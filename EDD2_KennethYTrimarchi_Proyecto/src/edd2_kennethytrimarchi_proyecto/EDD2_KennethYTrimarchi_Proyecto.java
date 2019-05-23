@@ -74,7 +74,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                         br.reset();
                         for(int i = DeleterStart; i < BytePosition-1; i++){
                             System.out.println((char)br.read());
-                            br.
+                            
                         }
                             
                         
