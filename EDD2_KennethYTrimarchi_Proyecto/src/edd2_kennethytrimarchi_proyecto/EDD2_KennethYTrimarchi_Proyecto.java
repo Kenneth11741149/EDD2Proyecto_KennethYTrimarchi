@@ -2,8 +2,10 @@ package edd2_kennethytrimarchi_proyecto;
 
 import java.awt.JobAttributes;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
@@ -41,34 +43,50 @@ public class EDD2_KennethYTrimarchi_Proyecto {
     public static void Delete(int position) throws IOException{
         File file = null;
         FileReader fr = null;
+        FileWriter fw = null;
         BufferedReader br = null;
+        BufferedWriter bw = null;
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
+            
             br = new BufferedReader(fr);
-            br.mark(0); //Si le das reset al buffered reader asi vuelve al inicio :)
+            //Si le das reset al buffered reader asi vuelve al inicio :)
             boolean continuar = true;
             //////////////////////////////////
             char actual; //Character que estoy extrayendo
             char invalido = (char)-1; //Character basura que da el br.read para que no se use.
             int contador = 0; //contador para las posiciones.
             int contadorchar = 0; //Contador para las /
-            while( (actual =(char)br.read()) != invalido){              
-                System.out.println(actual);
+            int DisqueByte = -1; //Para reset el lector;
+            int BytePosition = -1;
+            int DeleterStart = 0;
+            while( (actual =(char)br.read()) != invalido){ 
+                DisqueByte++; //Posicion que usare para marcar el inicio del borrado
+                BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
                 if(actual == '/' && contadorchar == 0){
+                    br.mark(DisqueByte);
                     contadorchar++;
                 } else if(actual == '/' && contadorchar == 1){
                     contador++;
-                    System.out.println("contador: "+contador);
-                    System.out.println("position"+position);
                     if(contador == position){
-                        System.out.println("");
-                        System.out.println("AHHHHHHHHHH");
+                        System.out.println("Position has been reached, commencing the elimination process.");
+                        br.reset();
+                        for(int i = DeleterStart; i < BytePosition-1; i++){
+                            System.out.println((char)br.read());
+                            br.
+                        }
+                            
+                        
+                        
                         break;
-                    }
+                    }else{
+                        DeleterStart = DisqueByte;
+                        br.mark(DisqueByte);
                     
                     
-                   
+                    } //end if interno
+                                   
                 }
                 
             }
