@@ -49,10 +49,13 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
+            fw = new FileWriter(file,true);
             
             br = new BufferedReader(fr);
+            bw = new BufferedWriter(fw);
             //Si le das reset al buffered reader asi vuelve al inicio :)
             boolean continuar = true;
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
             //////////////////////////////////
             char actual; //Character que estoy extrayendo
             char invalido = (char)-1; //Character basura que da el br.read para que no se use.
@@ -61,6 +64,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             int DisqueByte = -1; //Para reset el lector;
             int BytePosition = -1;
             int DeleterStart = 0;
+            int ByteLength = 0;
             while( (actual =(char)br.read()) != invalido){ 
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
                 BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
@@ -72,11 +76,16 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                     if(contador == position){
                         System.out.println("Position has been reached, commencing the elimination process.");
                         br.reset();
-                        for(int i = DeleterStart; i < BytePosition-1; i++){
-                            System.out.println((char)br.read());
-                            
+                        String insertion = "";
+                        ByteLength = (BytePosition-1) - DeleterStart;
+                        insertion += Integer.toString(ByteLength);
+                        for(int i = insertion.length(); i < ByteLength ;i++){
+                            insertion += "*";
+                           
                         }
-                            
+                          raf.seek(DeleterStart-4);
+                          raf.writeBytes(insertion);
+                         //bw.write(insertion, DeleterStart,ByteLength);
                         
                         
                         break;
@@ -97,7 +106,9 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             
         }
         br.close();
+        bw.close();
         fr.close();
+        fw.close();
        
     }
 }
