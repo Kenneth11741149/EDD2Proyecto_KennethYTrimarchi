@@ -154,9 +154,10 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                         ByteLength = (BytePosition-1) - DeleterStart;
                         insertion += "<";
                         
-                        insertion += Integer.toString(ByteLength);
+                        insertion += Integer.toString(ByteLength)+"*";
                         if(Metadata.equals("")){
                             Metadata = Integer.toString(position);
+                            insertion += "-1";
                         } else {
                             insertion += Metadata.toString()+"*";
                             Metadata = Integer.toString(position);
