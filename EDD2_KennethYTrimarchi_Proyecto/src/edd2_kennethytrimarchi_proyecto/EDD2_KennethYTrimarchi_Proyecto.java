@@ -147,7 +147,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             int BytePosition = -1;
             int DeleterStart = 0;
             int ByteLength = 0;
-            System.out.println("--------------------"+registros.length());
+            //System.out.println("--------------------"+registros.length());
             while( ijk < registros.length()){
                 actual = registros.charAt(ijk);
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
@@ -230,18 +230,17 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
-<<<<<<< HEAD
+
             //fw = new FileWriter(file,false);
 
-=======
            //fw = new FileWriter(file,false);
             
->>>>>>> 094c752468c43021b38ed6c158699ad969a0a732
+
             br = new BufferedReader(fr);
             //bw = new BufferedWriter(fw);
 
             String linea = br.readLine();
-            System.out.println("linea"+linea);
+           // System.out.println("linea"+linea);
             String Metadata = linea;
 
             String registros = br.readLine();
@@ -254,9 +253,11 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             int BytePosition = -1;
             int DeleterStart = 0;
             int ByteLength = 0;
-            
-            while( ijk < registros.length()){
+            boolean salir=false;
+            while( (ijk < registros.length()) && salir==false){
+                //System.out.println("-------------");
                 actual = registros.charAt(ijk);
+                //System.out.println("----------------");
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
                 //LINEA PENDEJA
                 BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
@@ -277,10 +278,14 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                            logic = 1;
                                     //MARCAS EL REGISTRO ACTUAL COMO ELIMINADO LO MANDO AL AVAILIST
                                     //ESCRIBIR AL FINAL.
-                        } else if(phrase.length() >= ByteLength){
+                        }else if(phrase.length() >= ByteLength){
+                            salir=true;
                             insertion += "<";
+                            
+                            //System.out.println("peneeeeeeeeeeeeeee");
                             DeleteP2(position);
                             registros +=phrase+"/";
+                            
                         }
                         insertion += Integer.toString(ByteLength)+"*";
                         if(Metadata.equals("")){
@@ -313,8 +318,8 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                         String print = registros2+insertion+registros4;
                         System.out.println(print);
                         
-                        //bw.write(Metadata);
-                        //bw.write(linea);
+                       // bw.write(Metadata);
+                       // bw.write(linea);
                         
                         
                         break;
@@ -330,6 +335,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         }catch(Exception e){
             System.out.println("ERROR AL CARGAR EL ARCHIVO.");
             e.printStackTrace();
+           
         }
         br.close();
         fr.close();
