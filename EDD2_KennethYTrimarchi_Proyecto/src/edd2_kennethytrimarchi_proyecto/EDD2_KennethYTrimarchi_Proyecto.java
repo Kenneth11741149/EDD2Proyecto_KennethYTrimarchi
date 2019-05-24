@@ -174,13 +174,13 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                         System.out.println(insertion);
                         String registros2 = registros.substring(0,DeleterStart+1);
                         
-                        System.out.println("Linea2"+registros2);
+                       // System.out.println("Linea2"+registros2);
                         String registros3 = registros.substring(DeleterStart+1,BytePosition);
                         registros3 += ">";
-                        System.out.println("Linea3"+registros3);
+                        //System.out.println("Linea3"+registros3);
                         String majo = registros2+registros3;
                         String registros4 = registros.substring(BytePosition);
-                        System.out.println("Linea4"+registros4);
+                        //System.out.println("Linea4"+registros4);
                         String print = registros2+insertion+registros4;
                         System.out.println(print);
                         
