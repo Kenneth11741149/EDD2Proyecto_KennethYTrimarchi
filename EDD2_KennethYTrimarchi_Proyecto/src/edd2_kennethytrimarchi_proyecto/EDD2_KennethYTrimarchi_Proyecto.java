@@ -130,7 +130,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
-            fw = new FileWriter(file,false);
+            fw = new FileWriter(file,true);
             
             br = new BufferedReader(fr);
             bw = new BufferedWriter(fw);
@@ -194,8 +194,8 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                         String print = registros2+insertion+registros4;
                         System.out.println(print);
                         
-                        //bw.write(Metadata);
-                        //bw.write(linea);
+                        bw.write(Metadata);
+                        bw.write(linea);
                         
                         
                         break;
@@ -229,7 +229,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
-            //fw = new FileWriter(file,false);
+           //fw = new FileWriter(file,false);
             
             br = new BufferedReader(fr);
             //bw = new BufferedWriter(fw);
