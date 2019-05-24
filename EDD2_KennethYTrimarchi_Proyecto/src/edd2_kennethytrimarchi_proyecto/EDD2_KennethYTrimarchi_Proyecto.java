@@ -147,6 +147,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             int BytePosition = -1;
             int DeleterStart = 0;
             int ByteLength = 0;
+            System.out.println("--------------------"+registros.length());
             while( ijk < registros.length()){
                 actual = registros.charAt(ijk);
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
@@ -230,14 +231,15 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             file = new File("Registro.txt");
             fr = new FileReader(file);
             //fw = new FileWriter(file,false);
-            
+
             br = new BufferedReader(fr);
             //bw = new BufferedWriter(fw);
-            
+
             String linea = br.readLine();
+            System.out.println("linea"+linea);
             String Metadata = linea;
+
             String registros = br.readLine();
-            
             int ijk = 0;
             char actual; //Character que estoy extrayendo
             char invalido = (char)-1; //Character basura que da el br.read para que no se use.
@@ -247,6 +249,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             int BytePosition = -1;
             int DeleterStart = 0;
             int ByteLength = 0;
+            
             while( ijk < registros.length()){
                 actual = registros.charAt(ijk);
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
