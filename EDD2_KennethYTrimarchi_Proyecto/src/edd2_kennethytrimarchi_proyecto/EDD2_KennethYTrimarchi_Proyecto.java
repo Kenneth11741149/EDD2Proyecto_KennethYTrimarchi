@@ -130,7 +130,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
-            fw = new FileWriter(file,false);
+            fw = new FileWriter(file,true);
             
             br = new BufferedReader(fr);
             bw = new BufferedWriter(fw);
@@ -195,8 +195,8 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                         String print = registros2+insertion+registros4;
                         System.out.println(print);
                         
-                        //bw.write(Metadata);
-                        //bw.write(linea);
+                        bw.write(Metadata);
+                        bw.write(linea);
                         
                         
                         break;
@@ -230,8 +230,13 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         try{
             file = new File("Registro.txt");
             fr = new FileReader(file);
+<<<<<<< HEAD
             //fw = new FileWriter(file,false);
 
+=======
+           //fw = new FileWriter(file,false);
+            
+>>>>>>> 094c752468c43021b38ed6c158699ad969a0a732
             br = new BufferedReader(fr);
             //bw = new BufferedWriter(fw);
 
@@ -253,6 +258,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             while( ijk < registros.length()){
                 actual = registros.charAt(ijk);
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
+                //LINEA PENDEJA
                 BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
                 if(actual == '/' && contadorchar == 0){
                     contadorchar++;
