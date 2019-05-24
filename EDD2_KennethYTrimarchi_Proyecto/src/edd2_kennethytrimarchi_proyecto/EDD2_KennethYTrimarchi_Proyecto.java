@@ -83,7 +83,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                             insertion += "*";
                            
                         }
-                          raf.seek(DeleterStart-4);
+                          long x = (byte)15;
                           raf.writeBytes(insertion);
                          //bw.write(insertion, DeleterStart,ByteLength);
                         
