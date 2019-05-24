@@ -250,6 +250,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             while( ijk < registros.length()){
                 actual = registros.charAt(ijk);
                 DisqueByte++; //Posicion que usare para marcar el inicio del borrado
+                //LINEA PENDEJA
                 BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
                 if(actual == '/' && contadorchar == 0){
                     contadorchar++;
