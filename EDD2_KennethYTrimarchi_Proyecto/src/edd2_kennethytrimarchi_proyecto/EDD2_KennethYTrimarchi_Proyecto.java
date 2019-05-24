@@ -27,10 +27,10 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         input = read.nextInt();
         switch(input){
             case 1:
-                System.out.println("Ingrese la posicion del bit a borrar.");
+                System.out.println("Ingrese la posicion del registro a borrar.");
                 position = 0;
                 position = read.nextInt();
-                Delete(position);
+                DeleteP2(position);
                 break;
             case 2:
                 break;
@@ -41,6 +41,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         
     }
     public static void Delete(int position) throws IOException{
+        
         File file = null;
         FileReader fr = null;
         FileWriter fw = null;
@@ -110,4 +111,103 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         fw.close();
        
     }
+    public static void DeleteP2(int position) throws IOException{
+        File file = null;
+        FileReader fr = null;
+        FileWriter fw = null;
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        
+        try{
+            file = new File("Registro.txt");
+            fr = new FileReader(file);
+            //fw = new FileWriter(file,false);
+            
+            br = new BufferedReader(fr);
+            //bw = new BufferedWriter(fw);
+            
+            String linea = br.readLine();
+            String Metadata = linea;
+            String registros = br.readLine();
+            int ijk = 0;
+            char actual; //Character que estoy extrayendo
+            char invalido = (char)-1; //Character basura que da el br.read para que no se use.
+            int contador = 0; //contador para las posiciones.
+            int contadorchar = 0; //Contador para las /
+            int DisqueByte = -1; //Para reset el lector;
+            int BytePosition = -1;
+            int DeleterStart = 0;
+            int ByteLength = 0;
+            while( ijk < registros.length()){
+                actual = registros.charAt(ijk);
+                DisqueByte++; //Posicion que usare para marcar el inicio del borrado
+                BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
+                if(actual == '/' && contadorchar == 0){
+                    contadorchar++;
+                } else if (actual == '/' && contadorchar == 1) {
+                    contador++;
+                    char elimval;
+                    if(contador == position && (elimval = registros.charAt(ijk-1))!= '<'){
+                        
+                        System.out.println("Position has been reached, commencing the elimination process.");
+                        String insertion = "";
+                        ByteLength = (BytePosition-1) - DeleterStart;
+                        insertion += "<";
+                        
+                        insertion += Integer.toString(ByteLength);
+                        if(Metadata.equals("")){
+                            Metadata = Integer.toString(position);
+                        } else {
+                            insertion += Metadata.toString()+"*";
+                            Metadata = Integer.toString(position);
+                        }
+                        System.out.println("Metadata:"+Metadata);
+                        for(int i = insertion.length(); i < ByteLength ;i++){
+                            
+                            if(i == ByteLength-1){
+                                insertion+= ">";
+                            } else {
+                                insertion += "*";
+                            }
+                           
+                        }
+                        System.out.println(insertion);
+                        String registros2 = registros.substring(0,DeleterStart+1);
+                        
+                        System.out.println("Linea2"+registros2);
+                        String registros3 = registros.substring(DeleterStart+1,BytePosition);
+                        registros3 += ">";
+                        System.out.println("Linea3"+registros3);
+                        String majo = registros2+registros3;
+                        String registros4 = registros.substring(BytePosition);
+                        System.out.println("Linea4"+registros4);
+                        String print = registros2+insertion+registros4;
+                        System.out.println(print);
+                        
+                        //bw.write(Metadata);
+                        //bw.write(linea);
+                        
+                        
+                        break;
+                    }else{
+                        DeleterStart = DisqueByte;
+                        br.mark(DisqueByte);
+                    
+                    
+                    } //end if interno
+                }
+                ijk++;
+            }
+        }catch(Exception e){
+            System.out.println("ERROR AL CARGAR EL ARCHIVO.");
+            e.printStackTrace();
+        }
+        br.close();
+        fr.close();
+       // bw.close();
+        //fw.close();
+        
+    }
+    
+    
 }
