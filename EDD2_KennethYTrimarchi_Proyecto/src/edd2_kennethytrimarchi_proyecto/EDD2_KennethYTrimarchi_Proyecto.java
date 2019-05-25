@@ -1,95 +1,59 @@
 package edd2_kennethytrimarchi_proyecto;
 
 import java.awt.JobAttributes;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EDD2_KennethYTrimarchi_Proyecto {
     static Scanner read = new Scanner(System.in);
-    
+    static int option;
     public static void main(String[] args) throws IOException {
         //System.out.println("Creating GUI");
         //GUI graphics = new GUI();
         //graphics.setVisible(true);
-       
-    }
-    public static void Delete(int position) throws IOException{
-        
-        File file = null;
-        FileReader fr = null;
-        FileWriter fw = null;
-        BufferedReader br = null;
-        BufferedWriter bw = null;
-        try{
-            file = new File("Registro.txt");
-            fr = new FileReader(file);
-            fw = new FileWriter(file,true);
-            
-            br = new BufferedReader(fr);
-            bw = new BufferedWriter(fw);
-            //Si le das reset al buffered reader asi vuelve al inicio :)
-            boolean continuar = true;
-            RandomAccessFile raf = new RandomAccessFile(file, "rw");
-            //////////////////////////////////
-            char actual; //Character que estoy extrayendo
-            char invalido = (char)-1; //Character basura que da el br.read para que no se use.
-            int contador = 0; //contador para las posiciones.
-            int contadorchar = 0; //Contador para las /
-            int DisqueByte = -1; //Para reset el lector;
-            int BytePosition = -1;
-            int DeleterStart = 0;
-            int ByteLength = 0;
-            while( (actual =(char)br.read()) != invalido){ 
-                DisqueByte++; //Posicion que usare para marcar el inicio del borrado
-                BytePosition++; //Posicion que estoy leyendo en el texto lo usare para marcar el final del borrado.
-                if(actual == '/' && contadorchar == 0){
-                    br.mark(DisqueByte);
-                    contadorchar++;
-                } else if(actual == '/' && contadorchar == 1){
-                    contador++;
-                    if(contador == position){
-                        System.out.println("Position has been reached, commencing the elimination process.");
-                        br.reset();
-                        String insertion = "";
-                        ByteLength = (BytePosition-1) - DeleterStart;
-                        insertion += Integer.toString(ByteLength);
-                        for(int i = insertion.length(); i < ByteLength ;i++){
-                            insertion += "*";
-                           
-                        }
-                          raf.writeBytes(insertion);
-                         //bw.write(insertion, DeleterStart,ByteLength);
-                        
-                        
-                        break;
-                    }else{
-                        DeleterStart = DisqueByte;
-                        br.mark(DisqueByte);
-                    
-                    
-                    } //end if interno
-                                   
-                }
-                
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
-            System.out.println("Error Loading TXT File");
-            
-        }
-        br.close();
-        bw.close();
-        fr.close();
-        fw.close();
-       
-    }
- 
+        //Menu Temporal
+        Kenneth metodos = new Kenneth();
+        System.out.println("Bienvenido al proyecto: ");
+        System.out.println("MENU:");
+        System.out.println("1. Crear Campos. ");
+        System.out.println("2. Listar Campos. ");
+        System.out.println("3. Modificar Campos. ");
+        System.out.println("4. Borrar campos. ");
+        System.out.println("5. Crear Registro. ");
+        System.out.println("6. Modificar Registro. ");
+        System.out.println("7. Buscar Registro. ");
+        System.out.println("8. Borrar Registro. ");
+        System.out.println("9. Listar Registro. ");
+        System.out.println("INGRESE SU OPCION: ");
+        option = read.nextInt();
+        switch(option){
+            case 1:
+                metodos.CreateCampos();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            default:
+                System.out.println("INVALIDO!!! ");
+                break;
+        } //Fin del switch menu.  
+    } //Fin del Main
+    
 }
