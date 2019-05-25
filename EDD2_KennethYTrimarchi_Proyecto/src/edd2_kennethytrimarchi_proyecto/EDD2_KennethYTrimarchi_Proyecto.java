@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 public class EDD2_KennethYTrimarchi_Proyecto {
     static Scanner read = new Scanner(System.in);
+    static Metadata metadata;
     static int option;
     public static void main(String[] args) throws IOException {
         //System.out.println("Creating GUI");
@@ -25,6 +26,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         //graphics.setVisible(true);
         //Menu Temporal
         Kenneth metodos = new Kenneth();
+        
         System.out.println("Bienvenido al proyecto: ");
         System.out.println("MENU:");
         System.out.println("1. Crear Campos. ");
@@ -40,11 +42,13 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         option = read.nextInt();
         switch(option){
             case 1:
-                metodos.CreateCampos();
+                metodos.CreateCampos(metadata);
                 break;
             case 2:
+                metodos.ListCampos(metadata);
                 break;
             case 3:
+                metodos.ModificarCampos(metadata);
                 break;
             case 4:
                 break;

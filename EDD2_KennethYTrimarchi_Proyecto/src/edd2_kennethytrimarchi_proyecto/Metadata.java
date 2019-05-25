@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edd2_kennethytrimarchi_proyecto;
 
 import java.io.File;
@@ -18,8 +14,32 @@ import java.io.Serializable;
  */
 public class Metadata implements Serializable{
     private String nombre;
-
+    private Object[] campos;
+    private int numregistros = 0;
+    
     public Metadata() {
+    }
+
+    public int getNumregistros() {
+        return numregistros;
+    }
+
+    public void setNumregistros(int numregistros) {
+        this.numregistros = numregistros;
+    }
+    
+    public void addnumregistros(){
+        this.numregistros++;
+    }
+    
+    
+
+    public Object[] getCampos() {
+        return campos;
+    }
+
+    public void setCampos(Object[] campos) {
+        this.campos = campos;
     }
     
     
