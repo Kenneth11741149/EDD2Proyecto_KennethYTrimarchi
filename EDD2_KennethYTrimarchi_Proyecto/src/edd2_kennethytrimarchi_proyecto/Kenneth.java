@@ -155,58 +155,66 @@ public class Kenneth {
     
     public void CreateCampos(Metadata metadata){
         if(metadata.getNumregistros() == 0){
-            System.out.println("Para dejar de insertar utilize el 0");
+            //System.out.println("Para dejar de insertar utilize el 0");
+            JOptionPane.showMessageDialog(null, "Para dejar de insertar Ingrese 0");
             String input = "";
             ArrayList<String> campos = new ArrayList<String>();
             // preparing containers for the information
             while(input.equals("0") != true){ //Mientras con centinela para que el usuario eliga cuando detenerse TEMP To deprecate.
-                System.out.println("Ingrese el nombre del campo: ");
-                input = read.nextLine();
+             //   System.out.println("Ingrese el nombre del campo: ");
+                input = JOptionPane.showInputDialog(null, "Ingrese el nombre del Campo");
                 if (input.equals("0") != true){
                     campos.add(input);  //Guardo en el arraylist todos los campos
                 }
             } //End while de insertar campos por usuario.
             metadata.setCampos(campos); //Lo guardo en la metadata para la Jtable.
-            System.out.println("Successfull!, check table");
+           // System.out.println("Successfull!, check table");
+            JOptionPane.showMessageDialog(null, "Success! Check Table.");
         } else {
-            System.out.println("Ya no se puede ingresar campos. Se ingresaron registros.");
+          //  System.out.println("Ya no se puede ingresar campos. Se ingresaron registros.");
+            JOptionPane.showMessageDialog(null, "Registro Ingresado, imposible realizar accion.");
         }
       
     } //End CreateCampos.
     
     public void ListCampos(Metadata metadata){
-        System.out.println(metadata.getCampos().toString());
+        //System.out.println(metadata.getCampos().toString());
+        JOptionPane.showMessageDialog(null,metadata.getCampos().toString());
     } //Fin de listar campos.
     
     public void ModificarCampos(Metadata metadata){
-        System.out.println("Ingrese el numero de cammpo que va a modificar: Ingresar apartir de 1.");
-        int campo = read.nextInt(); //Leo el campo a borrar
-        System.out.println("Ingrese el nuevo valor del campo:");
-        read.nextLine(); //Leo el nuevo nombre del campo
-        String input = read.nextLine();
+        //System.out.println("Ingrese el numero de cammpo que va a modificar: Ingresar apartir de 1.");
+        //JOptionPane.showMessageDialog(null, "Ingrese el campo a modificar a partir de 1.");
+        int campo = Integer.parseInt(JOptionPane.showInputDialog(null,"Ingrese el campo a modificar a partir de 1")); //Leo el campo a borrar
+        //System.out.println("Ingrese el nuevo valor del campo:");
+        //read.nextLine(); //Leo el nuevo nombre del campo
+        String input = JOptionPane.showInputDialog(null, "Ingrese el nuevo valor");
         campo--; 
         ArrayList campos = metadata.getCampos(); 
         if(campo >= 0 && campo < campos.size()){
             campos.set(campo, input);
             metadata.setCampos(campos);
-            System.out.println("Successfull! Check Table");
+            //System.out.println("Successfull! Check Table");
+            JOptionPane.showMessageDialog(null,"Success! Check Table" );
         } else {
-            System.out.println("Invalid Size. Action could not be performed.");
+            //System.out.println("Invalid Size. Action could not be performed.");
+            JOptionPane.showMessageDialog(null,"Invalid Size");
         }
     }
     
     public void DeleteCampos(Metadata metadata){
         if(metadata.getNumregistros() == 0){
-            System.out.println("Ingrese el numero del campo a borrar. Contar desde 1.");
-            int campo = read.nextInt();
+            //System.out.println("Ingrese el numero del campo a borrar. Contar desde 1.");
+            int campo = Integer.parseInt(JOptionPane.showInputDialog(null,"Ingrese el numero del campo a borrar A PARTIR DE 1"));
             campo--;
             ArrayList campos = metadata.getCampos();
             if(campo >= 0 && campo < campos.size()){
                 campos.remove(campo);
                 metadata.setCampos(campos);
-                System.out.println("Successfull! Check table!");
+                //System.out.println("Successfull! Check table!");
+                JOptionPane.showMessageDialog(null,"Success Check table" );
             } else {
-                System.out.println("Invalid Size. Action could not be performed.");
+                JOptionPane.showMessageDialog(null, "Action could not be performed!");
             }
             
         }

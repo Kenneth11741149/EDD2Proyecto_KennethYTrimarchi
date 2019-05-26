@@ -15,12 +15,15 @@ import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class EDD2_KennethYTrimarchi_Proyecto {
     //static Scanner read = new Scanner(System.in);
     static Metadata metadata;
     static int option;
     public static void main(String[] args) throws IOException {
+        JOptionPane.showMessageDialog(null,"GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
+        
         GUI graphics = new GUI();
         graphics.setVisible(true);
         //Menu Temporal

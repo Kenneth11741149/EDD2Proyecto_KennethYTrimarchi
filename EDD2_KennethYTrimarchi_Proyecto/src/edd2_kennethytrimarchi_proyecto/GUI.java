@@ -110,7 +110,8 @@ public class GUI extends javax.swing.JFrame {
         jLabel2.setText("PRE ALPHA MENU");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel3.setText("Pre-Alpha GUI V 1.5");
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Pre-Alpha GUI V 1.7");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -277,7 +278,7 @@ public class GUI extends javax.swing.JFrame {
             Animacion.Animacion.mover_izquierda(2,-155, 18,6, jPanel2 );
             Animacion.Animacion.mover_izquierda(300, 102, 18,6, jScrollPane1);
             //Animacion.Animacion.mover_izquierda(posicion, num, ERROR,DELAY, rootPane);
-            jScrollPane1.setSize(850,499);
+            jScrollPane1.setSize(817,499);
             jScrollPane1.updateUI();
             
             
@@ -288,7 +289,7 @@ public class GUI extends javax.swing.JFrame {
             Animacion.Animacion.mover_derecha(1,158, 18,6, jButton1);
             Animacion.Animacion.mover_derecha(-155, 2,18,6, jPanel2);
             Animacion.Animacion.mover_derecha(102,300, 18,6, jScrollPane1);
-            jScrollPane1.setSize(663,499);
+            jScrollPane1.setSize(619,499);
             jScrollPane1.updateUI();
            
         }
