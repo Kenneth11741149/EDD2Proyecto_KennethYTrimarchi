@@ -17,16 +17,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EDD2_KennethYTrimarchi_Proyecto {
-    static Scanner read = new Scanner(System.in);
+    //static Scanner read = new Scanner(System.in);
     static Metadata metadata;
     static int option;
     public static void main(String[] args) throws IOException {
-        //System.out.println("Creating GUI");
-        //GUI graphics = new GUI();
-        //graphics.setVisible(true);
+        GUI graphics = new GUI();
+        graphics.setVisible(true);
         //Menu Temporal
-        Kenneth metodos = new Kenneth();
-        
+        /*Kenneth metodos = new Kenneth();
+        String resp = "S";
+        metadata = new Metadata();
+        while(resp.equals("S") || resp.equals("s")){
         System.out.println("Bienvenido al proyecto: ");
         System.out.println("MENU:");
         System.out.println("1. Crear Campos. ");
@@ -58,6 +59,11 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 System.out.println("INVALIDO!!! ");
                 break;
         } //Fin del switch menu.  
+            System.out.println("Desea volver al menu del programa ? [S/N] ?");
+            read.nextLine();
+            resp = read.nextLine();
+        } //Fin del while con respuesta de usuario. Menu
+         */
     } //Fin del Main
     
 }

@@ -157,29 +157,25 @@ public class Kenneth {
         if(metadata.getNumregistros() == 0){
             System.out.println("Para dejar de insertar utilize el 0");
             String input = "";
-            ArrayList<String> camposcontainer = new ArrayList<String>();
+            ArrayList<String> campos = new ArrayList<String>();
             // preparing containers for the information
             while(input.equals("0") != true){ //Mientras con centinela para que el usuario eliga cuando detenerse TEMP To deprecate.
                 System.out.println("Ingrese el nombre del campo: ");
                 input = read.nextLine();
                 if (input.equals("0") != true){
-                    camposcontainer.add(input);  //Guardo en el arraylist todos los campos
-                }       
+                    campos.add(input);  //Guardo en el arraylist todos los campos
+                }
             } //End while de insertar campos por usuario.
-            Object[] campos; //Guardaremos al final en array porque el Jtable lo lee en array.
-            campos = camposcontainer.toArray(); //convierto el arraylist en el array para la tabla
             metadata.setCampos(campos); //Lo guardo en la metadata para la Jtable.
+            System.out.println("Successfull!, check table");
         } else {
             System.out.println("Ya no se puede ingresar campos. Se ingresaron registros.");
         }
-        
+      
     } //End CreateCampos.
     
     public void ListCampos(Metadata metadata){
-        Object[] campos = metadata.getCampos();
-        for (int i = 0; i < campos.length; i++) {
-            System.out.println(campos[i].toString());
-        }
+        System.out.println(metadata.getCampos().toString());
     } //Fin de listar campos.
     
     public void ModificarCampos(Metadata metadata){
@@ -188,25 +184,32 @@ public class Kenneth {
         System.out.println("Ingrese el nuevo valor del campo:");
         read.nextLine(); //Leo el nuevo nombre del campo
         String input = read.nextLine();
-        campo++; 
-        Object[] campos = metadata.getCampos(); 
-        if(campo >= 1 && campo <= campos.length){
-            campos[campo-1] = input;
+        campo--; 
+        ArrayList campos = metadata.getCampos(); 
+        if(campo >= 0 && campo < campos.size()){
+            campos.set(campo, input);
             metadata.setCampos(campos);
+            System.out.println("Successfull! Check Table");
         } else {
             System.out.println("Invalid Size. Action could not be performed.");
         }
     }
     
     public void DeleteCampos(Metadata metadata){
-        System.out.println("Ingrese el numero del campo a borrar. Contar desde 1.");
-        int campo = read.nextInt();
-        campo++;
-        Object[] campos = metadata.getCampos();
-        if(campo >= 1 && campo <= campos.length){
-            //campos[campo-1] = input;
-        } else {
-            System.out.println("Invalid Size. Action could not be performed.");
+        if(metadata.getNumregistros() == 0){
+            System.out.println("Ingrese el numero del campo a borrar. Contar desde 1.");
+            int campo = read.nextInt();
+            campo--;
+            ArrayList campos = metadata.getCampos();
+            if(campo >= 0 && campo < campos.size()){
+                campos.remove(campo);
+                metadata.setCampos(campos);
+                System.out.println("Successfull! Check table!");
+            } else {
+                System.out.println("Invalid Size. Action could not be performed.");
+            }
+            
         }
+        
     }
 }

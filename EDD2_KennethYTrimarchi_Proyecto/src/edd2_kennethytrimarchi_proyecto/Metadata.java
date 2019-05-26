@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.io.Serializable;
  */
 public class Metadata implements Serializable{
     private String nombre;
-    private Object[] campos;
+    private ArrayList campos;
     private int numregistros = 0;
     
     public Metadata() {
@@ -31,16 +32,18 @@ public class Metadata implements Serializable{
     public void addnumregistros(){
         this.numregistros++;
     }
-    
-    
 
-    public Object[] getCampos() {
+    public ArrayList getCampos() {
         return campos;
     }
 
-    public void setCampos(Object[] campos) {
+    public void setCampos(ArrayList campos) {
         this.campos = campos;
     }
+    
+    
+
+    
     
     
     public Metadata(String nombre){
