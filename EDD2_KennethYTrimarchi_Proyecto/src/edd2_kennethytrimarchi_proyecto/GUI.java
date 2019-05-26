@@ -23,12 +23,13 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
-        metadata = new Metadata();
+         //Creating temporary or permanent metadata depending on user input.
+         metadata = new Metadata();
+         //Setting up table default design.
          Jtable.setForeground(Color.BLACK);
          Jtable.setBackground(Color.WHITE);
          Jtable.setFont(new Font("", 1, 22));
-         Jtable.setRowHeight(30);
-         
+         Jtable.setRowHeight(30); 
     }
 
     /**
@@ -284,29 +285,24 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
-        System.out.println("Complete test");
-        
         int posicion = jButton1.getX();
-        System.out.println(posicion);
+        //System.out.println(posicion);
         if(posicion > 5){
+            //Al metiche que este leyendo esto por favor salir de aqui.
             Animacion.Animacion.mover_izquierda(160, 1, 18,6, jButton1);
             Animacion.Animacion.mover_izquierda(2,-155, 18,6, jPanel2 );
             Animacion.Animacion.mover_izquierda(300, 102, 18,6, jScrollPane1);
             //Animacion.Animacion.mover_izquierda(posicion, num, ERROR,DELAY, rootPane);
             jScrollPane1.setSize(817,499);
             jScrollPane1.updateUI();
-            
-            
-            
             //System.out.println(posicion2);
         } else {
-            
+            //Metiche favor deja de leer
             Animacion.Animacion.mover_derecha(1,160, 18,6, jButton1);
             Animacion.Animacion.mover_derecha(-155, 2,18,6, jPanel2);
             Animacion.Animacion.mover_derecha(102,300, 18,6, jScrollPane1);
             jScrollPane1.setSize(619,499);
             jScrollPane1.updateUI();
-           
         }
     }//GEN-LAST:event_jButton1MouseClicked
 
@@ -317,19 +313,19 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         metodos.CreateCampos(metadata);
-        TableBuilder(metadata,0);
+        BuildTable(metadata,0);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
         metodos.ModificarCampos(metadata);
-        TableBuilder(metadata, 0);
+        BuildTable(metadata, 0);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
         metodos.DeleteCampos(metadata);
-        TableBuilder(metadata, 0);
+        BuildTable(metadata, 0);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -337,14 +333,13 @@ public class GUI extends javax.swing.JFrame {
         metodos.ListCampos(metadata);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void TableBuilder(Metadata metadata, int funcion){
-        if(funcion == 0){ //Funcion 0 hace que solo cambie los titulos de la tabla.
+    private void BuildTable(Metadata metadata, int funcion){
+        if(funcion == 0){ //Instruction 0 lets the Table Builde know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
             tabla.setColumnIdentifiers(campos);
-            Jtable.setModel(tabla);
-            
+            Jtable.setModel(tabla); 
         }
         
     }

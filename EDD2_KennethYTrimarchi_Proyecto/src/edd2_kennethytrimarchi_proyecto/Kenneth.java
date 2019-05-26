@@ -152,7 +152,9 @@ public class Kenneth {
     public static void RAF(){
         
     }
-    
+    ////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    ////////////////////////////////////////////////
     public void CreateCampos(Metadata metadata){
         if(metadata.getNumregistros() == 0){
             //System.out.println("Para dejar de insertar utilize el 0");

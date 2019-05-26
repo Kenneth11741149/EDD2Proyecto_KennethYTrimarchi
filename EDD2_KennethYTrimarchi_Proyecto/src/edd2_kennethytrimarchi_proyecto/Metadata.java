@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Metadata implements Serializable{
     private String nombre;
     private ArrayList campos;
+    private ArrayList tipos;
     private int numregistros = 0;
     
     public Metadata() {
