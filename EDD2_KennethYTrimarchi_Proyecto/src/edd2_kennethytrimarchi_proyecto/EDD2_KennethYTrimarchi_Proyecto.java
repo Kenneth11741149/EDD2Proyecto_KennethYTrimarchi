@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -21,7 +22,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
     //static Scanner read = new Scanner(System.in);
     static Metadata metadata;
     static int option;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         JOptionPane.showMessageDialog(null,"GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
         
         GUI graphics = new GUI();
@@ -67,6 +68,16 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             resp = read.nextLine();
         } //Fin del while con respuesta de usuario. Menu
          */
+        char[] name=new char [10];
+        for (int i = 0; i < 10; i++) {
+            name[i]='a';
+        }
+        Registro test=new Registro();
+        Campos prueba=new Campos(1,20,40,true);
+        test.abrir();
+       test.read(test);
+        //test.escribir(test, prueba);
+        //System.out.println("File----"+test.File_size());
     } //Fin del Main
     
 }
