@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author X
  */
-public class Registro extends Trima {
+public class Registro  extends Trima {
 
     public int size;
     public int numCampos;

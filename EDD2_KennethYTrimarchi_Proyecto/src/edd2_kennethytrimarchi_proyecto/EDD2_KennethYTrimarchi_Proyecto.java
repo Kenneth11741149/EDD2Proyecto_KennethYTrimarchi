@@ -24,7 +24,6 @@ public class EDD2_KennethYTrimarchi_Proyecto {
     static int option;
     public static void main(String[] args) throws IOException, ParseException {
         JOptionPane.showMessageDialog(null,"GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
-        
         GUI graphics = new GUI();
         graphics.setVisible(true);
         //Menu Temporal
@@ -75,7 +74,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
         Registro test=new Registro();
         Campos prueba=new Campos(1,20,40,true);
         test.abrir();
-       test.read(test);
+        test.read(test);
         //test.escribir(test, prueba);
         //System.out.println("File----"+test.File_size());
     } //Fin del Main

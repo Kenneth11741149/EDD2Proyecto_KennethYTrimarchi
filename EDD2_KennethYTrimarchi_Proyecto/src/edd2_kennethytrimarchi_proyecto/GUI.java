@@ -9,8 +9,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import javafx.animation.Animation;
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -30,6 +33,7 @@ public class GUI extends javax.swing.JFrame {
          Jtable.setBackground(Color.WHITE);
          Jtable.setFont(new Font("", 1, 22));
          Jtable.setRowHeight(30); 
+         cleanTable = Jtable.getModel();
     }
 
     /**
@@ -255,6 +259,11 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setText("New");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -365,16 +374,52 @@ public class GUI extends javax.swing.JFrame {
         metodos.ListCampos(metadata);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        NewFile();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     private void BuildTable(Metadata metadata, int funcion){
         if(funcion == 0){ //Instruction 0 lets the Table Builder know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
             tabla.setColumnIdentifiers(campos);
-            Jtable.setModel(tabla); 
+            Jtable.setModel(tabla);  
+        } else if(funcion == 1){ //Instruction 1 lets the Table Builder clean all models loaded.
+            Jtable.setModel(cleanTable);
         }
         
     }
+    
+    private void NewFile(){
+        // Protocolo de creacion de Metadata. 
+        // SE LE ADVIERTE AL USUARIO QUE INFORMACION ACTUAL SERA BORRADA.
+        // 1. Se le pide el nombre de la metadata al usuario.
+        // 2. Se crea Metadata.
+        String name;
+        int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
+        if(option == JOptionPane.NO_OPTION){
+            metadata = new Metadata();
+            BuildTable(metadata, 1);
+            System.out.println("");
+            System.out.println("All models have been cleaned.");
+            name = JOptionPane.showInputDialog(this, "Please enter new Metadata name");
+            String temp = "\"";
+            temp+= name;
+            temp+=".dat";
+            temp+= "\"";
+            System.out.println(temp);            
+        } else if(option == JOptionPane.YES_OPTION){
+            System.out.println("Please Implement Save Option.");
+        } else{
+            System.out.println("Operation cancelled");
+        }
+    }
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -413,6 +458,7 @@ public class GUI extends javax.swing.JFrame {
     int num = 0;
     Kenneth metodos = new Kenneth();
     Metadata metadata;
+    TableModel cleanTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Jtable;
     private javax.swing.JButton jButton1;

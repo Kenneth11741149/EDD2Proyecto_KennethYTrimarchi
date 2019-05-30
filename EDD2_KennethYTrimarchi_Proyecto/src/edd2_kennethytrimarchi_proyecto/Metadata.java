@@ -18,10 +18,31 @@ public class Metadata implements Serializable{
     private ArrayList campos;
     private ArrayList tipos;
     private int numregistros = 0;
+    private boolean estado; // True significa que hay informacion en la metadata.
+                                                        
+    
     
     public Metadata() {
+        estado = false;
     }
 
+    public ArrayList getTipos() {
+        return tipos;
+    }
+
+    public void setTipos(ArrayList tipos) {
+        this.tipos = tipos;
+    }
+
+    public boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    } 
+
+    
     public int getNumregistros() {
         return numregistros;
     }
