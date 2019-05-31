@@ -26,7 +26,11 @@ public class EDD2_KennethYTrimarchi_Proyecto {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException, ParseException {
+
         JOptionPane.showMessageDialog(null, "GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
+
+
+        JOptionPane.showMessageDialog(null,"GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
 
         GUI graphics = new GUI();
         graphics.setVisible(true);
@@ -71,6 +75,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             resp = read.nextLine();
         } //Fin del while con respuesta de usuario. Menu
          */
+
 
         Registro test = new Registro();
         test.abrir(test);
@@ -143,7 +148,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
             }
         } while (resp != 4);
 
-        System.out.println(test.File_size());
+
         //test.escribir(test, prueba);
         //System.out.println(test.File_size() + "------" + prueba.sizeBytes);
 

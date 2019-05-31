@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edd2_kennethytrimarchi_proyecto;
 
 import java.io.IOException;
@@ -12,7 +7,7 @@ import java.text.ParseException;
 
 /**
  *
- * Bienvenido a Java Puterias y +
+ * Bienvenido a Java Puterias y +      <---- HAHAHAHAHAHAHAHHA
  */
 public class Trima {
 
@@ -39,8 +34,10 @@ public class Trima {
         }
     }
 
+
     public void readC(Registro reg) throws IOException, ParseException {
         reg.readCampos(file);
+
     }
 
 // Cierre del fichero

@@ -8,9 +8,18 @@ package edd2_kennethytrimarchi_proyecto;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import javafx.animation.Animation;
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -30,6 +39,7 @@ public class GUI extends javax.swing.JFrame {
          Jtable.setBackground(Color.WHITE);
          Jtable.setFont(new Font("", 1, 22));
          Jtable.setRowHeight(30); 
+         cleanTable = Jtable.getModel();
     }
 
     /**
@@ -255,6 +265,11 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setText("New");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -365,16 +380,101 @@ public class GUI extends javax.swing.JFrame {
         metodos.ListCampos(metadata);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        NewFile();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     private void BuildTable(Metadata metadata, int funcion){
         if(funcion == 0){ //Instruction 0 lets the Table Builder know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
             tabla.setColumnIdentifiers(campos);
-            Jtable.setModel(tabla); 
+            Jtable.setModel(tabla);  
+        } else if(funcion == 1){ //Instruction 1 lets the Table Builder clean all models loaded.
+            Jtable.setModel(cleanTable);
         }
         
     }
+    private void CreateFile(){
+        //Borro lo que tengo en la metadata
+            metadata = new Metadata();
+            //Le digo a la tabla que se borre.
+            BuildTable(metadata, 1);
+            //OUTPUT TESTS ----- IGNORE
+            System.out.println("");
+            System.out.println("All models have been cleaned.");
+            // Output Tests ------ IGNORE.
+            String direction;
+            //Creo un nuevo JFileChooser para que eliga donde guardar.
+            //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File("./"));
+            FileNameExtensionFilter data = new FileNameExtensionFilter("DAT FILE","dat");
+            fileChooser.setFileFilter(data); 
+            int seleccion = fileChooser.showSaveDialog(this);
+            if(seleccion == JFileChooser.APPROVE_OPTION){ //Cuando le da guardar
+                //System.out.println(fileChooser.getCurrentDirectory().toString());
+                     File file = null;
+                     FileOutputStream fos = null;
+                     ObjectOutputStream ous = null;                  
+                try{ 
+                    if(fileChooser.getFileFilter().getDescription().equals("DAT FILE")){ //Chequea si lo que quiere guardar es DAT FILE
+                         direction = fileChooser.getSelectedFile().getPath()+".dat";
+                         file = new File(direction);
+                         if(file.length() == 0){ //Revisa que este vacio.
+                             JOptionPane.showMessageDialog(this, "Success!");
+                         } else if(file.exists()){ //Si ya existe entonces lo vuelve a crear. PERO VACIO.
+                             file.delete();
+                             file.createNewFile();
+                             JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
+                         }
+                     } else {
+                         JOptionPane.showMessageDialog(this, "Unable to save. Use DAT FILE.");
+                     }
+                       fos = new FileOutputStream(file);
+                       ous = new ObjectOutputStream(fos);
+                       ous.flush(); //Lo oficializo
+                       System.out.println("FILE LENGTH: "+(file.length()-4)); //SIZE MENOS BUFFER.
+                    
+                }catch(Exception e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this,"Something Went Wrong! Contact System Administrator.");
+                }
+                try{
+                    ous.close();
+                    fos.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Fatal error closing files.");
+                }
+                
+            } //End of FileChooserIf 
+    }
+    private void NewFile(){
+        // Protocolo de creacion de Metadata. 
+        // SE LE ADVIERTE AL USUARIO QUE INFORMACION ACTUAL SERA BORRADA.
+        // 1. Se le pide el nombre de la metadata al usuario.
+        // 2. Se crea Metadata.
+        String direction; // Nombre del archivo .dat que se creara/
+        int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
+        if(option == JOptionPane.NO_OPTION){ //Si no quiere guardar lo que hizo.
+            CreateFile(); //Como no quiere guardar solo lo creo.
+            
+        } else if(option == JOptionPane.YES_OPTION){
+            System.out.println("Please Implement Save Option."); 
+            //una vez se guarda la info se crea el archivo.
+            //CreateFile();
+            
+        } else{
+            System.out.println("Operation cancelled");
+        }
+    }
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -413,6 +513,7 @@ public class GUI extends javax.swing.JFrame {
     int num = 0;
     Kenneth metodos = new Kenneth();
     Metadata metadata;
+    TableModel cleanTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Jtable;
     private javax.swing.JButton jButton1;
