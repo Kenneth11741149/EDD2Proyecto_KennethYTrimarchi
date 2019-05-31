@@ -8,10 +8,16 @@ package edd2_kennethytrimarchi_proyecto;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import javafx.animation.Animation;
 import javax.swing.Icon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -391,27 +397,76 @@ public class GUI extends javax.swing.JFrame {
         }
         
     }
-    
+    private void CreateFile(){
+        //Borro lo que tengo en la metadata
+            metadata = new Metadata();
+            //Le digo a la tabla que se borre.
+            BuildTable(metadata, 1);
+            //OUTPUT TESTS ----- IGNORE
+            System.out.println("");
+            System.out.println("All models have been cleaned.");
+            // Output Tests ------ IGNORE.
+            String direction;
+            //Creo un nuevo JFileChooser para que eliga donde guardar.
+            //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File("./"));
+            FileNameExtensionFilter data = new FileNameExtensionFilter("DAT FILE","dat");
+            fileChooser.setFileFilter(data); 
+            int seleccion = fileChooser.showSaveDialog(this);
+            if(seleccion == JFileChooser.APPROVE_OPTION){ //Cuando le da guardar
+                //System.out.println(fileChooser.getCurrentDirectory().toString());
+                     File file = null;
+                     FileOutputStream fos = null;
+                     ObjectOutputStream ous = null;                  
+                try{ 
+                    if(fileChooser.getFileFilter().getDescription().equals("DAT FILE")){ //Chequea si lo que quiere guardar es DAT FILE
+                         direction = fileChooser.getSelectedFile().getPath()+".dat";
+                         file = new File(direction);
+                         if(file.length() == 0){ //Revisa que este vacio.
+                             JOptionPane.showMessageDialog(this, "Success!");
+                         } else if(file.exists()){ //Si ya existe entonces lo vuelve a crear. PERO VACIO.
+                             file.delete();
+                             file.createNewFile();
+                             JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
+                         }
+                     } else {
+                         JOptionPane.showMessageDialog(this, "Unable to save. Use DAT FILE.");
+                     }
+                       fos = new FileOutputStream(file);
+                       ous = new ObjectOutputStream(fos);
+                       ous.flush(); //Lo oficializo
+                       System.out.println("FILE LENGTH: "+(file.length()-4)); //SIZE MENOS BUFFER.
+                    
+                }catch(Exception e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this,"Something Went Wrong! Contact System Administrator.");
+                }
+                try{
+                    ous.close();
+                    fos.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Fatal error closing files.");
+                }
+                
+            } //End of FileChooserIf 
+    }
     private void NewFile(){
         // Protocolo de creacion de Metadata. 
         // SE LE ADVIERTE AL USUARIO QUE INFORMACION ACTUAL SERA BORRADA.
         // 1. Se le pide el nombre de la metadata al usuario.
         // 2. Se crea Metadata.
-        String name;
+        String direction; // Nombre del archivo .dat que se creara/
         int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
-        if(option == JOptionPane.NO_OPTION){
-            metadata = new Metadata();
-            BuildTable(metadata, 1);
-            System.out.println("");
-            System.out.println("All models have been cleaned.");
-            name = JOptionPane.showInputDialog(this, "Please enter new Metadata name");
-            String temp = "\"";
-            temp+= name;
-            temp+=".dat";
-            temp+= "\"";
-            System.out.println(temp);            
+        if(option == JOptionPane.NO_OPTION){ //Si no quiere guardar lo que hizo.
+            CreateFile(); //Como no quiere guardar solo lo creo.
+            
         } else if(option == JOptionPane.YES_OPTION){
-            System.out.println("Please Implement Save Option.");
+            System.out.println("Please Implement Save Option."); 
+            //una vez se guarda la info se crea el archivo.
+            //CreateFile();
+            
         } else{
             System.out.println("Operation cancelled");
         }
