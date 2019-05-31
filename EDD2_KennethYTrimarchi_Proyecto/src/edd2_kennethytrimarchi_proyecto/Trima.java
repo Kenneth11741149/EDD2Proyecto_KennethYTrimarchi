@@ -27,9 +27,10 @@ public class Trima {
     }
 
     // Apertura del fichero
-    public void abrir()
+    public void abrir(Registro r)
             throws IOException {
         file = new RandomAccessFile("MetaData.dat", "rw");
+        //r.numCampos=file.readLong();
     }
 
     public void escribir(Registro registro, Campos c) throws IOException {
@@ -37,12 +38,11 @@ public class Trima {
             registro.writeCampo(file, c);
         }
     }
-    public void read(Registro reg) throws IOException, ParseException{
-        reg.readFile(file);
+
+    public void readC(Registro reg) throws IOException, ParseException {
+        reg.readCampos(file);
     }
-    
-    
-    
+
 // Cierre del fichero
     public void cerrar()
             throws IOException {
@@ -54,6 +54,10 @@ public class Trima {
     public long File_size() throws IOException {
 
         return file.length();
+    }
+    public void modificarC(Registro c,Campos p) throws IOException{
+        c.modificarCampo(file,p.size_dec
+                ,p);
     }
 
 }

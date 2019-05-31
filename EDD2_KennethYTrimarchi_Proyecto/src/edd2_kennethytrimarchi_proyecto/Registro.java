@@ -17,11 +17,11 @@ import java.util.ArrayList;
 public class Registro extends Trima {
 
     public int size;
-    public int numCampos;
+    public long numCampos;
     public ArrayList<Campos> Camps = new ArrayList<>();
 
     public Registro() {
-
+        numCampos = 0;
     }
 
     public Registro(int size, int numCampos) {
@@ -37,7 +37,7 @@ public class Registro extends Trima {
         this.size = size;
     }
 
-    public int getNumCampos() {
+    public long getNumCampos() {
         return numCampos;
     }
 
@@ -61,22 +61,64 @@ public class Registro extends Trima {
         Camps.add(e);
     }
 
-    public void readFile(RandomAccessFile file)
+    public void readCampos(RandomAccessFile file)
             throws IOException, java.text.ParseException {
-        System.out.print(file.readLong());
-        System.out.print((char) file.readByte());
-        System.out.print(file.readLong());
-        System.out.print((char) file.readByte());
-        for (int i = 0; i<10; i++) {
-           System.out.print(file.readChar());
+        boolean registro_elimando = false;
+        file.seek(0);
+        numCampos = file.readLong();
+        file.skipBytes(2);
+
+        for (int j = 0; j < numCampos; j++) {
+            boolean frase_encontrada = false;
+            long ubicacion = file.readLong();
+
+            //int nCampos=file.readInt();
+            //file.readByte();
+            System.out.print(ubicacion);
+            System.out.print((char) file.readByte());
+            long size = file.readLong();
+            System.out.print(size);
+            System.out.print((char) file.readByte());
+            String nombre = "";
+            String acumulador = "";
+            Campos c = new Campos();
+
+            while (frase_encontrada == false) {
+                acumulador = "";
+                acumulador += (char) file.readByte();
+                if (acumulador.contains("|")) {
+                    //System.out.println("SIIIIIIIIIII");
+                    frase_encontrada = true;
+                } else {
+                    nombre += acumulador;
+                    // System.out.println("NOOOOOOOOOOOOOO");
+                }
+
+                //System.out.print(file.readChar());         
+            }
+            System.out.print(nombre + acumulador);
+            int tipo = file.readInt();
+            System.out.print(tipo);
+            System.out.print((char) file.readByte());
+            //long nose = file.readLong();
+            //System.out.print(nose);
+            //System.out.print((char) file.readByte());
+            boolean key = file.readBoolean();
+            System.out.print(key);
+            file.skipBytes(2);
+            System.out.println("");
+            //file.skipBytes(2);
+            c.setKey(key);
+            c.agregarNombre(nombre);
+            c.setFieldType(tipo);
+            c.setSizeBytes(size);
+            c.setSize_dec(ubicacion);
+
+            Camps.add(c);
+
+            //file.writeBytes(System.getProperty("line.separator"));
+            Camps.add(c);
         }
-        System.out.print((char) file.readByte());
-        System.out.print(file.readInt());
-        System.out.print((char) file.readByte());
-        System.out.print(file.readLong());
-        System.out.print((char) file.readByte());
-        System.out.print(file.readBoolean());
-        //file.writeBytes(System.getProperty("line.separator"));
     }
 
     private String readString(RandomAccessFile file) throws IOException {
@@ -96,39 +138,44 @@ public class Registro extends Trima {
         // |= 1 Byte    \n= 2Bytes
 
         //long-long-string-int-long-boolean
+        file.seek(0);
+        if (file.length() == 0) {
+            file.writeLong(0);
+            file.writeBytes(System.getProperty("line.separator"));
+        }
+
+        file.seek(file.length());
         String name = "";
-        long Bytes_en_Caracteres = 1 + 1 + 1 + 1 + 1 + 2;
-        long size_total = 8 + 8 + c.sizeBytes + 8 + 4 + Bytes_en_Caracteres;
+        long size_total = c.sizeBytes;
         file.writeLong(file.length());
         file.writeBytes("|");
         file.writeLong(size_total);
         file.writeBytes("|");
-
-        for (int i = 0; i < 10; i++) {
-            System.out.print(c.getChar(i));
-            String tiene = Character.toString('a');
-            System.out.println(tiene + "--");
-
-            String letras = "abcdefghijklmnopqrstuvwxyz"
-                    + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    + "1234567890";
-            if (letras.contains(tiene)) {
-                //System.out.println("Enocntrados" + tiene.length());
-                //name += tiene;
-                file.writeChar('a');
-            } else {
-                //System.out.println("NAada");
-            }
+        // System.out.println("-----------" + c.cadena.length());
+        for (int i = 0; i < c.cadena.length(); i++) {
+            char string[] = c.getName();
+            file.writeByte(string[i]);
         }
-        //file.writeChars(name);
         file.writeBytes("|");
         file.writeInt(c.FieldType);
         file.writeBytes("|");
-        file.writeLong(c.size_dec);
-        file.writeBytes("|");
+        //file.writeLong(c.size_dec);
+        //file.writeBytes("|");
         file.writeBoolean(c.key);
         file.writeBytes(System.getProperty("line.separator"));
-
+        numCampos++;
+        file.seek(0);
+        file.writeLong(numCampos);
     }
 
+    public void modificarCampo(RandomAccessFile file, long ubicacion,Campos c) throws IOException {
+        file.seek(ubicacion);
+        file.skipBytes(8 + 1 + 8 + 1);
+        for (int i = 0; i < c.cadena.length(); i++) {
+            char string[] = c.getName();
+            file.writeByte(string[i]);
+        }
+        //file.writeLong(1);
+        //file.writeBytes(System.getProperty("line.separator"));
+    }
 }

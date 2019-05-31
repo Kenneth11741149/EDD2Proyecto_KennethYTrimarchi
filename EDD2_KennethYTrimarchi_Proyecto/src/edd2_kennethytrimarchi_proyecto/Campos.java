@@ -16,30 +16,62 @@ public class Campos {
      * char name[30]; FieldType type; int size; int size_dec; bool key;
      *
      */
-    public char[] name=new char[30];
+    public char[] name;
     public int FieldType;
     public long sizeBytes;
     public long size_dec;
-    public boolean key=false;
+    public boolean key = false;
+    public String cadena = "123456789012345678901234567890";
+
+    public boolean entro = false;
 
     public Campos() {
-        
+
     }
-    
 
     @SuppressWarnings("empty-statement")
-    public Campos(int FieldType, long sizeBytes, long size_dec, boolean key) {
+    public Campos(int FieldType, long size_dec, boolean key) {
         this.FieldType = FieldType;
-        this.sizeBytes = sizeBytes;
+        long Bytes_en_Caracteres = 5 + 1;
+        this.sizeBytes = 8  + 8 + 4 + Bytes_en_Caracteres + 1;
         this.size_dec = size_dec;
         this.key = key;
-        
+
+    }
+
+    public boolean agregarNombre(String a) {
+        if (a.length() <= cadena.length()) {
+            if (entro == false) {
+                name = new char[a.length()];
+                for (int i = 0; i < a.length(); i++) {
+                    name[i] = a.charAt(i);
+                }
+                sizeBytes += (a.length());
+                cadena = a;
+                entro = true;
+            } else {
+                for (int i =   0; i < cadena.length(); i++) {
+                    if (i < a.length()) {
+                        name[i] = a.charAt(i);
+                    } else {
+                        name[i] =' ';
+                        a+=" ";
+                    }
+                }
+                cadena=a;
+            }
+            return true;
+        } else {
+            System.out.println("El Registro es Muy Grande debe ser mas pequeño");
+            return false;
+        }
     }
 
     public char[] getName() {
         return name;
     }
-    public char getChar(int x){
+
+    public char getChar(int x) {
         return name[x];
     }
 
@@ -67,7 +99,7 @@ public class Campos {
         return size_dec;
     }
 
-    public void setSize_dec(int size_dec) {
+    public void setSize_dec(long size_dec) {
         this.size_dec = size_dec;
     }
 
@@ -81,11 +113,7 @@ public class Campos {
 
     @Override
     public String toString() {
-        return name+"|"+FieldType+"|"+key;
+        return cadena + "|" + FieldType + "|" + key;
     }
-    
-   
-    
-    
-    
+
 }
