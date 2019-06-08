@@ -27,56 +27,23 @@ public class EDD2_KennethYTrimarchi_Proyecto {
 
     public static void main(String[] args) throws IOException, ParseException {
 
-        JOptionPane.showMessageDialog(null, "GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
+        JOptionPane.showMessageDialog(null, "Pre Alpha PROGRAM VERSION 1.9 Patch Notes: "
+                + "\n1.Try catch is almost rolled out System Wide. "
+                + "\n2.Binary File features not working, but are getting prepped."
+                + "\n3.New File feature (option NO) is completely operational"
+                + "\n4. Create Campos exports successfully all necesary info to metadata on class gui."
+                + "\n5. Borrar Campos works as it should modyfing metadata"
+                + "\n6. Modificar campos works as it should."
+                + "\n7. Funcion Crear registro is existent but not operational."
+                + "\n8.Table Code is being developed."
+                + "\n\n\n\n");
 
-
-        JOptionPane.showMessageDialog(null,"GUI VERSION 1.7. \nNo try catch enabled. \nTable Issues Resolved");
 
         GUI graphics = new GUI();
         graphics.setVisible(true);
-        //Menu Temporal
-        /*Kenneth metodos = new Kenneth();
-        String resp = "S";
-        metadata = new Metadata();
-        while(resp.equals("S") || resp.equals("s")){
-        System.out.println("Bienvenido al proyecto: ");
-        System.out.println("MENU:");
-        System.out.println("1. Crear Campos. ");
-        System.out.println("2. Listar Campos. ");
-        System.out.println("3. Modificar Campos. ");
-        System.out.println("4. Borrar campos. ");
-        System.out.println("5. Crear Registro. ");
-        System.out.println("6. Modificar Registro. ");
-        System.out.println("7. Buscar Registro. ");
-        System.out.println("8. Borrar Registro. ");
-        System.out.println("9. Listar Registro. ");
-        System.out.println("INGRESE SU OPCION: ");
-        option = read.nextInt();
-        switch(option){
-            case 1:
-                metodos.CreateCampos(metadata);
-                break;
-            case 2:
-                metodos.ListCampos(metadata);
-                break;
-            case 3:
-                metodos.ModificarCampos(metadata);
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            default:
-                System.out.println("INVALIDO!!! ");
-                break;
-        } //Fin del switch menu.  
-            System.out.println("Desea volver al menu del programa ? [S/N] ?");
-            read.nextLine();
-            resp = read.nextLine();
-        } //Fin del while con respuesta de usuario. Menu
-         */
+       
 
-
+        /*
         Registro test = new Registro();
         test.abrir(test);
         int resp = 0;
@@ -146,7 +113,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 case 4:
                     break;
             }
-        } while (resp != 4);
+        } while (resp != 4);*/
 
 
         //test.escribir(test, prueba);

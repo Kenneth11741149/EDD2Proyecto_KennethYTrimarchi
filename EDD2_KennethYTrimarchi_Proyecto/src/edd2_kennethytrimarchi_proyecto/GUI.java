@@ -5,18 +5,18 @@
  */
 package edd2_kennethytrimarchi_proyecto;
 
+import com.sun.javafx.property.adapter.PropertyDescriptor;
+import java.awt.AWTEventMulticaster;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Rectangle;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import javafx.animation.Animation;
-import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -32,14 +32,17 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
-         //Creating temporary or permanent metadata depending on user input.
-         metadata = new Metadata();
-         //Setting up table default design.
-         Jtable.setForeground(Color.BLACK);
-         Jtable.setBackground(Color.WHITE);
-         Jtable.setFont(new Font("", 1, 22));
-         Jtable.setRowHeight(30); 
-         cleanTable = Jtable.getModel();
+        //Creating temporary or permanent metadata depending on user input.
+        metadata = new Metadata();
+        //Setting up table default design.
+        this.setLocationRelativeTo(null);
+        Table.setForeground(Color.BLACK);
+        Table.setBackground(Color.WHITE);
+        Table.setFont(new Font("", 1, 22));
+        Table.setRowHeight(30);
+        Table.putClientProperty("terminateEditOnFocusLost", true);
+        cleanTable = Table.getModel();
+
     }
 
     /**
@@ -52,6 +55,7 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -64,7 +68,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Jtable = new javax.swing.JTable();
+        Table = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -76,8 +80,12 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         jMenuItem2.setText("jMenuItem2");
+
+        jMenu3.setText("jMenu3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -98,56 +106,55 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edd2_kennethytrimarchi_proyecto/icons8_plus_32px.png"))); // NOI18N
-        jLabel1.setText("Add Registro");
+        jLabel1.setText("Export to Excel");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(25, 25, 25))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("PRE ALPHA MENU");
+        jLabel2.setText("Special Features");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pre-Alpha GUI V 1.7");
+        jLabel3.setText("Pre-Alpha V 1.8");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Something Usefull");
+        jLabel4.setText("Export to XML");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(19, 19, 19))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(0, 204, 204));
@@ -180,33 +187,34 @@ public class GUI extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel2)
-                .addGap(27, 27, 27)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(29, 29, 29))
         );
@@ -221,7 +229,7 @@ public class GUI extends javax.swing.JFrame {
 
         jScrollPane1.setOpaque(false);
 
-        Jtable.setModel(new javax.swing.table.DefaultTableModel(
+        Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -229,7 +237,17 @@ public class GUI extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(Jtable);
+        Table.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TableFocusLost(evt);
+            }
+        });
+        Table.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                TablePropertyChange(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Table);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -257,6 +275,11 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Save");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
@@ -274,12 +297,18 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Close");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Campos");
 
+        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem6.setText("Crear Campo");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -314,6 +343,19 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu4.setText("Registros");
+
+        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem10.setText("Crear Registro");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,28 +372,30 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
         int posicion = jButton1.getX();
         //System.out.println(posicion);
-        if(posicion > 5){
+        if (posicion > 5) {
             //Al metiche que este leyendo esto por favor salir de aqui.
-            Animacion.Animacion.mover_izquierda(160, 1, 18,6, jButton1);
-            Animacion.Animacion.mover_izquierda(2,-155, 18,6, jPanel2 );
-            Animacion.Animacion.mover_izquierda(300, 102, 18,6, jScrollPane1);
+            Animacion.Animacion.mover_izquierda(160, 1, 18, 6, jButton1);
+            Animacion.Animacion.mover_izquierda(2, -155, 18, 6, jPanel2);
+            Animacion.Animacion.mover_izquierda(300, 102, 18, 6, jScrollPane1);
             //Animacion.Animacion.mover_izquierda(posicion, num, ERROR,DELAY, rootPane);
-            jScrollPane1.setSize(817,499);
+            jScrollPane1.setSize(817, 499);
             jScrollPane1.updateUI();
             //System.out.println(posicion2);
         } else {
             //Metiche favor deja de leer
-            Animacion.Animacion.mover_derecha(1,160, 18,6, jButton1);
-            Animacion.Animacion.mover_derecha(-155, 2,18,6, jPanel2);
-            Animacion.Animacion.mover_derecha(102,300, 18,6, jScrollPane1);
-            jScrollPane1.setSize(619,499);
+            Animacion.Animacion.mover_derecha(1, 160, 18, 6, jButton1);
+            Animacion.Animacion.mover_derecha(-155, 2, 18, 6, jPanel2);
+            Animacion.Animacion.mover_derecha(102, 300, 18, 6, jScrollPane1);
+            jScrollPane1.setSize(619, 499);
             jScrollPane1.updateUI();
         }
     }//GEN-LAST:event_jButton1MouseClicked
+
 
     private void jPanel1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel1FocusLost
         // TODO add your handling code here:
@@ -359,20 +403,53 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-        metodos.CreateCampos(metadata);
-        BuildTable(metadata,0);
+        if (metadata.getNumregistros() == 0) {
+            metodos.CreateCampos(metadata);
+            BuildTable(metadata, 0);
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid Operation.");
+        }
+
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
-        metodos.ModificarCampos(metadata);
-        BuildTable(metadata, 0);
+        if (metadata.getNumregistros() == 0 && metadata.getCampos() != null) {
+            try {
+                if (metadata.getCampos().size() == 0) {
+
+                } else {
+                     metodos.ModificarCampos(metadata);
+                     BuildTable(metadata, 0);
+                }
+               
+            } catch (Exception e) {
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid Operation");
+        }
+
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
-        metodos.DeleteCampos(metadata);
-        BuildTable(metadata, 0);
+        if (metadata.getNumregistros() == 0 && metadata.getCampos() != null) {
+            try {
+                if (metadata.getCampos().size() == 0) {
+                    
+                } else {
+                    metodos.DeleteCampos(metadata);
+                    BuildTable(metadata, 0);
+                }
+                
+            } catch (Exception e) {
+
+            }
+
+        }
+
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -385,96 +462,207 @@ public class GUI extends javax.swing.JFrame {
         NewFile();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void BuildTable(Metadata metadata, int funcion){
-        if(funcion == 0){ //Instruction 0 lets the Table Builder know it should only change headers.
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        if (metadata != null) {
+            if (metadata.getCampos() != null) {
+                if (metadata.getCampos().size() > 0) {
+                    metadata.addnumregistros();
+                    CrearRegistro();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No hay campos creados! XTT 428");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay campos creados! XTT 431");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay campos creados! XTT 435");
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    private void Temp() {
+
+        //Table.
+        Table.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+                    int row = Table.getSelectedRow();
+                    int column = Table.getSelectedColumn();
+
+                    // resul is the new value to insert in the DB
+                    String resul = Table.getValueAt(row, column).toString();
+                    // id is the primary key of my DB
+                    String id = Table.getValueAt(row, 0).toString();
+
+                    // update is my method to update. Update needs the id for
+                    // the where clausule. resul is the value that will receive
+                    // the cell and you need column to tell what to update.
+                    System.out.println("Row" + row + "Column" + column);
+
+                }
+            }
+        });
+    }
+
+    private void CrearRegistro() {
+        TableModel model = Table.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) model;
+
+        Object[] insertarray = new Object[metadata.getCampos().size()];
+        for (int i = 0; i < metadata.getCampos().size(); i++) {
+            boolean exito = false;
+            while (exito == false) {
+                try {
+                    String temp = JOptionPane.showInputDialog(null, "Ingrese: " + metadata.getCampos().get(i).toString() + " Tipo: " + metadata.getTipos().get(i).toString());
+                    if (Integer.parseInt(metadata.getTipos().get(i).toString()) == 1) {
+                        insertarray[i] = Integer.parseInt(temp);
+                    } else if (Integer.parseInt(metadata.getTipos().get(i).toString()) == 2) {
+                        insertarray[i] = Long.parseLong(temp);
+                    } else if (Integer.parseInt(metadata.getTipos().get(i).toString()) == 3) {
+                        insertarray[i] = temp;
+                    } else if (Integer.parseInt(metadata.getTipos().get(i).toString()) == 4) {
+                        insertarray[i] = temp.charAt(0);
+                    }
+                    exito = true;
+                } catch (Exception e) {
+                    System.out.println("Crash Prevented // Create Register Function");
+                }
+            }
+
+        }
+        modelo.addRow(insertarray);
+        Table.setModel(modelo);
+        //Temp();
+
+    }
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void TableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TableFocusLost
+        // TODO add your handling code here:\
+        /*System.out.println(" Pene");
+        int Row = Table.getEditingRow();
+        int Column = Table.getEditingColumn();
+        System.out.println("Row:"+Row);
+        System.out.println("Column:"+Column);*/
+    }//GEN-LAST:event_TableFocusLost
+
+    private void TablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TablePropertyChange
+        // TODO add your handling code here:
+        System.out.println("Property Change.");
+    }//GEN-LAST:event_TablePropertyChange
+
+    private void BuildTable(Metadata metadata, int funcion) {
+        if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
             tabla.setColumnIdentifiers(campos);
-            Jtable.setModel(tabla);  
-        } else if(funcion == 1){ //Instruction 1 lets the Table Builder clean all models loaded.
-            Jtable.setModel(cleanTable);
+            Table.setModel(tabla);
+        } else if (funcion == 1) { //Instruction 1 lets the Table Builder clean all models loaded.
+            Table.setModel(cleanTable);
         }
-        
+
     }
-    private void CreateFile(){
+
+    private void CreateFile() {
         //Borro lo que tengo en la metadata
-            metadata = new Metadata();
-            //Le digo a la tabla que se borre.
-            BuildTable(metadata, 1);
-            //OUTPUT TESTS ----- IGNORE
-            System.out.println("");
-            System.out.println("All models have been cleaned.");
-            // Output Tests ------ IGNORE.
-            String direction;
-            //Creo un nuevo JFileChooser para que eliga donde guardar.
-            //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File("./"));
-            FileNameExtensionFilter data = new FileNameExtensionFilter("DAT FILE","dat");
-            fileChooser.setFileFilter(data); 
-            int seleccion = fileChooser.showSaveDialog(this);
-            if(seleccion == JFileChooser.APPROVE_OPTION){ //Cuando le da guardar
-                //System.out.println(fileChooser.getCurrentDirectory().toString());
-                     File file = null;
-                     FileOutputStream fos = null;
-                     ObjectOutputStream ous = null;                  
-                try{ 
-                    if(fileChooser.getFileFilter().getDescription().equals("DAT FILE")){ //Chequea si lo que quiere guardar es DAT FILE
-                         direction = fileChooser.getSelectedFile().getPath()+".dat";
-                         file = new File(direction);
-                         if(file.length() == 0){ //Revisa que este vacio.
-                             JOptionPane.showMessageDialog(this, "Success!");
-                         } else if(file.exists()){ //Si ya existe entonces lo vuelve a crear. PERO VACIO.
-                             file.delete();
-                             file.createNewFile();
-                             JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
-                         }
-                     } else {
-                         JOptionPane.showMessageDialog(this, "Unable to save. Use DAT FILE.");
-                     }
-                       fos = new FileOutputStream(file);
-                       ous = new ObjectOutputStream(fos);
-                       ous.flush(); //Lo oficializo
-                       System.out.println("FILE LENGTH: "+(file.length()-4)); //SIZE MENOS BUFFER.
-                    
-                }catch(Exception e){
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this,"Something Went Wrong! Contact System Administrator.");
+        //metadata = new Metadata();
+        //Le digo a la tabla que se borre.
+        //BuildTable(metadata, 1);
+        //OUTPUT TESTS ----- IGNORE
+
+        // Output Tests ------ IGNORE.
+        String direction;
+        //Creo un nuevo JFileChooser para que eliga donde guardar.
+        //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("./"));
+        FileNameExtensionFilter data = new FileNameExtensionFilter("DAT FILE", "dat");
+        fileChooser.setFileFilter(data);
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) { //Cuando le da guardar
+            //System.out.println(fileChooser.getCurrentDirectory().toString());
+            File file = null;
+            FileOutputStream fos = null;
+            ObjectOutputStream ous = null;
+            try {
+                if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
+                    direction = fileChooser.getSelectedFile().getPath() + ".dat";
+                    file = new File(direction);
+                    if (file.length() == 0) { //Revisa que este vacio.
+                        metadata = new Metadata();
+                        BuildTable(metadata, 1);
+                        this.file = new File(direction);
+                        JOptionPane.showMessageDialog(this, "Success!\n All unsaved progress was Lost!");
+
+                    } else if (file.exists()) { //Si ya existe entonces lo vuelve a crear. PERO VACIO.
+                        file.delete();
+                        file.createNewFile();
+                        metadata = new Metadata();
+                        BuildTable(metadata, 1);
+                        this.file = new File(direction);
+                        JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Unable to save. Use DAT FILE.");
                 }
-                try{
-                    ous.close();
-                    fos.close();
-                }catch(Exception e){
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Fatal error closing files.");
-                }
-                
-            } //End of FileChooserIf 
+                fos = new FileOutputStream(file);
+                ous = new ObjectOutputStream(fos);
+                ous.flush(); //Lo oficializo
+                System.out.println("FILE LENGTH: " + (file.length() - 4)); //SIZE MENOS BUFFER.
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Something Went Wrong! Contact System Administrator.");
+            }
+            try {
+                ous.close();
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Fatal error closing files.");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Operation aborted!");
+        }
+        //End of FileChooserIf 
     }
-    private void NewFile(){
+
+    private void NewFile() {
         // Protocolo de creacion de Metadata. 
         // SE LE ADVIERTE AL USUARIO QUE INFORMACION ACTUAL SERA BORRADA.
         // 1. Se le pide el nombre de la metadata al usuario.
         // 2. Se crea Metadata.
         String direction; // Nombre del archivo .dat que se creara/
         int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
-        if(option == JOptionPane.NO_OPTION){ //Si no quiere guardar lo que hizo.
+        if (option == JOptionPane.NO_OPTION) { //Si no quiere guardar lo que hizo.
             CreateFile(); //Como no quiere guardar solo lo creo.
-            
-        } else if(option == JOptionPane.YES_OPTION){
-            System.out.println("Please Implement Save Option."); 
+
+        } else if (option == JOptionPane.YES_OPTION) {
+            System.out.println("Please Implement Save Option.");
             //una vez se guarda la info se crea el archivo.
             //CreateFile();
-            
-        } else{
+
+        } else {
             System.out.println("Operation cancelled");
         }
     }
-    
-    
-    
-    
+
+    private void SaveFile() {
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -514,8 +702,10 @@ public class GUI extends javax.swing.JFrame {
     Kenneth metodos = new Kenneth();
     Metadata metadata;
     TableModel cleanTable;
+    File file;
+    int TableStatus = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable Jtable;
+    private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -523,8 +713,11 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
