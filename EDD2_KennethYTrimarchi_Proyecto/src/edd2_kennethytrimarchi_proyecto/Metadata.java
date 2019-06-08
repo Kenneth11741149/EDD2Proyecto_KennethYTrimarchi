@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Metadata implements Serializable{
     private String nombre;
-    private ArrayList campos;
+    private ArrayList campos; 
     private ArrayList tipos;
     private int numregistros = 0;
     private boolean estado; // True significa que hay informacion en la metadata.

@@ -132,7 +132,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pre-Alpha V 1.8");
+        jLabel3.setText("Pre-Alpha V 1.9");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
 
@@ -558,7 +558,16 @@ public class GUI extends javax.swing.JFrame {
 
     private void TablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TablePropertyChange
         // TODO add your handling code here:
-        System.out.println("Property Change.");
+        
+        if(Table.isEditing() && modification == 0){
+            System.out.println("Cell value being edited.");
+            modification = 1;
+            int row = Table.getEditingRow();
+            int column = Table.getEditingColumn();
+        } else if(modification == 1){
+            modification = 0;
+            System.out.println("Cell value finished editing.");
+        }
     }//GEN-LAST:event_TablePropertyChange
 
     private void BuildTable(Metadata metadata, int funcion) {
@@ -703,7 +712,7 @@ public class GUI extends javax.swing.JFrame {
     Metadata metadata;
     TableModel cleanTable;
     File file;
-    int TableStatus = 0;
+    int modification = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
