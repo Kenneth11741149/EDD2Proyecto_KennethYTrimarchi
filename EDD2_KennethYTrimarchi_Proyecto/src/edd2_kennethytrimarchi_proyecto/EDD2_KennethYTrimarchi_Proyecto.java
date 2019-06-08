@@ -37,7 +37,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n7. Funcion Crear registro is existent but not operational."
                 + "\n8.Table Code is being developed."
                 + "\n\n\n\n9. TABLE LISTENER THREAD IS NOW AWARE OF WHEN IT IS BEING EDITED AND WHEN IT IS NOT"
-                + "\n 10. TABLE NOW IS CAPABLE OF TELLING IF A VALUE IS THE SAME OR NOT, AND WHERE DID IT OCURR.");
+                + "\n10. TABLE NOW IS CAPABLE OF TELLING IF A VALUE IS THE SAME OR NOT, AND WHERE DID IT OCURR.");
 
 
         GUI graphics = new GUI();
