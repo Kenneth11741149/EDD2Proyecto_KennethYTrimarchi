@@ -14,8 +14,11 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import javax.swing.CellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -419,10 +422,10 @@ public class GUI extends javax.swing.JFrame {
                 if (metadata.getCampos().size() == 0) {
 
                 } else {
-                     metodos.ModificarCampos(metadata);
-                     BuildTable(metadata, 0);
+                    metodos.ModificarCampos(metadata);
+                    BuildTable(metadata, 0);
                 }
-               
+
             } catch (Exception e) {
 
             }
@@ -438,12 +441,12 @@ public class GUI extends javax.swing.JFrame {
         if (metadata.getNumregistros() == 0 && metadata.getCampos() != null) {
             try {
                 if (metadata.getCampos().size() == 0) {
-                    
+
                 } else {
                     metodos.DeleteCampos(metadata);
                     BuildTable(metadata, 0);
                 }
-                
+
             } catch (Exception e) {
 
             }
@@ -558,16 +561,54 @@ public class GUI extends javax.swing.JFrame {
 
     private void TablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TablePropertyChange
         // TODO add your handling code here:
-        
-        if(Table.isEditing() && modification == 0){
+
+        if (Table.isEditing() && tablemodification == 0) {
+            tablemodification = 1;
             System.out.println("Cell value being edited.");
-            modification = 1;
-            int row = Table.getEditingRow();
-            int column = Table.getEditingColumn();
-        } else if(modification == 1){
-            modification = 0;
-            System.out.println("Cell value finished editing.");
-        }
+            
+            CellEditor x = Table.getCellEditor();
+            oldcellvalue = Table.getValueAt(Table.getSelectedRow(), Table.getSelectedColumn());
+            System.out.println(oldcellvalue);
+            x.addCellEditorListener(new CellEditorListener() {
+                @Override
+                public void editingStopped(ChangeEvent e) {
+                    Object temp = x.getCellEditorValue();
+                    if(tablemodification == 1){
+                        tablemodification = 0;
+                        if( oldcellvalue.equals(temp) ){
+                            System.out.println("Same Cell Value detected.");
+                        } else {
+                            System.out.println("Different Cell Value Detected"+temp);
+                        }
+                        
+                    }
+                    
+                }
+
+                @Override
+                public void editingCanceled(ChangeEvent e) {
+                    throw new UnsupportedOperationException("Editing Canceled."); //To change body of generated methods, choose Tools | Templates.
+                }
+            });
+            x.removeCellEditorListener(Table);
+            
+            /*tablemodification = 1;
+            currentRow = Table.getEditingRow();
+            currentColumn = Table.getEditingColumn();
+            oldcellvalue = Table.getValueAt(currentRow, currentColumn).toString();
+            System.out.println("Original Value: " + oldcellvalue);*/
+        } /*else if (tablemodification == 1) {
+            tablemodification = 0;
+            if (currentRow == Table.getSelectedRow() && currentColumn == Table.getSelectedColumn()) {
+                if (oldcellvalue != Table.getValueAt(currentRow, currentColumn).toString()) {
+                    System.out.println("Different Cell value detected.");
+                } else {
+                    System.out.println("Same Cell value detected.");
+                }
+                System.out.println("Cell value finished editing.");
+            }
+
+        }*/
     }//GEN-LAST:event_TablePropertyChange
 
     private void BuildTable(Metadata metadata, int funcion) {
@@ -707,12 +748,15 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-    int num = 0;
-    Kenneth metodos = new Kenneth();
-    Metadata metadata;
-    TableModel cleanTable;
-    File file;
-    int modification = 0;
+    int num = 0; //
+    Kenneth metodos = new Kenneth(); //Import Program Abilities developed by Kenneth
+    Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
+    TableModel cleanTable; //Clean Table model for when program needs to return to original state.
+    File file; // Global variable for binary file handling. May be null sometimes.
+    int tablemodification = 0; //Int bandera , Table awareness for modification.
+    Object oldcellvalue; // Old cell value that is being modified live on table. Might be null.
+    int currentRow;
+    int currentColumn;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
