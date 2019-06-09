@@ -27,7 +27,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
 
     public static void main(String[] args) throws IOException, ParseException {
 
-        JOptionPane.showMessageDialog(null, "Pre Alpha PROGRAM VERSION 1.9 Patch Notes: "
+        JOptionPane.showMessageDialog(null, "Pre Alpha PATCH 1.90: "
                 + "\n1.Try catch is almost rolled out System Wide. "
                 + "\n2.Binary File features not working, but are getting prepped."
                 + "\n3.New File feature (option NO) is completely operational"
@@ -35,9 +35,13 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n5. Borrar Campos works as it should modyfing metadata"
                 + "\n6. Modificar campos works as it should."
                 + "\n7. Funcion Crear registro is existent but not operational."
-                + "\n8.Table Code is being developed."
-                + "\n\n\n\n9. TABLE LISTENER THREAD IS NOW AWARE OF WHEN IT IS BEING EDITED AND WHEN IT IS NOT"
-                + "\n10. TABLE NOW IS CAPABLE OF TELLING IF A VALUE IS THE SAME OR NOT, AND WHERE DID IT OCURR.");
+                + "\n8. Table is being worked on"
+                + "\n9. TABLE LISTENER THREAD IS NOW AWARE OF WHEN IT IS BEING EDITED AND WHEN IT IS NOT"
+                + "\n\n\n Pre Alpha PATCH 1.91"
+                + "\n10. TABLE NOW IS CAPABLE OF TELLING IF A VALUE IS THE SAME OR NOT, AND WHERE DID IT OCCUR."
+                + "\n11. TABLE IS NOW CAPABLE OF VALIDATING USERS INPUT TO MAKE SURE NO WRONG TYPES ARE INSERTED."
+                + "\n12. If user Inserts an incorrect data type on a cell (String on an Int), User value is downgraded to original value."
+                + "\n13. Funcion Crear Registro is beginning to be operational, PENDING REGISTRO STRUCTURE.");
 
 
         GUI graphics = new GUI();

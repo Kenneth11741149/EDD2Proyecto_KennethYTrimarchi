@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.CellEditor;
@@ -420,6 +421,8 @@ public class GUI extends javax.swing.JFrame {
                 metodos.CreateCampos(metadata);
             } catch (IOException ex) {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             BuildTable(metadata, 0);
         } else {
@@ -454,16 +457,18 @@ public class GUI extends javax.swing.JFrame {
         if (metadata.getNumregistros() == 0 && metadata.getCampos() != null) {
             try {
                 if (metadata.getCampos().size() == 0) {
-
+                    JOptionPane.showMessageDialog(null, "Invalid Operation");
                 } else {
                     metodos.DeleteCampos(metadata);
                     BuildTable(metadata, 0);
                 }
 
             } catch (Exception e) {
-
+                
             }
 
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid Operation");
         }
 
     }//GEN-LAST:event_jMenuItem8ActionPerformed
@@ -578,24 +583,44 @@ public class GUI extends javax.swing.JFrame {
         if (Table.isEditing() && tablemodification == 0) {
             tablemodification = 1;
             System.out.println("Cell value being edited.");
-            
+
             CellEditor x = Table.getCellEditor();
             oldcellvalue = Table.getValueAt(Table.getSelectedRow(), Table.getSelectedColumn());
+            currentRow = Table.getSelectedRow();
+            currentColumn = Table.getSelectedColumn();
             System.out.println(oldcellvalue);
             x.addCellEditorListener(new CellEditorListener() {
                 @Override
-                public void editingStopped(ChangeEvent e) {
-                    Object temp = x.getCellEditorValue();
-                    if(tablemodification == 1){
-                        tablemodification = 0;
-                        if( oldcellvalue.equals(temp) ){
-                            System.out.println("Same Cell Value detected.");
-                        } else {
-                            System.out.println("Different Cell Value Detected"+temp);
+                public void editingStopped(ChangeEvent e) { //When editing stops compare original value and type to the new value and type.
+                    Object temp = x.getCellEditorValue(); //Extract new value.
+                    if (tablemodification == 1) { //Simple bandera.
+                        tablemodification = 0; //Making sure bandera resets
+                        if (oldcellvalue.equals(temp)) { //If the same value is detected
+                            System.out.println("Same Cell Value detected."); // Dont change anything
+                        } else { // If new value is detected: 
+                            System.out.println("Different Cell Value Detected" + temp);
+                            System.out.println("Column: " + currentColumn);
+                            int type = Integer.parseInt(metadata.getTipos().get(currentColumn).toString()); //Extract the type of the value from metadata that it should have.
+                            try { // Attempt to convert it to see if it is workable.
+                                Object assignation;
+                                if (type == 1) {
+                                    assignation = Integer.parseInt(temp.toString());
+                                } else if (type == 2) {
+                                    assignation = Long.parseLong(temp.toString());
+                                } else if (type == 3) {
+                                    assignation =  temp.toString();
+                                } else if (type == 4) {
+                                    assignation = temp.toString().charAt(0);
+                                }
+                            } catch (Exception exc) { //If it fails to convert then replace new value with old value.
+                                Table.setValueAt(oldcellvalue, currentRow, currentColumn);
+                                JOptionPane.showMessageDialog(null, "Incompatible data type. Original value was set.");
+                            }
+
                         }
-                        
-                    }
-                    
+
+                    } //End if of modification bandera.
+
                 }
 
                 @Override
@@ -604,13 +629,14 @@ public class GUI extends javax.swing.JFrame {
                 }
             });
             x.removeCellEditorListener(Table);
-            
+
             /*tablemodification = 1;
             currentRow = Table.getEditingRow();
             currentColumn = Table.getEditingColumn();
             oldcellvalue = Table.getValueAt(currentRow, currentColumn).toString();
             System.out.println("Original Value: " + oldcellvalue);*/
-        } /*else if (tablemodification == 1) {
+        }
+        /*else if (tablemodification == 1) {
             tablemodification = 0;
             if (currentRow == Table.getSelectedRow() && currentColumn == Table.getSelectedColumn()) {
                 if (oldcellvalue != Table.getValueAt(currentRow, currentColumn).toString()) {
@@ -686,10 +712,10 @@ public class GUI extends javax.swing.JFrame {
                 fos = new FileOutputStream(file);
                 ous = new ObjectOutputStream(fos);
                 ous.flush(); //Lo oficializo
-                
+
                 System.out.println("FILE LENGTH: " + (file.length() - 4)); //SIZE MENOS BUFFER.
                 metadata.setFile(file);
-               // RAfile=new RandomAccessFile(file,"rw");
+                // RAfile=new RandomAccessFile(file,"rw");
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Something Went Wrong! Contact System Administrator.");
@@ -767,16 +793,17 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-    
+
     int num = 0; //
     Kenneth metodos = new Kenneth(); //Import Program Abilities developed by Kenneth
     Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
     TableModel cleanTable; //Clean Table model for when program needs to return to original state.
     File file; // Global variable for binary file handling. May be null sometimes.
+    RandomAccessFile RAfile;
     int tablemodification = 0; //Int bandera , Table awareness for modification.
     Object oldcellvalue; // Old cell value that is being modified live on table. Might be null.
-    int currentRow; 
-   // RandomAccessFile RAfile;
+    int currentRow;
+    // RandomAccessFile RAfile;
     int currentColumn;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
