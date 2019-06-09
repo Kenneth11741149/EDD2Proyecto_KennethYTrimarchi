@@ -44,7 +44,9 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n13. Funcion Crear Registro is beginning to be operational, PENDING REGISTRO STRUCTURE."
                 + "\n14. Added New global variables that need to be reset when new file is created. Pending fix."
                 + "\n15. Table Borrar Registro is now being prepped."
-                + "\n16. Table is now able to Export changes as an arraylist, Pending destination. BUG FIXES MADE.");
+                + "\n16. Table is now able to Export changes as an arraylist, Pending destination. BUG FIXES MADE."
+                + "\n17. Al crear Registro se crea un ArrayList ExportTrima2 que es el registro en forma ArrayList."
+                + "\n18. Al detectar cambio en una celda un ArrayList ExportTrima se crea con los valores del registro nuevos.");
 
 
         GUI graphics = new GUI();

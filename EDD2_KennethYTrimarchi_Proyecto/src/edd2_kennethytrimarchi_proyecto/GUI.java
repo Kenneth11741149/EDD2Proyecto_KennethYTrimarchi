@@ -563,7 +563,13 @@ public class GUI extends javax.swing.JFrame {
             }
 
         }
+        ArrayList TrimaExport2 = new ArrayList();
+        for (int i = 0; i < insertarray.length; i++) {
+            TrimaExport2.add(insertarray[i]);
+        }
+        //Export to Trima in this line.
         modelo.addRow(insertarray);
+        System.out.println(TrimaExport2);
         Table.setModel(modelo);
         //Temp();
 
@@ -637,7 +643,7 @@ public class GUI extends javax.swing.JFrame {
                                 }
                                 System.out.println("Exportar a Trima valores: "+TrimaExport);
                                 //Apartir de aqui se exporta el nuevo valor del registro. AKA TrimaExport.
-                                
+                                //Export to Trima Here.
                                 
                             } catch (Exception exc) { //If it fails to convert then replace new value with old value.
                                 Table.setValueAt(oldcellvalue, currentRow, currentColumn);
