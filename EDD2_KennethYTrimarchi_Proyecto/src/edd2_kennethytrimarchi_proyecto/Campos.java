@@ -26,14 +26,15 @@ public class Campos {
     public boolean entro = false;
 
     public Campos() {
-
+        long Bytes_en_Caracteres = 5 + 1;
+        this.sizeBytes = 8 + 8 + 4 + Bytes_en_Caracteres + 1;
     }
 
     @SuppressWarnings("empty-statement")
     public Campos(int FieldType, long size_dec, boolean key) {
         this.FieldType = FieldType;
         long Bytes_en_Caracteres = 5 + 1;
-        this.sizeBytes = 8  + 8 + 4 + Bytes_en_Caracteres + 1;
+        this.sizeBytes = 8 + 8 + 4 + Bytes_en_Caracteres + 1;
         this.size_dec = size_dec;
         this.key = key;
 
@@ -50,15 +51,15 @@ public class Campos {
                 cadena = a;
                 entro = true;
             } else {
-                for (int i =   0; i < cadena.length(); i++) {
+                for (int i = 0; i < cadena.length(); i++) {
                     if (i < a.length()) {
                         name[i] = a.charAt(i);
                     } else {
-                        name[i] =' ';
-                        a+=" ";
+                        name[i] = ' ';
+                        a += " ";
                     }
                 }
-                cadena=a;
+                cadena = a;
             }
             return true;
         } else {
@@ -91,7 +92,7 @@ public class Campos {
         return sizeBytes;
     }
 
-    public void setSizeBytes(Long sizeBytes) {
+    public void setSizeBytes(long sizeBytes) {
         this.sizeBytes = sizeBytes;
     }
 

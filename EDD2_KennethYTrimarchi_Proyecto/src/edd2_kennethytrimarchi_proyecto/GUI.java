@@ -13,7 +13,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.CellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -105,7 +109,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jPanel3.setBackground(new java.awt.Color(0, 204, 204));
-        jPanel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -287,6 +291,11 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Load");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
@@ -407,7 +416,11 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         if (metadata.getNumregistros() == 0) {
-            metodos.CreateCampos(metadata);
+            try {
+                metodos.CreateCampos(metadata);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             BuildTable(metadata, 0);
         } else {
             JOptionPane.showMessageDialog(null, "Invalid Operation.");
@@ -611,6 +624,10 @@ public class GUI extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_TablePropertyChange
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     private void BuildTable(Metadata metadata, int funcion) {
         if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
@@ -669,8 +686,10 @@ public class GUI extends javax.swing.JFrame {
                 fos = new FileOutputStream(file);
                 ous = new ObjectOutputStream(fos);
                 ous.flush(); //Lo oficializo
+                
                 System.out.println("FILE LENGTH: " + (file.length() - 4)); //SIZE MENOS BUFFER.
-
+                metadata.setFile(file);
+               // RAfile=new RandomAccessFile(file,"rw");
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Something Went Wrong! Contact System Administrator.");
@@ -748,6 +767,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
+    
     int num = 0; //
     Kenneth metodos = new Kenneth(); //Import Program Abilities developed by Kenneth
     Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
@@ -755,7 +775,8 @@ public class GUI extends javax.swing.JFrame {
     File file; // Global variable for binary file handling. May be null sometimes.
     int tablemodification = 0; //Int bandera , Table awareness for modification.
     Object oldcellvalue; // Old cell value that is being modified live on table. Might be null.
-    int currentRow;
+    int currentRow; 
+   // RandomAccessFile RAfile;
     int currentColumn;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;

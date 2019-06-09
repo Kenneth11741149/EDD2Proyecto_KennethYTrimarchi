@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -150,11 +151,15 @@ public class Kenneth {
     ////////////////////////////////////////////////
     ////////////////////////////////////////////////
     ////////////////////////////////////////////////
-    public void CreateCampos(Metadata metadata) {
+    public void CreateCampos(Metadata metadata) throws IOException, ParseException {
         if (metadata.getNumregistros() == 0) {
             //System.out.println("Para dejar de insertar utilize el 0");
             JOptionPane.showMessageDialog(null, "Para dejar de insertar Ingrese 0\nEl primer campo es PRIMARY KEY");
             String input = "";
+            
+            //ArrayList<Campos> Campo=new ArrayList<>();
+                    
+            
             ArrayList<String> campos = new ArrayList<String>();
             ArrayList<Integer> types = new ArrayList<Integer>();
             // preparing containers for the information
@@ -195,9 +200,13 @@ public class Kenneth {
                 }
 
             } //End while de insertar campos por usuario.
+            
             metadata.setCampos(campos); //Lo guardo en la metadata para la Jtable.
             metadata.setTipos(types);
             metadata.setNombre(campos.toString());
+            
+            //metadata.setCamposArchivo(contador);//Para no afectar la estrutura hice un metodo para llenar mi Arraylist de Campos
+            
             // System.out.println("Successfull!, check table");
             JOptionPane.showMessageDialog(null, "Success! Check Table.");
         } else {
