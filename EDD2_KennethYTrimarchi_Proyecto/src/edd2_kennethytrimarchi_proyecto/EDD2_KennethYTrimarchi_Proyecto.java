@@ -42,7 +42,8 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n11. TABLE IS NOW CAPABLE OF VALIDATING USER'S INPUT TO MAKE SURE NO WRONG DATA TYPES ARE INSERTED."
                 + "\n12. If user Inserts an incorrect data type on a cell (String on an Int), User value is downgraded to original value."
                 + "\n13. Funcion Crear Registro is beginning to be operational, PENDING REGISTRO STRUCTURE."
-                + "\n14. Added New global variables that need to be reset when new file is created. Pending fix.");
+                + "\n14. Added New global variables that need to be reset when new file is created. Pending fix."
+                + "\n15. Table Borrar Registro is now being prepped.");
 
 
         GUI graphics = new GUI();
