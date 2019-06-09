@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.CellEditor;
@@ -141,7 +142,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pre-Alpha V 1.9");
+        jLabel3.setText("Pre-Alpha V 1.91");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
 
@@ -594,10 +595,11 @@ public class GUI extends javax.swing.JFrame {
             System.out.println("Cell value being edited.");
 
             CellEditor x = Table.getCellEditor();
+            
             oldcellvalue = Table.getValueAt(Table.getSelectedRow(), Table.getSelectedColumn());
             currentRow = Table.getSelectedRow();
             currentColumn = Table.getSelectedColumn();
-            System.out.println(oldcellvalue);
+            System.out.println("Valor Original: "+oldcellvalue);
             x.addCellEditorListener(new CellEditorListener() {
                 @Override
                 public void editingStopped(ChangeEvent e) { //When editing stops compare original value and type to the new value and type.
@@ -605,13 +607,16 @@ public class GUI extends javax.swing.JFrame {
                     if (tablemodification == 1) { //Simple bandera.
                         tablemodification = 0; //Making sure bandera resets
                         if (oldcellvalue.equals(temp)) { //If the same value is detected
-                            System.out.println("Same Cell Value detected."); // Dont change anything
+                            System.out.println("Same Cell Value detected: "+oldcellvalue); // Dont change anything
+                            System.out.println("No export Requiered.");
                         } else { // If new value is detected: 
-                            System.out.println("Different Cell Value Detected" + temp);
+                            System.out.println("Different Cell Value Detected: " + temp);
                             System.out.println("Column: " + currentColumn);
+                            //DefaultTableModel temasdasd = Table.getModel();
                             int type = Integer.parseInt(metadata.getTipos().get(currentColumn).toString()); //Extract the type of the value from metadata that it should have.
                             try { // Attempt to convert it to see if it is workable.
-                                Object assignation;
+                                
+                                Object assignation = null; //Basicamente solo es para que ocurra la exception validadora pero no hace nada.
                                 if (type == 1) {
                                     assignation = Integer.parseInt(temp.toString());
                                 } else if (type == 2) {
@@ -621,6 +626,19 @@ public class GUI extends javax.swing.JFrame {
                                 } else if (type == 4) {
                                     assignation = temp.toString().charAt(0);
                                 }
+                                ArrayList TrimaExport = new ArrayList(); //ArrayList que se le manda a Trimarchi cuando se detecta un cambio en el registro.
+                                for (int i = 0; i < metadata.getCampos().size(); i++) {
+                                    if(i == currentColumn){
+                                       TrimaExport.add(assignation);
+                                    } else {
+                                        TrimaExport.add(Table.getValueAt(currentRow, i));
+                                    }
+                                    
+                                }
+                                System.out.println("Exportar a Trima valores: "+TrimaExport);
+                                //Apartir de aqui se exporta el nuevo valor del registro. AKA TrimaExport.
+                                
+                                
                             } catch (Exception exc) { //If it fails to convert then replace new value with old value.
                                 Table.setValueAt(oldcellvalue, currentRow, currentColumn);
                                 JOptionPane.showMessageDialog(null, "Incompatible data type. Original value was set.");

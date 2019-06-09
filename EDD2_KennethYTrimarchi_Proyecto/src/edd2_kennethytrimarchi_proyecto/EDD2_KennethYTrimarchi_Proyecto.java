@@ -43,7 +43,8 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n12. If user Inserts an incorrect data type on a cell (String on an Int), User value is downgraded to original value."
                 + "\n13. Funcion Crear Registro is beginning to be operational, PENDING REGISTRO STRUCTURE."
                 + "\n14. Added New global variables that need to be reset when new file is created. Pending fix."
-                + "\n15. Table Borrar Registro is now being prepped.");
+                + "\n15. Table Borrar Registro is now being prepped."
+                + "\n16. Table is now able to Export changes as an arraylist, Pending destination.");
 
 
         GUI graphics = new GUI();
