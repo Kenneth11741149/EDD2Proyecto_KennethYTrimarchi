@@ -32,16 +32,17 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n2.Binary File features not working, but are getting prepped."
                 + "\n3.New File feature (option NO) is completely operational"
                 + "\n4. Create Campos exports successfully all necesary info to metadata on class gui."
-                + "\n5. Borrar Campos works as it should modyfing metadata"
+                + "\n5. Borrar Campos works as it should modifying metadata"
                 + "\n6. Modificar campos works as it should."
-                + "\n7. Funcion Crear registro is existent but not operational."
+                + "\n7. Funcion Crear registro is existent on early stages but not operational."
                 + "\n8. Table is being worked on"
-                + "\n9. TABLE LISTENER THREAD IS NOW AWARE OF WHEN IT IS BEING EDITED AND WHEN IT IS NOT"
+                + "\n9. TABLE THREAD IS NOW AWARE OF WHEN IT IS BEING EDITED AND WHEN IT IS NOT"
                 + "\n\n\n Pre Alpha PATCH 1.91"
-                + "\n10. TABLE NOW IS CAPABLE OF TELLING IF A VALUE IS THE SAME OR NOT, AND WHERE DID IT OCCUR."
-                + "\n11. TABLE IS NOW CAPABLE OF VALIDATING USERS INPUT TO MAKE SURE NO WRONG TYPES ARE INSERTED."
+                + "\n10. TABLE IS NOW CAPABLE OF TELLING IF A VALUE IS THE SAME AS BEFORE OR NOT, AND WHERE DID IT OCCUR."
+                + "\n11. TABLE IS NOW CAPABLE OF VALIDATING USER'S INPUT TO MAKE SURE NO WRONG DATA TYPES ARE INSERTED."
                 + "\n12. If user Inserts an incorrect data type on a cell (String on an Int), User value is downgraded to original value."
-                + "\n13. Funcion Crear Registro is beginning to be operational, PENDING REGISTRO STRUCTURE.");
+                + "\n13. Funcion Crear Registro is beginning to be operational, PENDING REGISTRO STRUCTURE."
+                + "\n14. Added New global variables that need to be reset when new file is created. Pending fix.");
 
 
         GUI graphics = new GUI();
