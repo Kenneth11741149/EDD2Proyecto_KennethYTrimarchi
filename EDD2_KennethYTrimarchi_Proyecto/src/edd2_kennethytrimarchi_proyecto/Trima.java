@@ -22,20 +22,20 @@ public class Trima {
     }
 
     // Apertura del fichero
-    public void abrir(Registro r)
+    public void abrir(Registrozzz r)
             throws IOException {
         file = new RandomAccessFile("MetaData.dat", "rw");
         //r.numCampos=file.readLong();
     }
 
-    public void escribir(Registro registro, Campos c) throws IOException {
+    public void escribir(Registrozzz registro, Campos c) throws IOException {
         if (file != null) {
             registro.writeCampo(file, c);
         }
     }
 
 
-    public void readC(Registro reg) throws IOException, ParseException {
+    public void readC(Registrozzz reg) throws IOException, ParseException {
         reg.readCampos(file);
 
     }
@@ -52,7 +52,7 @@ public class Trima {
 
         return file.length();
     }
-    public void modificarC(Registro c,Campos p) throws IOException{
+    public void modificarC(Registrozzz c,Campos p) throws IOException{
         c.modificarCampo(file,p.size_dec
                 ,p);
     }
