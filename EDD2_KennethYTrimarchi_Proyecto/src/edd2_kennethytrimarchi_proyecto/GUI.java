@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.swing.CellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
@@ -808,6 +809,14 @@ public class GUI extends javax.swing.JFrame {
             Table.setModel(cleanTable);
         }
 
+    }
+    
+    private void TableInsertRegistro(ArrayList registro){
+        TableModel model = Table.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) model;
+        metadata.addnumregistros();
+        modelo.addRow(registro.toArray());
+        Table.setModel(model);
     }
 
     private void CreateFile() {
