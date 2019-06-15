@@ -511,7 +511,7 @@ public class GUI extends javax.swing.JFrame {
                             EscribirMetadatos();
                         } catch (IOException ex) {
                             ex.printStackTrace();
-                        }             
+                        }
                         CrearRegistro();
                     } else {
                         metadata.addnumregistros();
@@ -727,15 +727,24 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         LoadFile();
-        if(FileSuccess == 1){
+        if (FileSuccess == 1) {
             metadata = new Metadata();
             BuildTable(metadata, 1);
-        } else {
+            try {
+                CargarMetadatos();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(metadata.getCampos().get(0));
+            BuildTable(metadata, 0);
             
+            
+        } else {
+
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    public void LoadFile(){
+    public void LoadFile() {
         FileSuccess = 0;
         String direction;
         //Creo un nuevo JFileChooser para que eliga donde guardar.
@@ -761,11 +770,9 @@ public class GUI extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Unable to Load. Use DAT FILE.");
                 }
-               // fos = new FileOutputStream(file);
-              //  ous = new ObjectOutputStream(fos);
-              //  ous.flush(); //Lo oficializo
-
-                
+                // fos = new FileOutputStream(file);
+                //  ous = new ObjectOutputStream(fos);
+                //  ous.flush(); //Lo oficializo
 
                 // RAfile=new RandomAccessFile(file,"rw");
             } catch (Exception e) {
@@ -784,16 +791,8 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Operation aborted!");
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem11ActionPerformed
@@ -902,9 +901,10 @@ public class GUI extends javax.swing.JFrame {
 
     public void CargarMetadatos() throws ClassNotFoundException {
         try {
+            System.out.println("????????????????");
             RAfile = new RandomAccessFile(file, "rw");
             int tamaño = RAfile.readInt();
-            System.out.println(tamaño);
+            System.out.println(tamaño + " SIZEEEEEEEE");
             byte[] data = new byte[tamaño];
             RAfile.read(data);
             ByteArrayInputStream in = new ByteArrayInputStream(data);
@@ -953,6 +953,8 @@ public class GUI extends javax.swing.JFrame {
 
     public void LeerDatosRegistro() throws ClassNotFoundException {
         try {//Este metodo quedara available cuando Se habilite la fncion Load File
+            System.out.println("=========================================");
+            System.out.println("Cargando Registros a la Table");
             KennethExport2 = new ArrayList<>();
             RAfile = new RandomAccessFile(file, "rw");
             RAfile.seek(0);
@@ -971,7 +973,6 @@ public class GUI extends javax.swing.JFrame {
                 if (d.getSize_alter().contains("*")) {//If que verifica que si el registro esta eliminado
                     eliminado = true;//si entra significa que si
                 } else {//entra al else cuando NO ETSA ELIMINADO
-
                     Registro temporal = new Registro(d.getKey());
                     temporal.setByteOffset(d.getUbicacion());
                     metadata.getArbolB().insert(temporal);
@@ -1050,18 +1051,15 @@ public class GUI extends javax.swing.JFrame {
                     objeto.writeObject(temp);
                     byte[] dat2 = obArray.toByteArray();
                     RAfile.write(dat2);
-    
-                    
+
                     //ESPACIO RESERVADO PARA EL AVAILlIST
-                    
-                    
-                    long byteOffset=RAfile.length();
+                    long byteOffset = RAfile.length();
                     RAfile.seek(byteOffset);//ahora nos vamos al final de archivo a poner el El registro ya que es muy grande
                     RAfile.writeInt(dat.length);
                     RAfile.write(dat);
-                    
-                    Bnode tmp=metadata.getArbolB().search(temporal);
-                    int ubicacion=searchEnNodo(tmp,temp.getKey());
+
+                    Bnode tmp = metadata.getArbolB().search(temporal);
+                    int ubicacion = searchEnNodo(tmp, temp.getKey());
                     tmp.key[ubicacion].setByteOffset(byteOffset);
 
                     //Espera implementarse mas adelante
@@ -1087,140 +1085,6 @@ public class GUI extends javax.swing.JFrame {
         return pos;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * @param args the command line arguments
      */
