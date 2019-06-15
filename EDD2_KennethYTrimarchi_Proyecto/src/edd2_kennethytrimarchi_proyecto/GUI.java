@@ -739,7 +739,7 @@ public class GUI extends javax.swing.JFrame {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(metadata.getCampos().get(0));
-            BuildTable(metadata, 0);
+            
 
         } else {
 
@@ -806,6 +806,7 @@ public class GUI extends javax.swing.JFrame {
             tabla.setColumnCount(campos.length);
             tabla.setColumnIdentifiers(campos);
             Table.setModel(tabla);
+            //Table.updateUI();
         } else if (funcion == 1) { //Instruction 1 lets the Table Builder clean all models loaded.
             Table.setModel(cleanTable);
         }
@@ -813,13 +814,10 @@ public class GUI extends javax.swing.JFrame {
     }
 
     private void TableInsertRegistro() {
+        BuildTable(metadata,0);
         TableModel model = Table.getModel();
-        DefaultTableModel modelo = (DefaultTableModel) model;
-        //metadata.addnumregistros();
-        System.out.println("ENTRO a LA Table??"+KennethExport2.get(0));
-        Object  insertArray[]=KennethExport2.toArray();
-        System.out.println("POS2..."+insertArray[1]);
-        modelo.addRow(insertArray);
+        DefaultTableModel modelo = (DefaultTableModel) model;  
+        modelo.addRow(KennethExport2.toArray());
         Table.setModel(model);
     }
 
