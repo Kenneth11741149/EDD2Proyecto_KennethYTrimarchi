@@ -733,13 +733,14 @@ public class GUI extends javax.swing.JFrame {
             BuildTable(metadata, 1);
             try {
                 CargarMetadatos();
+
+                LeerDatosRegistro();
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(metadata.getCampos().get(0));
             BuildTable(metadata, 0);
-            
-            
+
         } else {
 
         }
@@ -810,12 +811,15 @@ public class GUI extends javax.swing.JFrame {
         }
 
     }
-    
-    private void TableInsertRegistro(){
+
+    private void TableInsertRegistro() {
         TableModel model = Table.getModel();
         DefaultTableModel modelo = (DefaultTableModel) model;
-        metadata.addnumregistros();
-        modelo.addRow(KennethExport2.toArray());
+        //metadata.addnumregistros();
+        System.out.println("ENTRO a LA Table??"+KennethExport2.get(0));
+        Object  insertArray[]=KennethExport2.toArray();
+        System.out.println("POS2..."+insertArray[1]);
+        modelo.addRow(insertArray);
         Table.setModel(model);
     }
 
@@ -936,6 +940,7 @@ public class GUI extends javax.swing.JFrame {
         RAfile.write(datos);
         //RAfile.setLength(7500);
         metadata.setSizeMeta((int) RAfile.length());
+        System.out.println("ESTE ES EL SIZE DE LOS METADATOS..." + datos.length);
 
     }
 
@@ -943,7 +948,7 @@ public class GUI extends javax.swing.JFrame {
         Data datos = new Data();
         Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
         long byteOffset = RAfile.length();
-
+        System.out.println("ByteOffset+:: " + byteOffset);
         Bnode d = metadata.getArbolB().search(temporal);
         int x = searchEnNodo(d, temporal.getKey());
 
@@ -958,22 +963,24 @@ public class GUI extends javax.swing.JFrame {
         RAfile.seek(byteOffset);//Place pointe at the beggining of the file
         RAfile.writeInt(dat.length);
         RAfile.write(dat);
+        System.out.println("ESTE ES EL SIZE DEL REGISTRO..." + dat.length);
     }
 
     public void LeerDatosRegistro() throws ClassNotFoundException {
         try {//Este metodo quedara available cuando Se habilite la fncion Load File
             System.out.println("=========================================");
             System.out.println("Cargando Registros a la Table");
-            KennethExport2 = new ArrayList<>();
+
             RAfile = new RandomAccessFile(file, "rw");
             RAfile.seek(0);
             int tamaño = RAfile.readInt();
-            RAfile.seek(tamaño);
-            System.out.println(tamaño);
+            RAfile.seek(tamaño + 4);
+            //System.out.println(tamaño);
             boolean eliminado = false;//boolen que marca que el registro leido esta eliminado
             while (RAfile.getFilePointer() < RAfile.length()) {
                 eliminado = false;
                 tamaño = RAfile.readInt();
+                System.out.println("Newwww Tamaño" + tamaño);
                 byte[] data = new byte[tamaño];
                 RAfile.read(data);
                 ByteArrayInputStream in = new ByteArrayInputStream(data);
@@ -982,11 +989,16 @@ public class GUI extends javax.swing.JFrame {
                 if (d.getSize_alter().contains("*")) {//If que verifica que si el registro esta eliminado
                     eliminado = true;//si entra significa que si
                 } else {//entra al else cuando NO ETSA ELIMINADO
+                    KennethExport2 = new ArrayList<>();
                     Registro temporal = new Registro(d.getKey());
                     temporal.setByteOffset(d.getUbicacion());
                     metadata.getArbolB().insert(temporal);
-                    KennethExport2.add(d.getDatos());
-
+                    for (int i = 0; i < d.getDatos().size(); i++) {
+                        KennethExport2.add(d.getDatos().get(i));
+                        System.out.print("qp2");
+                    }
+                    TableInsertRegistro();//Inserto en la tabla
+                    System.out.println("ALOOOO");
 //Agrego un registro con el mismo formato que me fue enviado para implementarlo en la table
                     //Arraylist Lista para agarrar Registros
                     //GRAB Global Array!!!! XD 
@@ -995,7 +1007,7 @@ public class GUI extends javax.swing.JFrame {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(Trima.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
