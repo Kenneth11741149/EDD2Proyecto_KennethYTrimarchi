@@ -5,6 +5,8 @@
  */
 package edd2_kennethytrimarchi_proyecto;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author X
@@ -12,11 +14,23 @@ package edd2_kennethytrimarchi_proyecto;
 public class Registro {
     int key;
     String name="";
+    ArrayList<Object> data=new ArrayList();
+    
     
     
 
     public Registro() {
     }
+
+    public ArrayList<Object> getData() {
+        return data;
+    }
+
+
+    public void setData(ArrayList<Object> data) {
+        this.data = data;
+    }
+    
 
     public Registro(int key) {
         this.key = key;
