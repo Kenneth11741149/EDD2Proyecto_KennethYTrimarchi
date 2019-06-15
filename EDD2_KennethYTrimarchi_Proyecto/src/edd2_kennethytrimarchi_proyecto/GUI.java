@@ -726,8 +726,74 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        LoadFile();
+        if(FileSuccess == 1){
+            metadata = new Metadata();
+            BuildTable(metadata, 1);
+        } else {
+            
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    public void LoadFile(){
+        FileSuccess = 0;
+        String direction;
+        //Creo un nuevo JFileChooser para que eliga donde guardar.
+        //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("./"));
+        FileNameExtensionFilter data = new FileNameExtensionFilter("DAT FILE", "dat");
+        fileChooser.setFileFilter(data);
+        int seleccion = fileChooser.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) { //Cuando le da guardar
+            //System.out.println(fileChooser.getCurrentDirectory().toString());
+            File file = null;
+            // FileOutputStream fos = null;
+            // ObjectOutputStream ous = null;
+            try {
+                if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
+                    direction = fileChooser.getSelectedFile().getPath() + ".dat";
+                    file = fileChooser.getSelectedFile();
+                    this.file = file;
+                    JOptionPane.showMessageDialog(null, "Sucess!");
+                    System.out.println("Length of Loaded File: " + (file.length() - 4)); //SIZE MENOS BUFFER.
+                    FileSuccess = 1;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Unable to Load. Use DAT FILE.");
+                }
+               // fos = new FileOutputStream(file);
+              //  ous = new ObjectOutputStream(fos);
+              //  ous.flush(); //Lo oficializo
+
+                
+
+                // RAfile=new RandomAccessFile(file,"rw");
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Something Went Wrong! Contact System Administrator.");
+            }
+            try {
+                //ous.close();
+                // fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Fatal error closing files.");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Operation aborted!");
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem11ActionPerformed
@@ -1021,6 +1087,140 @@ public class GUI extends javax.swing.JFrame {
         return pos;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
