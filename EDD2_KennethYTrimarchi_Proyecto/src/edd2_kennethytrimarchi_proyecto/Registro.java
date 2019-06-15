@@ -14,14 +14,19 @@ import java.util.ArrayList;
 public class Registro {
     int key;
     String name="";
-    ArrayList<Object> data=new ArrayList();
+    ArrayList<Object> data;
+
+    public Registro(ArrayList<Object> data) {
+        this.data = data;
+        this.key = Integer.valueOf(data.get(0).toString());
+    }
     
     
     
 
     public Registro() {
     }
-
+    
     public ArrayList<Object> getData() {
         return data;
     }

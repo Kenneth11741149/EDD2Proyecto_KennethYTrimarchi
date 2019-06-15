@@ -23,11 +23,21 @@ public class Metadata implements Serializable {
     private ArrayList campos;
     private ArrayList tipos;
     private int numregistros = 0;
-    private boolean estado; // True significa que hay informacion en la metadata.
+    //private boolean estado; // True significa que hay informacion en la metadata.
     private long Campos_en_Archivo;
+    BTree ArbolB;
+
+    public BTree getArbolB() {
+        return ArbolB;
+    }
+
+    public void setArbolB(BTree ArbolB) {
+        this.ArbolB = ArbolB;
+    }
 
     public Metadata() {
-        estado = false;
+       // estado = false;
+       ArbolB = new BTree();
     }
 
     public ArrayList getTipos() {
@@ -39,13 +49,9 @@ public class Metadata implements Serializable {
 
     }
 
-    public boolean getEstado() {
-        return estado;
-    }
+    
 
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
+ 
 
     public int getNumregistros() {
         return numregistros;
