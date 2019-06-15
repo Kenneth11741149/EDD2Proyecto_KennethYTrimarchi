@@ -226,6 +226,7 @@ public class Kenneth {
         //JOptionPane.showMessageDialog(null, "Ingrese el campo a modificar a partir de 1.");
         if (metadata.getNumregistros() == 0) {
             try {
+                
                 int campo = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el campo a modificar a partir de 1")); //Leo el campo a borrar
                 //System.out.println("Ingrese el nuevo valor del campo:");
                 //read.nextLine(); //Leo el nuevo nombre del campo
@@ -258,7 +259,8 @@ public class Kenneth {
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Incorret Value Inserted.");
-                e.printStackTrace();
+                //e.printStackTrace();
+                System.out.println("Crash Prevented Funcion Modificar Campo.");
             }
         }
 
@@ -267,8 +269,12 @@ public class Kenneth {
     public void DeleteCampos(Metadata metadata) {
         if (metadata.getNumregistros() == 0) {
             //System.out.println("Ingrese el numero del campo a borrar. Contar desde 1.");
+            System.out.println("X2");
             int campo = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el numero del campo a borrar A PARTIR DE 1"));
+            System.out.println("As requested.");
+            System.out.println("Modification requested Campo #:"+campo);
             campo--;
+            System.out.println("PENE");
             ArrayList campos = metadata.getCampos();
             if (campo >= 0 && campo < campos.size()) {
                 campos.remove(campo);

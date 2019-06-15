@@ -474,7 +474,7 @@ public class GUI extends javax.swing.JFrame {
                 }
 
             } catch (Exception e) {
-                
+                System.out.println("Crash Prevented on Illegal operation.");
             }
 
         } else {
