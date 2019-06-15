@@ -74,6 +74,9 @@ public class Metadata implements Serializable {
     public void addnumregistros() {
         this.numregistros++;
     }
+    public void subtractnumregistros(){
+        this.numregistros--;
+    }
 
     public ArrayList getCampos() {
         return campos;

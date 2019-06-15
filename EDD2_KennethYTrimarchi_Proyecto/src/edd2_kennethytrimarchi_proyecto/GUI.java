@@ -256,6 +256,11 @@ public class GUI extends javax.swing.JFrame {
                 TableFocusLost(evt);
             }
         });
+        Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableMouseClicked(evt);
+            }
+        });
         Table.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 TablePropertyChange(evt);
@@ -636,81 +641,93 @@ public class GUI extends javax.swing.JFrame {
 
     private void TablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TablePropertyChange
         // TODO add your handling code here:
+        try {
+            if (Table.isEditing() && tablemodification == 0) {
 
-        if (Table.isEditing() && tablemodification == 0) {
-            tablemodification = 1;
-            System.out.println("Cell value being edited.");
+                tablemodification = 1;
+                System.out.println("Cell value being edited.");
 
-            CellEditor x = Table.getCellEditor();
+                CellEditor x = Table.getCellEditor();
+                oldcellvalue = Table.getValueAt(Table.getSelectedRow(), Table.getSelectedColumn());
+                currentRow = Table.getSelectedRow();
+                currentColumn = Table.getSelectedColumn();
+                System.out.println("Valor Original:" + oldcellvalue);
+                x.addCellEditorListener(new CellEditorListener() {
+                    @Override
+                    public void editingStopped(ChangeEvent e) { //When editing stops compare original value and type to the new value and type.
+                        Object temp = x.getCellEditorValue(); //Extract new value.
 
-            oldcellvalue = Table.getValueAt(Table.getSelectedRow(), Table.getSelectedColumn());
-            currentRow = Table.getSelectedRow();
-            currentColumn = Table.getSelectedColumn();
-            System.out.println("Valor Original: " + oldcellvalue);
-            x.addCellEditorListener(new CellEditorListener() {
-                @Override
-                public void editingStopped(ChangeEvent e) { //When editing stops compare original value and type to the new value and type.
-                    Object temp = x.getCellEditorValue(); //Extract new value.
-                    if (tablemodification == 1) { //Simple bandera.
-                        tablemodification = 0; //Making sure bandera resets
-                        if (oldcellvalue.equals(temp)) { //If the same value is detected
-                            System.out.println("Same Cell Value detected: " + oldcellvalue); // Dont change anything
-                            System.out.println("No export Requiered.");
-                        } else { // If new value is detected: 
-                            System.out.println("Different Cell Value Detected: " + temp);
-                            System.out.println("Column: " + currentColumn);
-                            //DefaultTableModel temasdasd = Table.getModel();
-                            int type = Integer.parseInt(metadata.getTipos().get(currentColumn).toString()); //Extract the type of the value from metadata that it should have.
-                            try { // Attempt to convert it to see if it is workable.
+                        if (tablemodification == 1) { //Simple bandera.
+                            tablemodification = 0; //Making sure bandera resets
+                            if (oldcellvalue.toString().equals(temp.toString())) { //If the same value is detected
+                                System.out.println("Same Cell Value detected: " + oldcellvalue); // Dont change anything
+                                System.out.println("No export Requiered.");
+                            } else { // If new value is detected: 
+                                System.out.println("Different Cell Value Detected:" + temp);
+                                System.out.println("Column: " + currentColumn);
+                                //DefaultTableModel temasdasd = Table.getModel();
+                                int type = Integer.parseInt(metadata.getTipos().get(currentColumn).toString()); //Extract the type of the value from metadata that it should have.
+                                try { // Attempt to convert it to see if it is workable.
 
-                                Object assignation = null; //Basicamente solo es para que ocurra la exception validadora pero no hace nada.
-                                if (type == 1) {
-                                    assignation = Integer.parseInt(temp.toString());
-                                } else if (type == 2) {
-                                    assignation = Long.parseLong(temp.toString());
-                                } else if (type == 3) {
-                                    assignation = temp.toString();
-                                } else if (type == 4) {
-                                    assignation = temp.toString().charAt(0);
-                                }
-                                ArrayList TrimaExport = new ArrayList(); //ArrayList que se le manda a Trimarchi cuando se detecta un cambio en el registro.
-                                for (int i = 0; i < metadata.getCampos().size(); i++) {
-                                    if (i == currentColumn) {
-                                        TrimaExport.add(assignation);
-                                    } else {
-                                        TrimaExport.add(Table.getValueAt(currentRow, i));
+                                    Object assignation = null; //Basicamente solo es para que ocurra la exception validadora pero no hace nada.
+                                    if (type == 1) {
+                                        assignation = Integer.parseInt(temp.toString());
+                                    } else if (type == 2) {
+                                        assignation = Long.parseLong(temp.toString());
+                                    } else if (type == 3) {
+                                        assignation = temp.toString();
+                                    } else if (type == 4) {
+                                        assignation = temp.toString().charAt(0);
+                                    }
+                                    ArrayList TrimaExport = new ArrayList(); //ArrayList que se le manda a Trimarchi cuando se detecta un cambio en el registro.
+                                    for (int i = 0; i < metadata.getCampos().size(); i++) {
+                                        if (i == currentColumn) {
+                                            TrimaExport.add(assignation);
+                                        } else {
+                                            TrimaExport.add(Table.getValueAt(currentRow, i));
+
+                                        }
 
                                     }
+                                    System.out.println("Exportar a Trima valores: " + TrimaExport);
+                                    //Apartir de aqui se exporta el nuevo valor del registro. AKA TrimaExport.
+                                    //Export to Trima Here.
+                                    if (currentColumn == 0) {
+                                        JOptionPane.showMessageDialog(null, " No se puede modificar la primary key");
+                                        Table.setValueAt(oldcellvalue, currentRow, currentColumn);
+                                    } else {
+                                        ModificarDatoArchivo(TrimaExport);//Exportando A Metodo Trima
+                                    }
 
+                                } catch (Exception exc) { //If it fails to convert then replace new value with old value.
+                                    Table.setValueAt(oldcellvalue, currentRow, currentColumn);
+                                    JOptionPane.showMessageDialog(null, "Incompatible data type. Original value was set.");
                                 }
-                                System.out.println("Exportar a Trima valores: " + TrimaExport);
-                                //Apartir de aqui se exporta el nuevo valor del registro. AKA TrimaExport.
-                                //Export to Trima Here.
-                                ModificarDatoArchivo(TrimaExport);//Exportando A Metodo Trima
-                            } catch (Exception exc) { //If it fails to convert then replace new value with old value.
-                                Table.setValueAt(oldcellvalue, currentRow, currentColumn);
-                                JOptionPane.showMessageDialog(null, "Incompatible data type. Original value was set.");
+
                             }
 
-                        }
+                        } //End if of modification bandera.
 
-                    } //End if of modification bandera.
+                    }
 
-                }
+                    @Override
+                    public void editingCanceled(ChangeEvent e) {
 
-                @Override
-                public void editingCanceled(ChangeEvent e) {
-                    throw new UnsupportedOperationException("Editing Canceled."); //To change body of generated methods, choose Tools | Templates.
-                }
-            });
-            x.removeCellEditorListener(Table);
+                    }
+                });
 
-            /*tablemodification = 1;
+                x.removeCellEditorListener(Table);
+
+                /*tablemodification = 1;
             currentRow = Table.getEditingRow();
             currentColumn = Table.getEditingColumn();
             oldcellvalue = Table.getValueAt(currentRow, currentColumn).toString();
             System.out.println("Original Value: " + oldcellvalue);*/
+            }
+        } catch (Exception e) {
+            System.out.println("FATAL ERROR. Expect Table Failures");
         }
+
         /*else if (tablemodification == 1) {
             tablemodification = 0;
             if (currentRow == Table.getSelectedRow() && currentColumn == Table.getSelectedColumn()) {
@@ -733,13 +750,13 @@ public class GUI extends javax.swing.JFrame {
             BuildTable(metadata, 1);
             try {
                 CargarMetadatos();
-                BuildTable(metadata,0);
+                BuildTable(metadata, 0);
                 LeerDatosRegistro();
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(metadata.getCampos().get(0));
-           
+
         } else {
 
         }
@@ -796,7 +813,38 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
+        if (mode == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione un Registro para borrar.");
+        } else {
+            try {
+                System.out.println("Se eliminara el registro: " + rowRemoval);
+                ArrayList ExportTrima3 = new ArrayList();
+                for (int i = 0; i < metadata.getCampos().size(); i++) {
+                    ExportTrima3.add(Table.getValueAt(rowRemoval, i));
+                }
+                mode = -1;
+                //Exportar a Trima Aqui.
+                System.out.println(metadata.getNumregistros());
+                metadata.subtractnumregistros();
+                TableModel modelo = Table.getModel();
+                DefaultTableModel model = (DefaultTableModel) modelo;
+                model.removeRow(rowRemoval);
+                Table.setModel(modelo);
+            } catch (Exception e) {
+                System.out.println("Problem deleting file");
+            }
+
+        }
+
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableMouseClicked
+        // TODO add your handling code here:
+        System.out.println("TOUCHING AUFHAKJDFA;KDHFA;DHFKAJHSDFKAHDFKJAHDFAJDFH");
+        rowRemoval = Table.getSelectedRow();
+        mode = 0;
+        System.out.println("Removal on:" + rowRemoval);
+    }//GEN-LAST:event_TableMouseClicked
 
     private void BuildTable(Metadata metadata, int funcion) {
         if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
@@ -815,10 +863,10 @@ public class GUI extends javax.swing.JFrame {
     private void TableInsertRegistro() {
         TableModel model = Table.getModel();
         DefaultTableModel modelo = (DefaultTableModel) model;
-        metadata.addnumregistros();       
-        System.out.println("ENTRO a LA Table??"+KennethExport2.get(0));
-        Object insertArray[]=KennethExport2.toArray();
-        System.out.println("POS2..."+insertArray[1]);
+        metadata.addnumregistros();
+        System.out.println("ENTRO a LA Table??" + KennethExport2.get(0));
+        Object insertArray[] = KennethExport2.toArray();
+        System.out.println("POS2..." + insertArray[1]);
         modelo.addRow(insertArray);
         System.out.println("SUPER PENE");
         Table.setModel(model);
@@ -1156,6 +1204,8 @@ public class GUI extends javax.swing.JFrame {
     RandomAccessFile RAfile;
     int currentColumn;
     int FileSuccess;
+    int mode = -1;
+    int rowRemoval;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
