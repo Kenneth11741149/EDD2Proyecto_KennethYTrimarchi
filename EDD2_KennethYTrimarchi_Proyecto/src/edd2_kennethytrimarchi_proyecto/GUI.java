@@ -751,7 +751,7 @@ public class GUI extends javax.swing.JFrame {
                 ous.flush(); //Lo oficializo
 
                 System.out.println("FILE LENGTH: " + (file.length() - 4)); //SIZE MENOS BUFFER.
-                metadata.setFile(file);
+                
                 // RAfile=new RandomAccessFile(file,"rw");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -780,7 +780,6 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
         if (option == JOptionPane.NO_OPTION) { //Si no quiere guardar lo que hizo.
             CreateFile(); //Como no quiere guardar solo lo creo.
-
         } else if (option == JOptionPane.YES_OPTION) {
             System.out.println("Please Implement Save Option.");
             //una vez se guarda la info se crea el archivo.
