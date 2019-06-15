@@ -811,11 +811,11 @@ public class GUI extends javax.swing.JFrame {
 
     }
     
-    private void TableInsertRegistro(ArrayList registro){
+    private void TableInsertRegistro(){
         TableModel model = Table.getModel();
         DefaultTableModel modelo = (DefaultTableModel) model;
         metadata.addnumregistros();
-        modelo.addRow(registro.toArray());
+        modelo.addRow(KennethExport2.toArray());
         Table.setModel(model);
     }
 
