@@ -593,6 +593,12 @@ public class GUI extends javax.swing.JFrame {
             metadata.getArbolB().insert(temporal);
             modelo.addRow(insertarray);
             System.out.println(TrimaExport2);
+            try {
+                EscribirDatosRegistro(TrimaExport2);//Send Array to Trima
+                BuscarDatoArchivo(temporal);
+            } catch (Exception ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Table.setModel(modelo);
             System.out.println(metadata.getArbolB().search(temporal));
 
@@ -678,7 +684,7 @@ public class GUI extends javax.swing.JFrame {
                                 System.out.println("Exportar a Trima valores: " + TrimaExport);
                                 //Apartir de aqui se exporta el nuevo valor del registro. AKA TrimaExport.
                                 //Export to Trima Here.
-
+                                ModificarDatoArchivo(TrimaExport);//Exportando A Metodo Trima
                             } catch (Exception exc) { //If it fails to convert then replace new value with old value.
                                 Table.setValueAt(oldcellvalue, currentRow, currentColumn);
                                 JOptionPane.showMessageDialog(null, "Incompatible data type. Original value was set.");
@@ -837,6 +843,7 @@ public class GUI extends javax.swing.JFrame {
             ByteArrayInputStream in = new ByteArrayInputStream(data);
             ObjectInputStream read = new ObjectInputStream(in);
             metadata = (Metadata) read.readObject();//read the byte array
+            metadata.setSizeMeta(tamaño);
         } catch (IOException ex) {
             Logger.getLogger(Trima.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -851,7 +858,166 @@ public class GUI extends javax.swing.JFrame {
         RAfile.seek(0);//Place pointe at the beggining of the file
         RAfile.writeInt(datos.length);
         RAfile.write(datos);
+        //RAfile.setLength(7500);
+        metadata.setSizeMeta((int) RAfile.length());
 
+    }
+
+    public void EscribirDatosRegistro(ArrayList<Object> info_registro) throws IOException {
+        Data datos = new Data();
+        Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
+        long byteOffset = RAfile.length();
+
+        Bnode d = metadata.getArbolB().search(temporal);
+        int x = searchEnNodo(d, temporal.getKey());
+
+        d.key[x].setByteOffset(byteOffset);
+        datos.setDatos(info_registro);//Alistando para guardar arraylist de objetos en el archivo
+        datos.setUbicacion(byteOffset);//clase datos que guarda ubiacion
+
+        ByteArrayOutputStream obArray = new ByteArrayOutputStream();
+        ObjectOutputStream objeto = new ObjectOutputStream(obArray);
+        objeto.writeObject(datos);
+        byte[] dat = obArray.toByteArray();//makes an array of bytes from the object
+        RAfile.seek(byteOffset);//Place pointe at the beggining of the file
+        RAfile.writeInt(dat.length);
+        RAfile.write(dat);
+    }
+
+    public void LeerDatosRegistro() throws ClassNotFoundException {
+        try {//Este metodo quedara available cuando Se habilite la fncion Load File
+            KennethExport2 = new ArrayList<>();
+            RAfile = new RandomAccessFile(file, "rw");
+            RAfile.seek(0);
+            int tamaño = RAfile.readInt();
+            RAfile.seek(tamaño);
+            System.out.println(tamaño);
+            boolean eliminado = false;//boolen que marca que el registro leido esta eliminado
+            while (RAfile.getFilePointer() < RAfile.length()) {
+                eliminado = false;
+                tamaño = RAfile.readInt();
+                byte[] data = new byte[tamaño];
+                RAfile.read(data);
+                ByteArrayInputStream in = new ByteArrayInputStream(data);
+                ObjectInputStream read = new ObjectInputStream(in);
+                Data d = (Data) read.readObject();//guardo el array de bytes en una variable temporal
+                if (d.getSize_alter().contains("*")) {//If que verifica que si el registro esta eliminado
+                    eliminado = true;//si entra significa que si
+                } else {//entra al else cuando NO ETSA ELIMINADO
+
+                    Registro temporal = new Registro(d.getKey());
+                    temporal.setByteOffset(d.getUbicacion());
+                    metadata.getArbolB().insert(temporal);
+                    KennethExport2.add(d.getDatos());
+
+//Agrego un registro con el mismo formato que me fue enviado para implementarlo en la table
+                    //Arraylist Lista para agarrar Registros
+                    //GRAB Global Array!!!! XD 
+                }
+
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Trima.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Data BuscarDatoArchivo(Registro r) throws IOException, ClassNotFoundException {//Metodo para Buscar El Registro en el Archivo
+        if (metadata.getArbolB().search(r) != null) {//Solo uso la key del Arbol y lo pido de forma constante al Randomaccesfile
+            Bnode contenido = metadata.getArbolB().search(r);
+            int pos = searchEnNodo(contenido, r.getKey());
+            long byteOffset = contenido.key[pos].byteOffset;
+            RAfile.seek(byteOffset);
+            int tamaño = RAfile.readInt();
+            byte[] data = new byte[tamaño];
+            RAfile.read(data);
+            ByteArrayInputStream in = new ByteArrayInputStream(data);
+            ObjectInputStream read = new ObjectInputStream(in);
+            Data d = (Data) read.readObject();//guardo el array de bytes en una variable temporal
+
+            return d;
+        } else {
+            System.out.println("No se encontro el Nodo");
+
+            return null;
+        }
+
+    }
+
+    public void ModificarDatoArchivo(ArrayList<Object> TrimaExport) {
+        try {
+            Registro temporal = new Registro(Integer.parseInt(TrimaExport.get(0).toString()));
+            if (BuscarDatoArchivo(temporal) != null) {
+                System.out.println("===========================================================");
+                System.out.println("MODIFICANDO NODO...");
+                Data temp = BuscarDatoArchivo(temporal);
+                RAfile.seek(temp.ubicacion);
+                int size_act = RAfile.readInt();//Este es el tamaño actual
+
+                Data new_size = new Data();
+                new_size.setKey((int) TrimaExport.get(0));
+                new_size.setDatos(TrimaExport);
+                new_size.setUbicacion(temp.getUbicacion());
+                ByteArrayOutputStream obArray = new ByteArrayOutputStream();
+                ObjectOutputStream objeto = new ObjectOutputStream(obArray);
+                objeto.writeObject(new_size);
+                byte[] dat = obArray.toByteArray();
+
+                System.out.println("NEW SIZE" + dat.length + " ---- " + "SIZE ORIGINAL:" + size_act);
+                if (dat.length <= size_act) {//Este if permite entrar si es mas peqeño
+                    System.out.println("EL NUEVO REGISTRO ES MAS PEQUEÑO SE ADAPATARA PARA QUE SEAN DEL MISMO TAMAÑO SI ES NECESARIO");
+                    for (int i = 0; i < (size_act - dat.length); i++) {//El for lo que hace es meter caracteres para igualar los size de ambos
+                        new_size.setSize_alter(new_size.getSize_alter() + "|");
+                    }//Igualo los size para solo pegar el nuevo dato sobre el viejo y asi no generar errores
+                    obArray = new ByteArrayOutputStream();
+                    objeto = new ObjectOutputStream(obArray);
+                    objeto.writeObject(new_size);
+                    dat = obArray.toByteArray();//Actulizando 
+                    RAfile.write(dat);
+                    System.out.println("NEW SIZE" + dat.length + " ---- " + "SIZE ORIGINAL:" + size_act);
+                } else {
+                    System.out.println("EL NUEVO REGISTRO ES MUY GRANDE IRA AL FINAL DEL ARCHIVO");
+                    temp.setSize_alter("*"); //Pone un aterisco que marca ese registro o dato como eliminado
+                    obArray = new ByteArrayOutputStream();
+                    objeto = new ObjectOutputStream(obArray);
+                    objeto.writeObject(temp);
+                    byte[] dat2 = obArray.toByteArray();
+                    RAfile.write(dat2);
+    
+                    
+                    //ESPACIO RESERVADO PARA EL AVAILlIST
+                    
+                    
+                    long byteOffset=RAfile.length();
+                    RAfile.seek(byteOffset);//ahora nos vamos al final de archivo a poner el El registro ya que es muy grande
+                    RAfile.writeInt(dat.length);
+                    RAfile.write(dat);
+                    
+                    Bnode tmp=metadata.getArbolB().search(temporal);
+                    int ubicacion=searchEnNodo(tmp,temp.getKey());
+                    tmp.key[ubicacion].setByteOffset(byteOffset);
+
+                    //Espera implementarse mas adelante
+                }
+                System.out.println("OPERACION REALIZADA EXITOSAMENTE");
+                System.out.println("===========================================================");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int searchEnNodo(Bnode d, int key) {//Como mi arbol devulve el nodo en que se ubica el Registro
+        int pos = 0;
+        //Este Metodo me dije la posicion en la que se encuentra en el Nodo.
+        for (int i = 0; i < d.n; i++) {//for que busca en el nodo la llave y le agrega el byte donde se ubica en el archivo
+            if (d.key[i].getKey() == key) {
+                break;
+            } else {
+                pos++;
+            }
+        }
+        return pos;
     }
 
     /**
@@ -895,7 +1061,7 @@ public class GUI extends javax.swing.JFrame {
     Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
     TableModel cleanTable; //Clean Table model for when program needs to return to original state.
     File file; // Global variable for binary file handling. May be null sometimes.
-    
+    ArrayList<Object> KennethExport2;
     int tablemodification = 0; //Int bandera , Table awareness for modification.
     Object oldcellvalue; // Old cell value that is being modified live on table. Might be null.
     int currentRow;

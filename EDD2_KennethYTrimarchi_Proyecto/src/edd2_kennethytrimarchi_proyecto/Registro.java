@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 public class Registro implements Serializable{
     int key;
-    int byteOffset;
-    int size;
+    long byteOffset;
+   
      // ArrayList<Object> data;
 
     /*public Registro(ArrayList<Object> data) {
@@ -51,29 +51,22 @@ public class Registro implements Serializable{
         this.key = key;
     }
 
-    public int getByteOffset() {
+    public long getByteOffset() {
         return byteOffset;
     }
 
-    public void setByteOffset(int byteOffset) {
+    public void setByteOffset(long byteOffset) {
         this.byteOffset = byteOffset;
     }
 
-    public int getSize() {
-        return size;
-    }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-    
     
 
 
 
     @Override
     public String toString() {
-        return key +""+" ";
+        return key +"-"+byteOffset+" ";
     }
     
     

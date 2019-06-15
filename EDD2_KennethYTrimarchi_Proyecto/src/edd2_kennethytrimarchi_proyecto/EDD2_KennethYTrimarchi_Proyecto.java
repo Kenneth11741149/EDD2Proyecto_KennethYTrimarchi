@@ -37,7 +37,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n7. Funcion Crear registro is existent on early stages but not operational."
                 + "\n8. Table is being worked on."
                 + "\n9. TABLE THREAD IS NOW AWARE OF WHEN IT IS BEING EDITED AND WHEN IT IS NOT."
-                + "\n\n\n Pre Alpha PATCH 1.91"
+                + "\n\n Pre Alpha PATCH 1.91"
                 + "\n10. TABLE IS NOW CAPABLE OF TELLING IF A VALUE IS THE SAME AS BEFORE OR NOT, AND WHERE DID IT OCCUR."
                 + "\n11. TABLE IS NOW CAPABLE OF VALIDATING USER'S INPUT TO MAKE SURE NO WRONG DATA TYPES ARE INSERTED."
                 + "\n12. If user Inserts an incorrect data type on a cell (String on an Int), User value is downgraded to original value."
@@ -47,7 +47,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n16. Table is now able to Export changes as an Arraylist, Pending destination. BUG FIXES MADE."
                 + "\n17. Al crear Registro se crea un ArrayList que es el registro en forma ArrayList."
                 + "\n18. Al detectar cambio en una celda un ArrayList ExportTrima se crea con los valores del registro nuevos."
-                + "\n\n\n Alpha Patch 1.92"
+                + "\n\n Alpha Patch 1.92"
                 + "\n 1. Fixed Jonrry's bug on function modify and delete campo."
                 + "\n 2. User is now forced to choose a file to save everything! "
                 + "\n 3. GUI NOW CHECKS IF PRIMARY KEY ALREADY EXISTS."
@@ -57,8 +57,12 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n Additional validation is requiered when inserting or modifying registries."
                 + "\n Pending downgrade for the ability to modify the user primary key."
                 + "\n Saving Metadata to fill Fully Operational"
-                + "\n Waiting for Load File  Operation Update");
-
+                + "\n WAITING FOR LOAD FILE OPERATION"
+                + "\n\n Alpha Patch 2.01"
+                + "\n New Function write Metadata to the created File + Write and Modify registros in File"
+                + "\n Implementation of the class Data\"");
+                //en Modificar hacer que no se cambie el primary amenos que se haga delete del registro para luego meterlo again
+                //Envieo todo de la misma forma que lo recibo como un ARRAYLIST de OBJETOS
 
         GUI graphics = new GUI();
         graphics.setVisible(true);

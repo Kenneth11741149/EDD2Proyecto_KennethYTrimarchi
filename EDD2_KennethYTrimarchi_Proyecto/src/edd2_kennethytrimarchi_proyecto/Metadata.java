@@ -26,6 +26,7 @@ public class Metadata implements Serializable {
     //private boolean estado; // True significa que hay informacion en la metadata.
     private long Campos_en_Archivo;
     BTree ArbolB;
+    private int sizeMeta;
 
     public BTree getArbolB() {
         return ArbolB;
@@ -39,6 +40,15 @@ public class Metadata implements Serializable {
        // estado = false;
        ArbolB = new BTree();
     }
+
+    public int getSizeMeta() {
+        return sizeMeta;
+    }
+
+    public void setSizeMeta(int sizeMeta) {
+        this.sizeMeta = sizeMeta;
+    }
+    
 
     public ArrayList getTipos() {
         return tipos;
