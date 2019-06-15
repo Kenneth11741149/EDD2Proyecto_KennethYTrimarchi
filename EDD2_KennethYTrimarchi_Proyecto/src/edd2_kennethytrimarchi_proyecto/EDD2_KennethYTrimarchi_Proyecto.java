@@ -45,10 +45,15 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n14. Added New global variables that need to be reset when new file is created. Pending fix."
                 + "\n15. Table; Borrar Registro is now being prepped."
                 + "\n16. Table is now able to Export changes as an Arraylist, Pending destination. BUG FIXES MADE."
-                + "\n17. Al crear Registro se crea un ArrayList ExportTrima2 que es el registro en forma ArrayList."
+                + "\n17. Al crear Registro se crea un ArrayList que es el registro en forma ArrayList."
                 + "\n18. Al detectar cambio en una celda un ArrayList ExportTrima se crea con los valores del registro nuevos."
-                + "\n\n\n Pre Alpha Patch 1.92"
-                + "\n 1.Fixed Jonrry's bug on function modify and delete campo."
+                + "\n\n\n Alpha Patch 1.92"
+                + "\n 1. Fixed Jonrry's bug on function modify and delete campo."
+                + "\n 2. User is now forced to choose a file to save everything! "
+                + "\n 3. GUI NOW CHECKS IF PRIMARY KEY ALREADY EXISTS."
+                + "\n 4. EMERGENCY HOTFIX FOR THE PATCH THAT HASNT EVEN BEEN MADE."
+                + "\n 5. ArrayList on class Registry is now gone."
+                + "\n 6. Save File is now half way operational."
                 + "\n Additional validation is requiered when inserting or modifying registries."
                 + "\n Pending downgrade for the ability to modify the user primary key.");
 

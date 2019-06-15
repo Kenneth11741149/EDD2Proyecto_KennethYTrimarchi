@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class Registro {
     int key;
     String name="";
-    ArrayList<Object> data;
+     // ArrayList<Object> data;
 
-    public Registro(ArrayList<Object> data) {
+    /*public Registro(ArrayList<Object> data) {
         this.data = data;
         this.key = Integer.valueOf(data.get(0).toString());
-    }
+    }*/
     
     
     
@@ -27,14 +27,14 @@ public class Registro {
     public Registro() {
     }
     
-    public ArrayList<Object> getData() {
+    /*public ArrayList<Object> getData() {
         return data;
     }
 
 
     public void setData(ArrayList<Object> data) {
         this.data = data;
-    }
+    }*/
     
 
     public Registro(int key) {

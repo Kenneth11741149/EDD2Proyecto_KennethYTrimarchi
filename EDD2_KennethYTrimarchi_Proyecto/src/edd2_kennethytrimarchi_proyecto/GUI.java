@@ -498,8 +498,18 @@ public class GUI extends javax.swing.JFrame {
         if (metadata != null) {
             if (metadata.getCampos() != null) {
                 if (metadata.getCampos().size() > 0) {
-                    metadata.addnumregistros();
-                    CrearRegistro();
+                    if(file == null){
+                        while(FileSuccess == 0){
+                            CreateFile();
+                            
+                        }     
+                        metadata.addnumregistros();
+                        CrearRegistro();
+                    } else {
+                        metadata.addnumregistros();
+                        CrearRegistro();
+                    }
+                    
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay campos creados! XTT 428");
                 }
@@ -569,7 +579,7 @@ public class GUI extends javax.swing.JFrame {
             TrimaExport2.add(insertarray[i]);
         }
         //Export to Trima in this line.
-        Registro temporal = new Registro(TrimaExport2);
+        Registro temporal = new Registro(Integer.parseInt(insertarray[0].toString()));
        
             
         if (metadata.getArbolB().search(temporal) == null) {
@@ -587,6 +597,7 @@ public class GUI extends javax.swing.JFrame {
     }
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
+        SaveFile();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -595,6 +606,10 @@ public class GUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    public void SaveFile(){
+        JOptionPane.showMessageDialog(null,"Su file se ha guardado exitosamente!");
+    }
+    
     private void TableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TableFocusLost
         // TODO add your handling code here:\
         /*System.out.println(" Pene");
@@ -649,6 +664,7 @@ public class GUI extends javax.swing.JFrame {
                                         TrimaExport.add(assignation);
                                     } else {
                                         TrimaExport.add(Table.getValueAt(currentRow, i));
+                                        
                                     }
 
                                 }
@@ -723,6 +739,7 @@ public class GUI extends javax.swing.JFrame {
         //OUTPUT TESTS ----- IGNORE
 
         // Output Tests ------ IGNORE.
+        FileSuccess = 0;
         String direction;
         //Creo un nuevo JFileChooser para que eliga donde guardar.
         //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
@@ -740,20 +757,17 @@ public class GUI extends javax.swing.JFrame {
                 if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
                     direction = fileChooser.getSelectedFile().getPath() + ".dat";
                     file = new File(direction);
-                    if (file.length() == 0) { //Revisa que este vacio.
-                        metadata = new Metadata();
-                        BuildTable(metadata, 1);
+                    if (file.length() == 0) { //Revisa que este vacio.                    
                         this.file = new File(direction);
                         JOptionPane.showMessageDialog(this, "Success!\n All unsaved progress was Lost!");
 
                     } else if (file.exists()) { //Si ya existe entonces lo vuelve a crear. PERO VACIO.
                         file.delete();
                         file.createNewFile();
-                        metadata = new Metadata();
-                        BuildTable(metadata, 1);
                         this.file = new File(direction);
                         JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
                     }
+                    FileSuccess = 1;
                 } else {
                     JOptionPane.showMessageDialog(this, "Unable to save. Use DAT FILE.");
                 }
@@ -791,8 +805,13 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
         if (option == JOptionPane.NO_OPTION) { //Si no quiere guardar lo que hizo.
             CreateFile(); //Como no quiere guardar solo lo creo.
+            if(FileSuccess == 1){
+                metadata = new Metadata();
+                BuildTable(metadata, 1);
+            }
+            
         } else if (option == JOptionPane.YES_OPTION) {
-            System.out.println("Please Implement Save Option.");
+           SaveFile();
             //una vez se guarda la info se crea el archivo.
             //CreateFile();
 
@@ -801,9 +820,7 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
-    private void SaveFile() {
-
-    }
+   
 
     /**
      * @param args the command line arguments
@@ -846,12 +863,13 @@ public class GUI extends javax.swing.JFrame {
     Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
     TableModel cleanTable; //Clean Table model for when program needs to return to original state.
     File file; // Global variable for binary file handling. May be null sometimes.
-    RandomAccessFile RAfile;
+    
     int tablemodification = 0; //Int bandera , Table awareness for modification.
     Object oldcellvalue; // Old cell value that is being modified live on table. Might be null.
     int currentRow;
     // RandomAccessFile RAfile;
     int currentColumn;
+    int FileSuccess;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
