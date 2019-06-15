@@ -55,7 +55,9 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n 5. ArrayList on class Registry is now gone."
                 + "\n 6. Save File is now half way operational."
                 + "\n Additional validation is requiered when inserting or modifying registries."
-                + "\n Pending downgrade for the ability to modify the user primary key.");
+                + "\n Pending downgrade for the ability to modify the user primary key."
+                + "\n Saving Metadata to fill Fully Operational"
+                + "\n Waiting for Load File  Operation Update");
 
 
         GUI graphics = new GUI();

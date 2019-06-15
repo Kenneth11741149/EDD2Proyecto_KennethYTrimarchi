@@ -5,15 +5,17 @@
  */
 package edd2_kennethytrimarchi_proyecto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author X
  */
-public class Registro {
+public class Registro implements Serializable{
     int key;
-    String name="";
+    int byteOffset;
+    int size;
      // ArrayList<Object> data;
 
     /*public Registro(ArrayList<Object> data) {
@@ -49,14 +51,25 @@ public class Registro {
         this.key = key;
     }
 
-    public String getName() {
-        return name;
+    public int getByteOffset() {
+        return byteOffset;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setByteOffset(int byteOffset) {
+        this.byteOffset = byteOffset;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
     
+    
+
+
 
     @Override
     public String toString() {

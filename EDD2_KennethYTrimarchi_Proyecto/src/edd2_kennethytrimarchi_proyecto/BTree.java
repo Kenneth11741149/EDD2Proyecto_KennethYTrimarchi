@@ -5,13 +5,14 @@
  */
 package edd2_kennethytrimarchi_proyecto;
 
+import java.io.Serializable;
 import java.util.Queue;
 
 /**
  *
  * @author X
  */
-public class BTree {
+public class BTree implements Serializable{
 
     Bnode root; // Pointer to root node 
     int t = 3;  // Minimum degree

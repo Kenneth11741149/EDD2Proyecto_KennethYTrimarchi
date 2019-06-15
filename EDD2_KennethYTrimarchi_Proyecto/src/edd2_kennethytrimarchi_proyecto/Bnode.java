@@ -5,11 +5,13 @@
  */
 package edd2_kennethytrimarchi_proyecto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author X
  */
-public class Bnode {
+public class Bnode implements Serializable{
 
     Registro[] key;  // An array of keys 
     int t;      // Minimum degree (defines the range for number of keys) 

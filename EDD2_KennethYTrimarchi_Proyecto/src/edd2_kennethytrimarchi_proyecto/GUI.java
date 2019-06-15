@@ -11,9 +11,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
@@ -498,18 +501,23 @@ public class GUI extends javax.swing.JFrame {
         if (metadata != null) {
             if (metadata.getCampos() != null) {
                 if (metadata.getCampos().size() > 0) {
-                    if(file == null){
-                        while(FileSuccess == 0){
+                    if (file == null) {
+                        while (FileSuccess == 0) {
                             CreateFile();
-                            
-                        }     
+
+                        }
+                        try {
+                            EscribirMetadatos();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                         metadata.addnumregistros();
                         CrearRegistro();
                     } else {
                         metadata.addnumregistros();
                         CrearRegistro();
                     }
-                    
+
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay campos creados! XTT 428");
                 }
@@ -580,15 +588,14 @@ public class GUI extends javax.swing.JFrame {
         }
         //Export to Trima in this line.
         Registro temporal = new Registro(Integer.parseInt(insertarray[0].toString()));
-       
-            
+
         if (metadata.getArbolB().search(temporal) == null) {
             metadata.getArbolB().insert(temporal);
             modelo.addRow(insertarray);
             System.out.println(TrimaExport2);
             Table.setModel(modelo);
             System.out.println(metadata.getArbolB().search(temporal));
-            
+
         } else {
             JOptionPane.showMessageDialog(null, "Una Instancia del Registro ya existe.");
         }
@@ -606,10 +613,10 @@ public class GUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    public void SaveFile(){
-        JOptionPane.showMessageDialog(null,"Su file se ha guardado exitosamente!");
+    public void SaveFile() {
+        JOptionPane.showMessageDialog(null, "Su file se ha guardado exitosamente!");
     }
-    
+
     private void TableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TableFocusLost
         // TODO add your handling code here:\
         /*System.out.println(" Pene");
@@ -664,7 +671,7 @@ public class GUI extends javax.swing.JFrame {
                                         TrimaExport.add(assignation);
                                     } else {
                                         TrimaExport.add(Table.getValueAt(currentRow, i));
-                                        
+
                                     }
 
                                 }
@@ -805,13 +812,13 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showConfirmDialog(this, "Do you want to save your current progress?");
         if (option == JOptionPane.NO_OPTION) { //Si no quiere guardar lo que hizo.
             CreateFile(); //Como no quiere guardar solo lo creo.
-            if(FileSuccess == 1){
+            if (FileSuccess == 1) {
                 metadata = new Metadata();
                 BuildTable(metadata, 1);
             }
-            
+
         } else if (option == JOptionPane.YES_OPTION) {
-           SaveFile();
+            SaveFile();
             //una vez se guarda la info se crea el archivo.
             //CreateFile();
 
@@ -820,7 +827,32 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
-   
+    public void CargarMetadatos() throws ClassNotFoundException {
+        try {
+            RAfile = new RandomAccessFile(file, "rw");
+            int tamaño = RAfile.readInt();
+            System.out.println(tamaño);
+            byte[] data = new byte[tamaño];
+            RAfile.read(data);
+            ByteArrayInputStream in = new ByteArrayInputStream(data);
+            ObjectInputStream read = new ObjectInputStream(in);
+            metadata = (Metadata) read.readObject();//read the byte array
+        } catch (IOException ex) {
+            Logger.getLogger(Trima.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void EscribirMetadatos() throws IOException {
+        RAfile = new RandomAccessFile(file, "rw");
+        ByteArrayOutputStream obArray = new ByteArrayOutputStream();
+        ObjectOutputStream objeto = new ObjectOutputStream(obArray);
+        objeto.writeObject(metadata);
+        byte[] datos = obArray.toByteArray();//makes an array of bytes from the object
+        RAfile.seek(0);//Place pointe at the beggining of the file
+        RAfile.writeInt(datos.length);
+        RAfile.write(datos);
+
+    }
 
     /**
      * @param args the command line arguments
@@ -867,7 +899,7 @@ public class GUI extends javax.swing.JFrame {
     int tablemodification = 0; //Int bandera , Table awareness for modification.
     Object oldcellvalue; // Old cell value that is being modified live on table. Might be null.
     int currentRow;
-    // RandomAccessFile RAfile;
+    RandomAccessFile RAfile;
     int currentColumn;
     int FileSuccess;
     // Variables declaration - do not modify//GEN-BEGIN:variables
