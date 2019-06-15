@@ -14,17 +14,17 @@ import java.util.ArrayList;
  *
  * @author X
  */
-public class Registrozzz  extends Trima {
+public class ver_si_es_util  extends Trima {
 
     public int size;
     public long numCampos;
     public ArrayList<Campos> Camps = new ArrayList<>();
 
-    public Registrozzz() {
+    public ver_si_es_util() {
         numCampos = 0;
     }
 
-    public Registrozzz(int size, int numCampos) {
+    public ver_si_es_util(int size, int numCampos) {
         this.size = size;
         this.numCampos = numCampos;
     }
