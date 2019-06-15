@@ -145,7 +145,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pre-Alpha V 1.93");
+        jLabel3.setText("Pre-Alpha V 1.94");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
 
