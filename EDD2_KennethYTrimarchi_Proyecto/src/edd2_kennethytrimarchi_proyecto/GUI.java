@@ -145,7 +145,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pre-Alpha V 1.91");
+        jLabel3.setText("Pre-Alpha V 1.93");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
 
@@ -506,12 +506,12 @@ public class GUI extends javax.swing.JFrame {
                             CreateFile();
 
                         }
+                        metadata.addnumregistros();
                         try {
                             EscribirMetadatos();
                         } catch (IOException ex) {
                             ex.printStackTrace();
-                        }
-                        metadata.addnumregistros();
+                        }             
                         CrearRegistro();
                     } else {
                         metadata.addnumregistros();
@@ -592,12 +592,13 @@ public class GUI extends javax.swing.JFrame {
         if (metadata.getArbolB().search(temporal) == null) {
             metadata.getArbolB().insert(temporal);
             modelo.addRow(insertarray);
-            System.out.println(TrimaExport2);
+            System.out.println(temporal);
             try {
                 EscribirDatosRegistro(TrimaExport2);//Send Array to Trima
                 BuscarDatoArchivo(temporal);
             } catch (Exception ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
             Table.setModel(modelo);
             System.out.println(metadata.getArbolB().search(temporal));

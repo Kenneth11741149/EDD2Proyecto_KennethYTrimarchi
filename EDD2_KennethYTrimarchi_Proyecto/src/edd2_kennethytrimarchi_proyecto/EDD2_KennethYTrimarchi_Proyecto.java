@@ -58,9 +58,9 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n Pending downgrade for the ability to modify the user primary key."
                 + "\n Saving Metadata to fill Fully Operational"
                 + "\n WAITING FOR LOAD FILE OPERATION"
-                + "\n\n Alpha Patch 2.01"
-                + "\n New Function write Metadata to the created File + Write and Modify registros in File"
-                + "\n Implementation of the class Data\"");
+                + "\n\n Alpha Patch 1.93"
+                + "\n 1. New Function write Metadata to the created File + Write and Modify registros in File"
+                + "\n 2. Implementation of the class Data\"");
                 //en Modificar hacer que no se cambie el primary amenos que se haga delete del registro para luego meterlo again
                 //Envieo todo de la misma forma que lo recibo como un ARRAYLIST de OBJETOS
 
