@@ -49,7 +49,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n 3. InsertToTable function has been enabled for the inserts made from Files."
                 + "\n 4. PATCH NOTES .TXT was created on Project Folder."
                 + "\n 5. Modify Registries is now operational. Pending Deletion."
-                        + "\n 6. Emergency Fix on New File Operations");
+                + "\n 6. Emergency Fix on New File Operations");
         //en Modificar hacer que no se cambie el primary amenos que se haga delete del registro para luego meterlo again
         //Envieo todo de la misma forma que lo recibo como un ARRAYLIST de OBJETOS
 

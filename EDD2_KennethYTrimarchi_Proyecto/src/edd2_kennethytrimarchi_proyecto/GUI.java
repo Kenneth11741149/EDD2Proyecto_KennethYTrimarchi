@@ -929,7 +929,7 @@ public class GUI extends javax.swing.JFrame {
                     } else if (file.exists()) { //Si ya existe entonces lo vuelve a crear. PERO VACIO.
                         file.delete();
                         file.createNewFile();
-                        //this.file = new File(direction);
+                        this.file = new File(direction);
                         JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
                     }
                     FileSuccess = 1;
