@@ -13,8 +13,19 @@ import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
+//import javafx.scene.control.Cell;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 public class Kenneth {
 
@@ -291,4 +302,96 @@ public class Kenneth {
         }
 
     }
+    
+    public void ExportToExcel(Metadata metadata, String name, JTable table){
+        //Blank workbook
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        
+        //Create a blank sheet
+        XSSFSheet sheet = workbook.createSheet("Estructura de Datos");
+        int registros = table.getModel().getRowCount();
+        //This data needs to be written (Object[])
+        Map<String, Object[]> data = new TreeMap<String, Object[]>();
+        data.put("1",metadata.getCampos().toArray());
+        for (int i = 0; i < registros; i++) {
+            ArrayList Registro = new ArrayList();
+            for (int j = 0; j < metadata.getCampos().size(); j++) {
+                Registro.add(table.getValueAt(i, j));
+            }
+            data.put(Integer.toString(i+2), Registro.toArray());
+        }
+        //data.put("1", new Object[] {"ID", "NAME", "LASTNAME"});
+        //data.put("2", new Object[] {1, "Amit", "Shukla"});
+        //data.put("3", new Object[] {2, "Lokesh", "Gupta"});
+        //data.put("4", new Object[] {3, "John", "Adwards"});
+        //data.put("5", new Object[] {4, "Brian", "Schultz"});
+          
+        //Iterate over data and write to sheet
+        Set<String> keyset = data.keySet();
+        int rownum = 0;
+        for (String key : keyset)
+        {
+            Row row = sheet.createRow(rownum++);
+            Object [] objArr = data.get(key);
+            int cellnum = 0;
+            for (Object obj : objArr)
+            {
+               Cell cell = row.createCell(cellnum++);
+               if(obj instanceof String)
+                    cell.setCellValue((String)obj);
+                  // cell.setIte((String)obj);
+                else if(obj instanceof Integer)
+                    cell.setCellValue((Integer)obj);
+                    
+            }
+        }
+        try
+        {
+            //Write the workbook in file system
+            File filer = new File(name+=".xlsx");
+            filer.delete();
+            filer.createNewFile();
+            FileOutputStream out = new FileOutputStream(filer);
+            workbook.write(out);
+            out.close();
+            System.out.println(name+" written successfully on disk.");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
 }

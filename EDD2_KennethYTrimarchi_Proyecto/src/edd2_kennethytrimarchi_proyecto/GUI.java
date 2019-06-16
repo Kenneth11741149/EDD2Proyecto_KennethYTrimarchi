@@ -96,6 +96,7 @@ public class GUI extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
 
         jMenuItem2.setText("jMenuItem2");
 
@@ -117,6 +118,11 @@ public class GUI extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(0, 204, 204));
         jPanel3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel3MouseClicked(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -146,9 +152,10 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pre-Alpha V 1.94");
+        jLabel3.setText("Beta V 1.96");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -385,6 +392,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem11);
+
+        jMenuItem12.setText("Buscar Registro");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem12);
 
         jMenuBar1.add(jMenu4);
 
@@ -784,6 +799,7 @@ public class GUI extends javax.swing.JFrame {
     public void LoadFile() {
         FileSuccess = 0;
         String direction;
+        
         //Creo un nuevo JFileChooser para que eliga donde guardar.
         //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
         JFileChooser fileChooser = new JFileChooser();
@@ -865,11 +881,41 @@ public class GUI extends javax.swing.JFrame {
         System.out.println("Removal on:" + rowRemoval);
     }//GEN-LAST:event_TableMouseClicked
 
+    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+        // TODO add your handling code here:
+        try{
+             String name = JOptionPane.showInputDialog(null,"Ingrese el nombre del exporte: ");
+             metodos.ExportToExcel(metadata, name, Table);
+        }catch(Exception e){
+            System.out.println("Error Fatal.");
+        }
+       
+        //metodos.ExportToExcel();
+    }//GEN-LAST:event_jPanel3MouseClicked
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+            try{
+               int Primarykey = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el PrimaryKey del registro a buscar."));
+               Registro temporal = new Registro(Primarykey);
+               Object x;
+               if((x = metadata.getArbolB().search(temporal)) == null){
+                   JOptionPane.showMessageDialog(null, "No se pudo encontrar");
+               } else {
+                   System.out.println("TRIMA DIJO QUE LO DEJARA EN BLANCO.");
+                   
+               }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Operation aborted.");
+            }
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
     private void BuildTable(Metadata metadata, int funcion) {
         if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
+            
             tabla.setColumnIdentifiers(campos);
             Table.setModel(tabla);
             //Table.updateUI();
@@ -1279,6 +1325,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
