@@ -522,11 +522,11 @@ public class GUI extends javax.swing.JFrame {
                         CrearRegistro();
                     } else {
                         if (metadata.getNumregistros() < 1) {
-                            try{
+                            try {
                                 file.delete();
                                 file.createNewFile();
                                 System.out.println("Forcing deletion and recreation of the file.");
-                            }catch(Exception sdj){
+                            } catch (Exception sdj) {
                                 System.out.println("Error en la puteria de borrar.");
                             }
                             metadata.addnumregistros();
@@ -662,7 +662,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             if (Table.isEditing() && tablemodification == 0) {
-                mode=-1;
+                mode = -1;
                 tablemodification = 1;
                 System.out.println("Cell value being edited.");
 
@@ -918,7 +918,7 @@ public class GUI extends javax.swing.JFrame {
                 if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
                     direction = fileChooser.getSelectedFile().getPath().toString() + ".dat";
                     System.out.println(direction);
-                    direction = direction.replace(".dat","");
+                    direction = direction.replace(".dat", "");
                     System.out.println(direction);
                     direction += ".dat";
                     System.out.println(direction);
@@ -1105,6 +1105,40 @@ public class GUI extends javax.swing.JFrame {
             return null;
         }
 
+    }
+
+    public void EliminarDatoArchivo(ArrayList<Object> TrimaExport) {
+
+        try {
+            Registro temporal = new Registro(Integer.parseInt(TrimaExport.get(0).toString()));
+            if (BuscarDatoArchivo(temporal) != null) {
+                System.out.println("===========================================================");
+                System.out.println("ELIMANDO NODO...");
+                Data temp = BuscarDatoArchivo(temporal);
+                RAfile.seek(temp.ubicacion);
+                int size_act = RAfile.readInt();//Este es el tamaño actual
+                temp.setSize_alter("*"); //Pone un aterisco que marca ese registro o dato como eliminado
+
+                ByteArrayOutputStream obArray = new ByteArrayOutputStream();
+                ObjectOutputStream objeto = new ObjectOutputStream(obArray);
+
+                obArray = new ByteArrayOutputStream();
+                objeto = new ObjectOutputStream(obArray);
+                objeto.writeObject(temp);
+                byte[] dat2 = obArray.toByteArray();
+                RAfile.write(dat2);
+                System.out.println("Implementando Avail List....");
+                temp.setKey(size_act);
+                System.out.println("LLamar metodo del AvailList...");
+                
+                System.out.println("===========================================================");
+                //Avai
+                
+                
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void ModificarDatoArchivo(ArrayList<Object> TrimaExport) {
