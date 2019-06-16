@@ -1334,13 +1334,6 @@ public class GUI extends javax.swing.JFrame {
                     byte[] dat2 = obArray.toByteArray();
                     RAfile.write(dat2);
 
-                    System.out.println("LLamar metodo del AvailList...");
-                    AvailList.BestFit(size_act, temporal.byteOffset);
-                    AvailList.ImprimeListaEnlazada(AvailList.head);
-                    System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
-                    metadata.ArbolB.remove(temporal);
-                    System.out.println("Despues de Borrar el Registro...." + metadata.ArbolB.search(temporal));
-
                     //ESPACIO RESERVADO PARA EL AVAILlIST
                     long byteOffset = RAfile.length();
 
@@ -1348,15 +1341,22 @@ public class GUI extends javax.swing.JFrame {
                     obArray = new ByteArrayOutputStream();
                     objeto = new ObjectOutputStream(obArray);
                     objeto.writeObject(new_size);
-                    dat=obArray.toByteArray();
-                    
+                    dat = obArray.toByteArray();
+
                     RAfile.seek(byteOffset);//ahora nos vamos al final de archivo a poner el El registro ya que es muy grande
                     RAfile.writeInt(dat.length);
                     RAfile.write(dat);
-                    
+
                     Bnode tmp = metadata.getArbolB().search(temporal);
                     int ubicacion = searchEnNodo(tmp, temp.getKey());
                     tmp.key[ubicacion].byteOffset = byteOffset;
+
+                    System.out.println("LLamar metodo del AvailList...");
+                    AvailList.BestFit(size_act, temporal.byteOffset);
+                    AvailList.ImprimeListaEnlazada(AvailList.head);
+                    System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
+                    metadata.ArbolB.remove(temporal);
+                    System.out.println("Despues de Borrar el Registro...." + metadata.ArbolB.search(temporal));
 
                     System.out.println("Key: " + tmp.key[ubicacion].key + " ------------------ ByteOfsset" + tmp.key[ubicacion].byteOffset);
 
