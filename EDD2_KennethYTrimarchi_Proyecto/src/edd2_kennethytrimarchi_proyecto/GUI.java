@@ -709,6 +709,7 @@ public class GUI extends javax.swing.JFrame {
                     @Override
                     public void editingStopped(ChangeEvent e) { //When editing stops compare original value and type to the new value and type.
                         Object temp = x.getCellEditorValue(); //Extract new value.
+                        mode = -1;
                         if (tablemodification == 1) { //Simple bandera.
                             tablemodification = 0; //Making sure bandera resets
                             if (oldcellvalue.toString().equals(temp.toString())) { //If the same value is detected
