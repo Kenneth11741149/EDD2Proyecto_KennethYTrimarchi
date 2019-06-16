@@ -520,8 +520,26 @@ public class GUI extends javax.swing.JFrame {
                         }
                         CrearRegistro();
                     } else {
-                        metadata.addnumregistros();
-                        CrearRegistro();
+                        if (metadata.getNumregistros() < 1) {
+                            try{
+                                file.delete();
+                                file.createNewFile();
+                                System.out.println("Forcing deletion and recreation of the file.");
+                            }catch(Exception sdj){
+                                System.out.println("Error en la puteria de borrar.");
+                            }
+                            metadata.addnumregistros();
+                            try {
+                                EscribirMetadatos();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                            CrearRegistro();
+                        } else {
+                            metadata.addnumregistros();
+                            CrearRegistro();
+                        }
+
                     }
 
                 } else {
@@ -897,9 +915,12 @@ public class GUI extends javax.swing.JFrame {
             ObjectOutputStream ous = null;
             try {
                 if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
-                    direction = "";
-                    direction.replace(".dat","");
-                    direction = fileChooser.getSelectedFile().getPath() + ".dat";
+                    direction = fileChooser.getSelectedFile().getPath().toString() + ".dat";
+                    System.out.println(direction);
+                    direction = direction.replace(".dat","");
+                    System.out.println(direction);
+                    direction += ".dat";
+                    System.out.println(direction);
                     file = new File(direction);
                     if (file.length() == 0) { //Revisa que este vacio.                    
                         //this.file = new File(direction);
