@@ -12,7 +12,6 @@ package edd2_kennethytrimarchi_proyecto;
 public class DLL {
     // Class for Doubly Linked List 
 
-    
     Node head; // Cabeza de la Lista
 
     /* D-Linked List Nodess*/
@@ -20,67 +19,99 @@ public class DLL {
 
         Data reg;
         int data;
+        int posicion;
         Node prev;//valor previo ==null si es root o inicio
         Node next;//siguiente apuntador == null si es el ultimo
 
         // Constructor to create a new node 
         // next and prev is by default initialized as null 
-        Node(int d) {
+        Node(int d,int pos) {
             data = d;
+            posicion=pos;
         }
     }
 
-    public void push(int new_data) {//Caso que ingresa al incio
+    public void BestFit(int new_data,int pos) {//Caso que ingresa al incio
+        Node new_node = new Node(new_data,pos);
+        Node last = head;
+        new_node.next = null;
+        boolean insertado = false;
+        if (head == null) {
 
-        Node new_Node = new Node(new_data);      
-        new_Node.next = head;
-        new_Node.prev = null;// hace el anterior null como ingresa al inicio
+            new_node.prev = null;
+            head = new_node;
 
-        if (head != null) {
-            head.prev = new_Node;
+        } else {
+            if (new_data < last.data) {
+                //si es menor
+
+                new_node.prev = last.prev;
+                new_node.next = last;
+                last.prev = new_node;
+                head = new_node;
+                insertado = true;
+            } else {
+                //last=last.next;
+                while (last.next != null) {
+
+                    if (new_data < last.next.data) {
+                        new_node.prev = last;
+                        new_node.next = last.next;
+                        last.next.prev = new_node;
+                        last.next = new_node;
+
+                        insertado = true;
+                        break;
+                    } else {
+                        last = last.next;
+                    }
+                }
+                if (!insertado) {
+
+                    last.next = new_node;
+                    new_node.prev = last;
+                    //new_node.next=null;
+                }
+            }
+
+        }
+    }
+
+    public Node SearchSpace(int needed) {
+        Node last = head;
+        boolean found = false;
+        //dato maybe
+        while (last.next != null) {
+            if (needed > last.data) {
+                last = last.next;
+            } else {
+                //dev=last.data;
+                /**
+                 * break;
+                 *
+                 */
+                found = true;
+                break;
+            }
+        }
+        if (found == false) {
+            if (needed > last.data) {
+                // dev=100;
+                return null;
+            } else {
+                //return last.data;
+                return last;
+            }
+        } else {
+            return last;
         }
 
-        // hace el nodo cabeza
-        head = new_Node;
     }
 
     /* Given a node as prev_node, insert a new node after the given node */
-    public void InsertAfter(Node prev_Node, int new_data) {
+    void InsertEnd(int new_data,int pos) {//este metodo lo agrega al final
 
-        /*1. check if the given prev_node is NULL */
-        if (prev_Node == null) {
-            System.out.println("The given previous node cannot be NULL ");
-            return;
-        }
-        //2) Encuntrea el Nodo o Pos 
-        //3) Mete los datos
-        Node new_node = new Node(new_data);
-        //4. Hacer el next del siguiente nodo comosiguiente del nodo previo   
-        new_node.next = prev_Node.next;
-        prev_Node.next = new_node;// al apuntador de anterior le asigno next
-        new_node.prev = prev_Node;//al anterior del nuevo nodo le asigno el nodo anterior
-        if (new_node.next != null) {
-            new_node.next.prev = new_node;
-        }
-    }
-
-    
-    
-    public void bestFist(Data datos){
-
-        
-        
-        
-    }
-    public Data searchBestFit(){
-       
-        
-        
-        return null;
-    }
-    public void InsertEnd(int new_data) {//este metodo lo agrega al final
-
-        Node new_node = new Node(new_data);
+        Node new_node = new Node(new_data,pos);
         Node last = head;
         new_node.next = null;
 
@@ -115,24 +146,23 @@ public class DLL {
             last = last.prev;
         }
     }
-    void deleteNode(Node head_ref, Node delete) 
-    { 
+
+    void deleteNode(Node head_ref, Node delete) {
         // Caso Base
-        if (head == null || delete == null) { 
-            return; 
-        }  
+        if (head == null || delete == null) {
+            return;
+        }
         // If node to be deleted is head node 
-        if (head == delete) { 
-            head = delete.next; 
-        } 
+        if (head == delete) {
+            head = delete.next;
+        }
         if (delete.next != null) { //entra si no es el ultimo nodo
-            delete.next.prev = delete.prev; 
-        } 
+            delete.next.prev = delete.prev;
+        }
         if (delete.prev != null) { //no lo hace si es el primer nodo
-            delete.prev.next = delete.next; 
-        } 
-        return; 
-    } 
-  
+            delete.prev.next = delete.next;
+        }
+        return;
+    }
 
 }
