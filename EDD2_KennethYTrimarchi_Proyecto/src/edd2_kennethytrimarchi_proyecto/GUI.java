@@ -878,6 +878,7 @@ public class GUI extends javax.swing.JFrame {
                 }
                 mode = -1;
                 //Exportar a Trima Aqui.
+                
                 System.out.println(metadata.getNumregistros());
                 metadata.subtractnumregistros();
                 TableModel modelo = Table.getModel();
