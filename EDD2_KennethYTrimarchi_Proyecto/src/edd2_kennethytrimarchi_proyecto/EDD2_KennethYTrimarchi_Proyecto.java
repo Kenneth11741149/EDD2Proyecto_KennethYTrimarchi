@@ -28,17 +28,7 @@ public class EDD2_KennethYTrimarchi_Proyecto {
     public static void main(String[] args) throws IOException, ParseException {
 
         JOptionPane.showMessageDialog(null,
-                "\n\n Alpha Patch 1.92"
-                + "\n 1. Fixed Jonrry's bug on function modify and delete campo."
-                + "\n 2. User is now forced to choose a file to save everything! "
-                + "\n 3. GUI NOW CHECKS IF PRIMARY KEY ALREADY EXISTS."
-                + "\n 4. EMERGENCY HOTFIX FOR THE PATCH THAT HASNT EVEN BEEN MADE."
-                + "\n 5. ArrayList on class Registry is now gone."
-                + "\n 6. Save File is now half way operational."
-                + "\n Additional validation is requiered when inserting or modifying registries."
-                + "\n Pending downgrade for the ability to modify the user primary key."
-                + "\n Saving Metadata to fill Fully Operational"
-                + "\n WAITING FOR LOAD FILE OPERATION"
+                ""
                 + "\n\n Alpha Patch 1.93/1.94"
                 + "\n 1. New Function write Metadata to the created File + Write and Modify registros in File"
                 + "\n 2. Implementation of the class Data"
@@ -49,7 +39,20 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n 3. InsertToTable function has been enabled for the inserts made from Files."
                 + "\n 4. PATCH NOTES .TXT was created on Project Folder."
                 + "\n 5. Modify Registries is now operational. Pending Deletion."
-                + "\n 6. Emergency Fix on New File Operations");
+                + "\n 6. Emergency Fix on New File Operations"
+                + "\n\n BETA PATCH 1.96"
+                + "\n 1. Export to Excel is now operational."
+                + "\n 2. Fixed an issue where user could eliminate all registries and cause a file error."
+                + "\n 3. New File can now overwrite a selected file on GUI. For ease of use."
+                + "\n 4. Borrar Registro is operational pending Trima update."
+                + "\n 5. Professional Save function implemented 900IQ"
+                + "\n 6. Included new Select feature on table to allow deletion of registries."
+                + "\n 7. Table is now aware of whether you are editing or deleting."
+                + "\n 8. Availist is being developed."
+                + "\n 9. Fixed a rare issue where Ctrl + O would interfere on handling."
+                + "\n 10. Created Patch Notes.txt on Project Folder."
+                + "\n 11. UPLOADED EMERGENCY PATCH FIXING MULTIPLE BUGS."
+                        + "\n 12. Funcion Buscar Registro esta hecho a la mitad Pending Trima Update.");
         //en Modificar hacer que no se cambie el primary amenos que se haga delete del registro para luego meterlo again
         //Envieo todo de la misma forma que lo recibo como un ARRAYLIST de OBJETOS
 
