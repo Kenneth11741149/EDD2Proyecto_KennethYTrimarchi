@@ -544,13 +544,14 @@ public class GUI extends javax.swing.JFrame {
                             CreateFile();
 
                         }
-                        metadata.addnumregistros();
+
                         try {
                             EscribirMetadatos();
                         } catch (IOException ex) {
                             ex.printStackTrace();
                             System.out.println("Otro de los mil errores escribiendo metadatas.");
                         }
+                        metadata.addnumregistros();
                         CrearRegistro();
                     } else {
                         if (metadata.getNumregistros() < 1) {
@@ -561,12 +562,13 @@ public class GUI extends javax.swing.JFrame {
                             } catch (Exception sdj) {
                                 System.out.println("Error en la puteria de borrar.");
                             }
-                            metadata.addnumregistros();
+
                             try {
                                 EscribirMetadatos();
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
+                            metadata.addnumregistros();
                             CrearRegistro();
                         } else {
                             metadata.addnumregistros();
@@ -929,72 +931,78 @@ public class GUI extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        if (metadata != null) {
-            if (metadata.getCampos() != null) {
-                if (metadata.getCampos().size() > 0) {
-                    if (file == null) {
-                        JOptionPane.showMessageDialog(null, "ERROR 404: Please make sure file and campos have been defined.");
-                    } else {
-                        if (metadata.getNumregistros() < 1) {
-                            try {
-                                file.delete();
-                                file.createNewFile();
-                                System.out.println("Forcing deletion and recreation of the file.");
-                            } catch (Exception sdj) {
-                                System.out.println("Error en la puteria de borrar.");
-                            }
-                            //metadata.addnumregistros();
-                            try {
-                                EscribirMetadatos();
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
-                            //CrearRegistro();
-                            try {
-                                for (int i = 0; i < 10000; i++) {
-                                    ArrayList registro = new ArrayList();
-                                    registro.add(i);
-
-                                    for (int j = 1; j < metadata.getCampos().size(); j++) {
-                                        if (metadata.getTipos().get(j).toString().equals(Integer.toString(1))) {
-                                            registro.add(j);
-                                        } else if (metadata.getTipos().get(j).toString().equals(Integer.toString(2))) {
-                                            long x = j;
-                                            registro.add(x);
-                                        } else if (metadata.getTipos().get(j).toString().equals(Integer.toString(3))) {
-                                            registro.add("Andrea Mendoza");
-                                        } else {
-                                            registro.add("A");
-                                        }
-                                    }
-                                    Registro xasda = new Registro(i);
-                                    metadata.getArbolB().insert(xasda);
-                                    metadata.addnumregistros();
-                                    TableModel x = Table.getModel();
-                                    DefaultTableModel model = (DefaultTableModel) x;
-                                    model.addRow(registro.toArray());
-                                    try {
-                                        EscribirDatosRegistro(registro);//Send Array to Trima
-                                        BuscarDatoArchivo(xasda);
-                                    } catch (Exception ex) {
-                                        //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-                                        System.out.println(ex);
-                                    }
-                                    Table.setModel(x);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
+        if (developermode == 1) {
+            if (metadata != null) {
+                if (metadata.getCampos() != null) {
+                    if (metadata.getCampos().size() > 0) {
+                        if (file == null) {
+                            JOptionPane.showMessageDialog(null, "ERROR 404: Please make sure file and campos have been defined.");
                         } else {
-                           // metadata.addnumregistros();
-                            //CrearRegistro();
+                            if (metadata.getNumregistros() < 1) {
+                                try {
+                                    file.delete();
+                                    file.createNewFile();
+                                    System.out.println("Forcing deletion and recreation of the file.");
+                                } catch (Exception sdj) {
+                                    System.out.println("Error en la puteria de borrar.");
+                                }
+                                //metadata.addnumregistros();
+                                try {
+                                    EscribirMetadatos();
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                                //CrearRegistro();
+                                try {
+                                    for (int i = 0; i < 10000; i++) {
+                                        ArrayList registro = new ArrayList();
+                                        registro.add(i);
+
+                                        for (int j = 1; j < metadata.getCampos().size(); j++) {
+                                            if (metadata.getTipos().get(j).toString().equals(Integer.toString(1))) {
+                                                registro.add(j);
+                                            } else if (metadata.getTipos().get(j).toString().equals(Integer.toString(2))) {
+                                                long x = j;
+                                                registro.add(x);
+                                            } else if (metadata.getTipos().get(j).toString().equals(Integer.toString(3))) {
+                                                registro.add("Andrea Mendoza");
+                                            } else {
+                                                registro.add("A");
+                                            }
+                                        }
+                                        Registro xasda = new Registro(i);
+                                        metadata.getArbolB().insert(xasda);
+                                        metadata.addnumregistros();
+                                        TableModel x = Table.getModel();
+                                        DefaultTableModel model = (DefaultTableModel) x;
+                                        model.addRow(registro.toArray());
+                                        try {
+                                            EscribirDatosRegistro(registro);//Send Array to Trima
+                                            BuscarDatoArchivo(xasda);
+                                        } catch (Exception ex) {
+                                            //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                                            System.out.println(ex);
+                                        }
+                                        Table.setModel(x);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            } else {
+                                // metadata.addnumregistros();
+                                //CrearRegistro();
+                                JOptionPane.showMessageDialog(null, "Deben haber exactamente 0 registros en el gui.");
+                            }
                         }
                     }
                 }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Super User features have been disabled by creator.");
         }
-        
+
+
     }//GEN-LAST:event_jPanel5MouseClicked
 
     private void BuildTable(Metadata metadata, int funcion) {
@@ -1325,8 +1333,7 @@ public class GUI extends javax.swing.JFrame {
                     System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
                     metadata.ArbolB.remove(temporal);
                     System.out.println("Despues de Borrar el Registro...." + metadata.ArbolB.search(temporal));
-                    
-                    
+
                     //ESPACIO RESERVADO PARA EL AVAILlIST
                     long byteOffset = RAfile.length();
                     RAfile.seek(byteOffset);//ahora nos vamos al final de archivo a poner el El registro ya que es muy grande
@@ -1410,6 +1417,7 @@ public class GUI extends javax.swing.JFrame {
     int FileSuccess;
     int mode = -1;
     int rowRemoval;
+    int developermode = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
