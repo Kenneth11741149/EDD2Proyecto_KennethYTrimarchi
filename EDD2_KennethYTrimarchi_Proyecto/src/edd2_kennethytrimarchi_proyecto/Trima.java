@@ -57,39 +57,7 @@ public class Trima {
                 ,p);
     }
 /**
- *    public void EliminarDatoArchivo(ArrayList<Object> TrimaExport) {
-
-        try {
-            Registro temporal = new Registro(Integer.parseInt(TrimaExport.get(0).toString()));
-            if (BuscarDatoArchivo(temporal) != null) {
-                System.out.println("===========================================================");
-                System.out.println("ELIMANDO NODO...");
-                Data temp = BuscarDatoArchivo(temporal);
-                RAfile.seek(temp.ubicacion);
-                int size_act = RAfile.readInt();//Este es el tamaño actual
-                temp.setSize_alter("*"); //Pone un aterisco que marca ese registro o dato como eliminado
-
-                ByteArrayOutputStream obArray = new ByteArrayOutputStream();
-                ObjectOutputStream objeto = new ObjectOutputStream(obArray);
-
-                obArray = new ByteArrayOutputStream();
-                objeto = new ObjectOutputStream(obArray);
-                objeto.writeObject(temp);
-                byte[] dat2 = obArray.toByteArray();
-                RAfile.write(dat2);
-                System.out.println("Implementando Avail List....");
-                temp.setKey(size_act);
-                System.out.println("LLamar metodo del AvailList...");
-                
-                System.out.println("===========================================================");
-                //Avai
-                
-                
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+ * 
 
  */
 }

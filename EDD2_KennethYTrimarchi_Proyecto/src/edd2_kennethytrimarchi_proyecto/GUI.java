@@ -799,7 +799,7 @@ public class GUI extends javax.swing.JFrame {
     public void LoadFile() {
         FileSuccess = 0;
         String direction;
-        
+
         //Creo un nuevo JFileChooser para que eliga donde guardar.
         //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
         JFileChooser fileChooser = new JFileChooser();
@@ -883,31 +883,31 @@ public class GUI extends javax.swing.JFrame {
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
-        try{
-             String name = JOptionPane.showInputDialog(null,"Ingrese el nombre del exporte: ");
-             metodos.ExportToExcel(metadata, name, Table);
-        }catch(Exception e){
+        try {
+            String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del exporte: ");
+            metodos.ExportToExcel(metadata, name, Table);
+        } catch (Exception e) {
             System.out.println("Error Fatal.");
         }
-       
+
         //metodos.ExportToExcel();
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
-            try{
-               int Primarykey = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el PrimaryKey del registro a buscar."));
-               Registro temporal = new Registro(Primarykey);
-               Object x;
-               if((x = metadata.getArbolB().search(temporal)) == null){
-                   JOptionPane.showMessageDialog(null, "No se pudo encontrar");
-               } else {
-                   System.out.println("TRIMA DIJO QUE LO DEJARA EN BLANCO.");
-                   
-               }
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, "Operation aborted.");
+        try {
+            int Primarykey = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el PrimaryKey del registro a buscar."));
+            Registro temporal = new Registro(Primarykey);
+            Object x;
+            if ((x = metadata.getArbolB().search(temporal)) == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo encontrar");
+            } else {
+                System.out.println("TRIMA DIJO QUE LO DEJARA EN BLANCO.");
+
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Operation aborted.");
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void BuildTable(Metadata metadata, int funcion) {
@@ -915,7 +915,7 @@ public class GUI extends javax.swing.JFrame {
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
-            
+
             tabla.setColumnIdentifiers(campos);
             Table.setModel(tabla);
             //Table.updateUI();
@@ -1165,11 +1165,10 @@ public class GUI extends javax.swing.JFrame {
                 int size_act = RAfile.readInt();//Este es el tamaño actual
                 temp.setSize_alter("*"); //Pone un aterisco que marca ese registro o dato como eliminado
 
-                Bnode b=metadata.ArbolB.search(temporal);
-                int pos=searchEnNodo(b,temporal.key);
+                Bnode b = metadata.ArbolB.search(temporal);
+                int pos = searchEnNodo(b, temporal.key);
                 b.key[pos].getByteOffset();
-                
-                
+
                 ByteArrayOutputStream obArray = new ByteArrayOutputStream();
                 ObjectOutputStream objeto = new ObjectOutputStream(obArray);
 
@@ -1178,15 +1177,15 @@ public class GUI extends javax.swing.JFrame {
                 objeto.writeObject(temp);
                 byte[] dat2 = obArray.toByteArray();
 
- 
-                
                 System.out.println("LLamar metodo del AvailList...");
-                AvailList.BestFit(size_act,temporal.byteOffset);
+                AvailList.BestFit(size_act, temporal.byteOffset);
                 AvailList.ImprimeListaEnlazada(AvailList.head);
+                System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
+                metadata.ArbolB.remove(temporal);
+                System.out.println("Despues de Borrar el Registro...." + metadata.ArbolB.search(temporal));
                 System.out.println("===========================================================");
                 //Avai
-                
-                
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1233,6 +1232,14 @@ public class GUI extends javax.swing.JFrame {
                     byte[] dat2 = obArray.toByteArray();
                     RAfile.write(dat2);
 
+                    System.out.println("LLamar metodo del AvailList...");
+                    AvailList.BestFit(size_act, temporal.byteOffset);
+                    AvailList.ImprimeListaEnlazada(AvailList.head);
+                    System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
+                    metadata.ArbolB.remove(temporal);
+                    System.out.println("Despues de Borrar el Registro...." + metadata.ArbolB.search(temporal));
+                    
+                    
                     //ESPACIO RESERVADO PARA EL AVAILlIST
                     long byteOffset = RAfile.length();
                     RAfile.seek(byteOffset);//ahora nos vamos al final de archivo a poner el El registro ya que es muy grande
@@ -1252,7 +1259,6 @@ public class GUI extends javax.swing.JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     public int searchEnNodo(Bnode d, int key) {//Como mi arbol devulve el nodo en que se ubica el Registro
         int pos = 0;
@@ -1302,7 +1308,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-    DLL AvailList=new DLL();
+    DLL AvailList = new DLL();
     int num = 0; //
     Kenneth metodos = new Kenneth(); //Import Program Abilities developed by Kenneth
     Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
