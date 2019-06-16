@@ -1162,25 +1162,73 @@ public class GUI extends javax.swing.JFrame {
     }
 
     public void EscribirDatosRegistro(ArrayList<Object> info_registro) throws IOException {
-        Data datos = new Data();
-        Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
-        long byteOffset = RAfile.length();
-        System.out.println("ByteOffset+:: " + byteOffset);
-        Bnode d = metadata.getArbolB().search(temporal);
-        int x = searchEnNodo(d, temporal.getKey());
+        System.out.println("=========================================");
+        if (AvailList.head != null) {
+            System.out.println("EL AVAILIST TIENE DATOS!!! VER SI ENCUENTRA CUPO....");
+            Data datos = new Data();
+            Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
+            long byteOffset = RAfile.length();
+            System.out.println("ByteOffset+:: " + byteOffset);
+            Bnode d = metadata.getArbolB().search(temporal);
+            int x = searchEnNodo(d, temporal.getKey());
 
-        d.key[x].setByteOffset(byteOffset);
-        datos.setDatos(info_registro);//Alistando para guardar arraylist de objetos en el archivo
-        datos.setUbicacion(byteOffset);//clase datos que guarda ubiacion
+            d.key[x].setByteOffset(byteOffset);
+            datos.setDatos(info_registro);//Alistando para guardar arraylist de objetos en el archivo
+            datos.setUbicacion(byteOffset);//clase datos que guarda ubiacion
 
-        ByteArrayOutputStream obArray = new ByteArrayOutputStream();
-        ObjectOutputStream objeto = new ObjectOutputStream(obArray);
-        objeto.writeObject(datos);
-        byte[] dat = obArray.toByteArray();//makes an array of bytes from the object
-        RAfile.seek(byteOffset);//Place pointe at the beggining of the file
-        RAfile.writeInt(dat.length);
-        RAfile.write(dat);
-        System.out.println("ESTE ES EL SIZE DEL REGISTRO..." + dat.length);
+            ByteArrayOutputStream obArray = new ByteArrayOutputStream();
+            ObjectOutputStream objeto = new ObjectOutputStream(obArray);
+            objeto.writeObject(datos);
+
+            byte[] dat = obArray.toByteArray();
+            int required_size = dat.length;
+            DLL.Node espacio = AvailList.SearchSpace(required_size);
+            if (espacio == null) {
+                System.out.println("NO ENCONTRO ESPACIO, NO CABE");
+                RAfile.seek(byteOffset);//Place pointe at the beggining of the file
+                RAfile.writeInt(dat.length);
+                RAfile.write(dat);
+            } else {
+                System.out.println("SI ENCONTROO ESPACIO!!! ENTRO");
+                datos.setUbicacion(espacio.posicion);
+                System.out.println("Espacio encontrado: " + espacio.data + " ----- Tamaño del Registro a Insertar: " + dat.length);
+                for (int i = 0; i < (espacio.data - dat.length); i++) {//El for lo que hace es meter caracteres para igualar los size de ambos
+                    datos.setSize_alter(datos.getSize_alter() + "|");
+                    System.out.print("ENTRO Cuantas Veces??");
+                }
+                System.out.println("");
+                AvailList.deleteNode(AvailList.head, espacio);
+                obArray = new ByteArrayOutputStream();
+                objeto = new ObjectOutputStream(obArray);
+                objeto.writeObject(datos);
+                dat = obArray.toByteArray();
+                RAfile.seek(byteOffset);//Place pointe at the beggining of the file
+                RAfile.writeInt(dat.length);
+                RAfile.write(dat);
+            }
+        } else {
+            System.out.println("EL AVAILLIST ESTA VACIO ENTONCES INGRESA NORMAL");
+            Data datos = new Data();
+            Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
+            long byteOffset = RAfile.length();
+            System.out.println("ByteOffset+:: " + byteOffset);
+            Bnode d = metadata.getArbolB().search(temporal);
+            int x = searchEnNodo(d, temporal.getKey());
+
+            d.key[x].setByteOffset(byteOffset);
+            datos.setDatos(info_registro);//Alistando para guardar arraylist de objetos en el archivo
+            datos.setUbicacion(byteOffset);//clase datos que guarda ubiacion
+
+            ByteArrayOutputStream obArray = new ByteArrayOutputStream();
+            ObjectOutputStream objeto = new ObjectOutputStream(obArray);
+            objeto.writeObject(datos);
+            byte[] dat = obArray.toByteArray();//makes an array of bytes from the object
+            RAfile.seek(byteOffset);//Place pointe at the beggining of the file
+            RAfile.writeInt(dat.length);
+            RAfile.write(dat);
+            System.out.println("ESTE ES EL SIZE DEL REGISTRO..." + dat.length);
+        }
+
     }
 
     public void LeerDatosRegistro() throws ClassNotFoundException {
@@ -1268,7 +1316,8 @@ public class GUI extends javax.swing.JFrame {
                 Bnode b = metadata.ArbolB.search(temporal);
                 int pos = searchEnNodo(b, temporal.key);
                 long ubicacion = b.key[pos].getByteOffset();
-
+                temp.ubicacion=ubicacion;
+                
                 ByteArrayOutputStream obArray = new ByteArrayOutputStream();
                 ObjectOutputStream objeto = new ObjectOutputStream(obArray);
 
@@ -1277,7 +1326,7 @@ public class GUI extends javax.swing.JFrame {
                 objeto.writeObject(temp);
 
                 byte[] dat2 = obArray.toByteArray();
-                System.out.println(temp.size_alter + " ----------------------------" + ubicacion);
+                System.out.println(temp.size_alter + " ----------------------------" + temp.ubicacion);
                 RAfile.write(dat2);
 
                 System.out.println("LLamar metodo del AvailList...");
@@ -1302,6 +1351,7 @@ public class GUI extends javax.swing.JFrame {
                 System.out.println("===========================================================");
                 System.out.println("MODIFICANDO NODO...");
                 Data temp = BuscarDatoArchivo(temporal);
+                temporal.setByteOffset(temp.ubicacion);
                 RAfile.seek(temp.ubicacion);
                 int size_act = RAfile.readInt();//Este es el tamaño actual
 
@@ -1316,7 +1366,7 @@ public class GUI extends javax.swing.JFrame {
 
                 System.out.println("NEW SIZE" + dat.length + " ---- " + "SIZE ORIGINAL:" + size_act);
                 if (dat.length <= size_act) {//Este if permite entrar si es mas peqeño
-                    System.out.println("EL NUEVO REGISTRO ES MAS PEQUEÑO SE ADAPATARA PARA QUE SEAN DEL MISMO TAMAÑO SI ES NECESARIO");
+                    System.out.println("EL NUEVO REGISTRO ES MAS PEQUEÑO O IGUAL, SE ADAPATARA PARA QUE SEAN DEL MISMO TAMAÑO SI ES NECESARIO");
                     for (int i = 0; i < (size_act - dat.length); i++) {//El for lo que hace es meter caracteres para igualar los size de ambos
                         new_size.setSize_alter(new_size.getSize_alter() + "|");
                     }//Igualo los size para solo pegar el nuevo dato sobre el viejo y asi no generar errores
@@ -1356,8 +1406,8 @@ public class GUI extends javax.swing.JFrame {
                     AvailList.BestFit(size_act, temporal.byteOffset);
                     AvailList.ImprimeListaEnlazada(AvailList.head);
                     System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
-                    metadata.ArbolB.remove(temporal);
                     System.out.println("Despues de Borrar el Registro...." + metadata.ArbolB.search(temporal));
+                    System.out.println("");
 
                     System.out.println("Key: " + tmp.key[ubicacion].key + " ------------------ ByteOfsset" + tmp.key[ubicacion].byteOffset);
 
