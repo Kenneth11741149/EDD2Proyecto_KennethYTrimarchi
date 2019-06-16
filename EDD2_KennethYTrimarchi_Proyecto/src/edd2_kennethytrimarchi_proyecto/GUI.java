@@ -517,6 +517,7 @@ public class GUI extends javax.swing.JFrame {
                             EscribirMetadatos();
                         } catch (IOException ex) {
                             ex.printStackTrace();
+                            System.out.println("Otro de los mil errores escribiendo metadatas.");
                         }
                         CrearRegistro();
                     } else {
@@ -661,7 +662,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             if (Table.isEditing() && tablemodification == 0) {
-
+                mode=-1;
                 tablemodification = 1;
                 System.out.println("Cell value being edited.");
 
