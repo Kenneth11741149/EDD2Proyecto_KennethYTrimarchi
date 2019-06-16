@@ -897,16 +897,18 @@ public class GUI extends javax.swing.JFrame {
             ObjectOutputStream ous = null;
             try {
                 if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
+                    direction = "";
+                    direction.replace(".dat","");
                     direction = fileChooser.getSelectedFile().getPath() + ".dat";
                     file = new File(direction);
                     if (file.length() == 0) { //Revisa que este vacio.                    
-                        this.file = new File(direction);
+                        //this.file = new File(direction);
                         JOptionPane.showMessageDialog(this, "Success!\n All unsaved progress was Lost!");
 
                     } else if (file.exists()) { //Si ya existe entonces lo vuelve a crear. PERO VACIO.
                         file.delete();
                         file.createNewFile();
-                        this.file = new File(direction);
+                        //this.file = new File(direction);
                         JOptionPane.showMessageDialog(this, "File OverWritten, New Length: " + file.length());
                     }
                     FileSuccess = 1;
