@@ -19,19 +19,19 @@ public class DLL {
 
         Data reg;
         int data;
-        int posicion;
+        long posicion;
         Node prev;//valor previo ==null si es root o inicio
         Node next;//siguiente apuntador == null si es el ultimo
 
         // Constructor to create a new node 
         // next and prev is by default initialized as null 
-        Node(int d,int pos) {
+        Node(int d,long pos) {
             data = d;
             posicion=pos;
         }
     }
 
-    public void BestFit(int new_data,int pos) {//Caso que ingresa al incio
+    public void BestFit(int new_data,long pos) {//Caso que ingresa al incio
         Node new_node = new Node(new_data,pos);
         Node last = head;
         new_node.next = null;
@@ -109,7 +109,7 @@ public class DLL {
     }
 
     /* Given a node as prev_node, insert a new node after the given node */
-    void InsertEnd(int new_data,int pos) {//este metodo lo agrega al final
+    void InsertEnd(int new_data,long pos) {//este metodo lo agrega al final
 
         Node new_node = new Node(new_data,pos);
         Node last = head;
@@ -133,14 +133,14 @@ public class DLL {
 
     public void ImprimeListaEnlazada(Node node) {
         Node last = null;
-        System.out.println("Traversal in forward Direction");
+        System.out.println("Direccion Normal:");
         while (node != null) {
-            System.out.print(node.data + " ");
+            System.out.print("Size: "+node.data +"Pos: "+node.posicion +" ||");
             last = node;
             node = node.next;
         }
         System.out.println();
-        System.out.println("Traversal in reverse direction");
+        System.out.println("Direccion Opuesta:");
         while (last != null) {
             System.out.print(last.data + " ");
             last = last.prev;

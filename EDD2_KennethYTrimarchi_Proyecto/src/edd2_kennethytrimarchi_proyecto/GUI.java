@@ -1165,6 +1165,11 @@ public class GUI extends javax.swing.JFrame {
                 int size_act = RAfile.readInt();//Este es el tamaño actual
                 temp.setSize_alter("*"); //Pone un aterisco que marca ese registro o dato como eliminado
 
+                Bnode b=metadata.ArbolB.search(temporal);
+                int pos=searchEnNodo(b,temporal.key);
+                b.key[pos].getByteOffset();
+                
+                
                 ByteArrayOutputStream obArray = new ByteArrayOutputStream();
                 ObjectOutputStream objeto = new ObjectOutputStream(obArray);
 
@@ -1172,11 +1177,12 @@ public class GUI extends javax.swing.JFrame {
                 objeto = new ObjectOutputStream(obArray);
                 objeto.writeObject(temp);
                 byte[] dat2 = obArray.toByteArray();
-                RAfile.write(dat2);
-                System.out.println("Implementando Avail List....");
-                temp.setKey(size_act);
-                System.out.println("LLamar metodo del AvailList...");
+
+ 
                 
+                System.out.println("LLamar metodo del AvailList...");
+                AvailList.BestFit(size_act,temporal.byteOffset);
+                AvailList.ImprimeListaEnlazada(AvailList.head);
                 System.out.println("===========================================================");
                 //Avai
                 
@@ -1246,6 +1252,7 @@ public class GUI extends javax.swing.JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
     public int searchEnNodo(Bnode d, int key) {//Como mi arbol devulve el nodo en que se ubica el Registro
         int pos = 0;
@@ -1295,7 +1302,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-
+    DLL AvailList=new DLL();
     int num = 0; //
     Kenneth metodos = new Kenneth(); //Import Program Abilities developed by Kenneth
     Metadata metadata; //Global Variable for metadata handling. May be null sometimes.
