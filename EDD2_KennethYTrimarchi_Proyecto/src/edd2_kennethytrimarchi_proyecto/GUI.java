@@ -954,7 +954,7 @@ public class GUI extends javax.swing.JFrame {
                                 }
                                 //CrearRegistro();
                                 try {
-                                    for (int i = 0; i < 10000; i++) {
+                                    for (int i = 0; i < 10001; i++) {
                                         ArrayList registro = new ArrayList();
                                         registro.add(i);
 
