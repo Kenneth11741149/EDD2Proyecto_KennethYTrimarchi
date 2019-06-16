@@ -276,9 +276,12 @@ public class Kenneth {
             campo--;
             System.out.println("PENE");
             ArrayList campos = metadata.getCampos();
+            ArrayList tipos = metadata.getTipos();
             if (campo >= 0 && campo < campos.size()) {
                 campos.remove(campo);
+                tipos.remove(campo);
                 metadata.setCampos(campos);
+                metadata.setTipos(tipos);
                 //System.out.println("Successfull! Check table!");
                 JOptionPane.showMessageDialog(null, "Success Check table");
             } else {
