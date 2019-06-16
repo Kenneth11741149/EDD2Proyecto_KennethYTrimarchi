@@ -56,5 +56,8 @@ public class Trima {
         c.modificarCampo(file,p.size_dec
                 ,p);
     }
+/**
+ * 
 
+ */
 }
