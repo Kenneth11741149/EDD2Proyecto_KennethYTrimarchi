@@ -78,6 +78,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -152,7 +153,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Beta V 1.96");
+        jLabel3.setText("Beta  Build V 1.96");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
         jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -179,16 +180,32 @@ public class GUI extends javax.swing.JFrame {
         );
 
         jPanel5.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel5MouseClicked(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Test Registries");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 58, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel6.setBackground(new java.awt.Color(0, 204, 204));
@@ -235,7 +252,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(29, 29, 29))
         );
@@ -537,11 +554,11 @@ public class GUI extends javax.swing.JFrame {
                         CrearRegistro();
                     } else {
                         if (metadata.getNumregistros() < 1) {
-                            try{
+                            try {
                                 file.delete();
                                 file.createNewFile();
                                 System.out.println("Forcing deletion and recreation of the file.");
-                            }catch(Exception sdj){
+                            } catch (Exception sdj) {
                                 System.out.println("Error en la puteria de borrar.");
                             }
                             metadata.addnumregistros();
@@ -677,7 +694,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             if (Table.isEditing() && tablemodification == 0) {
-                mode=-1;
+                mode = -1;
                 tablemodification = 1;
                 System.out.println("Cell value being edited.");
 
@@ -799,7 +816,7 @@ public class GUI extends javax.swing.JFrame {
     public void LoadFile() {
         FileSuccess = 0;
         String direction;
-        
+
         //Creo un nuevo JFileChooser para que eliga donde guardar.
         //Le digo que aparezca en el home del proyecto .. Crea un problema que la Metadata se puede guardar en cualquier sitio.
         JFileChooser fileChooser = new JFileChooser();
@@ -883,39 +900,44 @@ public class GUI extends javax.swing.JFrame {
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
-        try{
-             String name = JOptionPane.showInputDialog(null,"Ingrese el nombre del exporte: ");
-             metodos.ExportToExcel(metadata, name, Table);
-        }catch(Exception e){
+        try {
+            String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del exporte: ");
+            metodos.ExportToExcel(metadata, name, Table);
+        } catch (Exception e) {
             System.out.println("Error Fatal.");
         }
-       
+
         //metodos.ExportToExcel();
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
-            try{
-               int Primarykey = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el PrimaryKey del registro a buscar."));
-               Registro temporal = new Registro(Primarykey);
-               Object x;
-               if((x = metadata.getArbolB().search(temporal)) == null){
-                   JOptionPane.showMessageDialog(null, "No se pudo encontrar");
-               } else {
-                   System.out.println("TRIMA DIJO QUE LO DEJARA EN BLANCO.");
-                   
-               }
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, "Operation aborted.");
+        try {
+            int Primarykey = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el PrimaryKey del registro a buscar."));
+            Registro temporal = new Registro(Primarykey);
+            Object x;
+            if ((x = metadata.getArbolB().search(temporal)) == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo encontrar");
+            } else {
+                System.out.println("TRIMA DIJO QUE LO DEJARA EN BLANCO.");
+
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Operation aborted.");
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jPanel5MouseClicked
 
     private void BuildTable(Metadata metadata, int funcion) {
         if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
             Object[] campos = metadata.getCampos().toArray();
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.setColumnCount(campos.length);
-            
+
             tabla.setColumnIdentifiers(campos);
             Table.setModel(tabla);
             //Table.updateUI();
@@ -964,7 +986,7 @@ public class GUI extends javax.swing.JFrame {
                 if (fileChooser.getFileFilter().getDescription().equals("DAT FILE")) { //Chequea si lo que quiere guardar es DAT FILE
                     direction = fileChooser.getSelectedFile().getPath().toString() + ".dat";
                     System.out.println(direction);
-                    direction = direction.replace(".dat","");
+                    direction = direction.replace(".dat", "");
                     System.out.println(direction);
                     direction += ".dat";
                     System.out.println(direction);
@@ -1283,6 +1305,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
