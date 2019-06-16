@@ -923,7 +923,7 @@ public class GUI extends javax.swing.JFrame {
                     System.out.println(direction);
                     file = new File(direction);
                     if (file.length() == 0) { //Revisa que este vacio.                    
-                        //this.file = new File(direction);
+                        this.file = new File(direction);
                         JOptionPane.showMessageDialog(this, "Success!\n All unsaved progress was Lost!");
 
                     } else if (file.exists()) { //Si ya existe entonces lo vuelve a crear. PERO VACIO.

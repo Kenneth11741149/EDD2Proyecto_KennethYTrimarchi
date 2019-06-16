@@ -44,11 +44,12 @@ public class EDD2_KennethYTrimarchi_Proyecto {
                 + "\n 2. Implementation of the class Data"
                 + "\n 3. Load File is now operational, pending Trima's file operations."
                 + "\n\n Alpha Patch 1.95"
-                + "1. Emergency Fix on Table's ability to identify the equality of objects."
-                + "2. User is now unable to modify primary keys."
-                + "3. InsertToTable function has been enabled for the inserts made from Files."
-                + "4. PATCH NOTES .TXT was created on Project Folder."
-                + "5. Modify Registries is now operational. Pending Deletion.");
+                + "\n 1. Emergency Fix on Table's ability to identify the equality of objects."
+                + "\n 2. User is now unable to modify primary keys."
+                + "\n 3. InsertToTable function has been enabled for the inserts made from Files."
+                + "\n 4. PATCH NOTES .TXT was created on Project Folder."
+                + "\n 5. Modify Registries is now operational. Pending Deletion."
+                        + "\n 6. Emergency Fix on New File Operations");
         //en Modificar hacer que no se cambie el primary amenos que se haga delete del registro para luego meterlo again
         //Envieo todo de la misma forma que lo recibo como un ARRAYLIST de OBJETOS
 
