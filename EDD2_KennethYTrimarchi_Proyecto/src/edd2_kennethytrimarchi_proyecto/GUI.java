@@ -741,6 +741,7 @@ public class GUI extends javax.swing.JFrame {
                                         }
 
                                     }
+                                    System.out.println("########################################################");
                                     System.out.println("Exportar a Trima valores: " + TrimaExport);
                                     //Apartir de aqui se exporta el nuevo valor del registro. AKA TrimaExport.
                                     //Export to Trima Here.
@@ -877,7 +878,7 @@ public class GUI extends javax.swing.JFrame {
                 }
                 mode = -1;
                 //Exportar a Trima Aqui.
-                
+                EliminarDatoArchivo(ExportTrima3);
                 System.out.println(metadata.getNumregistros());
                 metadata.subtractnumregistros();
                 TableModel modelo = Table.getModel();
@@ -1024,13 +1025,13 @@ public class GUI extends javax.swing.JFrame {
         TableModel model = Table.getModel();
         DefaultTableModel modelo = (DefaultTableModel) model;
         metadata.addnumregistros();
-        System.out.println("ENTRO a LA Table??" + KennethExport2.get(0));
+
         Object insertArray[] = KennethExport2.toArray();
-        System.out.println("POS2..." + insertArray[1]);
+
         modelo.addRow(insertArray);
-        System.out.println("SUPER PENE");
+
         Table.setModel(model);
-        System.out.println("Completeed.");
+
     }
 
     private void CreateFile() {
@@ -1193,6 +1194,7 @@ public class GUI extends javax.swing.JFrame {
             //System.out.println(tamaño);
             boolean eliminado = false;//boolen que marca que el registro leido esta eliminado
             while (RAfile.getFilePointer() < RAfile.length()) {
+                System.out.println("----------------------------------------------");
                 eliminado = false;
                 tamaño = RAfile.readInt();
                 System.out.println("Newwww Tamaño" + tamaño);
@@ -1203,17 +1205,19 @@ public class GUI extends javax.swing.JFrame {
                 Data d = (Data) read.readObject();//guardo el array de bytes en una variable temporal
                 if (d.getSize_alter().contains("*")) {//If que verifica que si el registro esta eliminado
                     eliminado = true;//si entra significa que si
+                    System.out.println("ENCONTRO EL REGISTRO BORRADO" + d.getDatos().get(1) + " Ubicacion...." + d.getUbicacion());
                 } else {//entra al else cuando NO ETSA ELIMINADO
                     KennethExport2 = new ArrayList<>();
                     Registro temporal = new Registro(d.getKey());
                     temporal.setByteOffset(d.getUbicacion());
                     metadata.getArbolB().insert(temporal);
+                    System.out.println("SE VA A METER A: " + d.getDatos().get(1) + " Ubicacion: " + d.getUbicacion());
                     for (int i = 0; i < d.getDatos().size(); i++) {
                         KennethExport2.add(d.getDatos().get(i));
-                        System.out.print("qp2");
+
                     }
                     TableInsertRegistro();//Inserto en la tabla
-                    System.out.println("ALOOOO");
+
 //Agrego un registro con el mismo formato que me fue enviado para implementarlo en la table
                     //Arraylist Lista para agarrar Registros
                     //GRAB Global Array!!!! XD 
@@ -1259,10 +1263,10 @@ public class GUI extends javax.swing.JFrame {
                 RAfile.seek(temp.ubicacion);
                 int size_act = RAfile.readInt();//Este es el tamaño actual
                 temp.setSize_alter("*"); //Pone un aterisco que marca ese registro o dato como eliminado
-
+                temp.size_alter = "*";
                 Bnode b = metadata.ArbolB.search(temporal);
                 int pos = searchEnNodo(b, temporal.key);
-                b.key[pos].getByteOffset();
+                long ubicacion = b.key[pos].getByteOffset();
 
                 ByteArrayOutputStream obArray = new ByteArrayOutputStream();
                 ObjectOutputStream objeto = new ObjectOutputStream(obArray);
@@ -1270,10 +1274,13 @@ public class GUI extends javax.swing.JFrame {
                 obArray = new ByteArrayOutputStream();
                 objeto = new ObjectOutputStream(obArray);
                 objeto.writeObject(temp);
+
                 byte[] dat2 = obArray.toByteArray();
+                System.out.println(temp.size_alter + " ----------------------------" + ubicacion);
+                RAfile.write(dat2);
 
                 System.out.println("LLamar metodo del AvailList...");
-                AvailList.BestFit(size_act, temporal.byteOffset);
+                AvailList.BestFit(size_act, temp.ubicacion);
                 AvailList.ImprimeListaEnlazada(AvailList.head);
                 System.out.println("Antes de Borrar el Registro...." + metadata.ArbolB.search(temporal));
                 metadata.ArbolB.remove(temporal);
@@ -1336,13 +1343,22 @@ public class GUI extends javax.swing.JFrame {
 
                     //ESPACIO RESERVADO PARA EL AVAILlIST
                     long byteOffset = RAfile.length();
+
+                    new_size.setUbicacion(byteOffset);
+                    obArray = new ByteArrayOutputStream();
+                    objeto = new ObjectOutputStream(obArray);
+                    objeto.writeObject(new_size);
+                    dat=obArray.toByteArray();
+                    
                     RAfile.seek(byteOffset);//ahora nos vamos al final de archivo a poner el El registro ya que es muy grande
                     RAfile.writeInt(dat.length);
                     RAfile.write(dat);
-
+                    
                     Bnode tmp = metadata.getArbolB().search(temporal);
                     int ubicacion = searchEnNodo(tmp, temp.getKey());
-                    tmp.key[ubicacion].setByteOffset(byteOffset);
+                    tmp.key[ubicacion].byteOffset = byteOffset;
+
+                    System.out.println("Key: " + tmp.key[ubicacion].key + " ------------------ ByteOfsset" + tmp.key[ubicacion].byteOffset);
 
                     //Espera implementarse mas adelante
                 }
@@ -1357,12 +1373,16 @@ public class GUI extends javax.swing.JFrame {
     public int searchEnNodo(Bnode d, int key) {//Como mi arbol devulve el nodo en que se ubica el Registro
         int pos = 0;
         //Este Metodo me dije la posicion en la que se encuentra en el Nodo.
-        for (int i = 0; i < d.n; i++) {//for que busca en el nodo la llave y le agrega el byte donde se ubica en el archivo
-            if (d.key[i].getKey() == key) {
-                break;
-            } else {
-                pos++;
+        if (d != null) {
+            for (int i = 0; i < d.n; i++) {//for que busca en el nodo la llave y le agrega el byte donde se ubica en el archivo
+                if (d.key[i].getKey() == key) {
+                    break;
+                } else {
+                    pos++;
+                }
             }
+        } else {
+            System.out.println("PORQUE ESSS NULLLLLL?????????????????????????????");
         }
         return pos;
     }
