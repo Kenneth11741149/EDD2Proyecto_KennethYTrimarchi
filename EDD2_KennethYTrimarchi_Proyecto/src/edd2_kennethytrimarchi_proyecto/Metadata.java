@@ -72,9 +72,11 @@ public class Metadata implements Serializable {
     }
 
     public void addnumregistros() {
+        System.out.println("ADDING ON METADATA!");
         this.numregistros++;
     }
     public void subtractnumregistros(){
+        System.out.println("SUBTRACTING ON METADAT.");
         this.numregistros--;
     }
 

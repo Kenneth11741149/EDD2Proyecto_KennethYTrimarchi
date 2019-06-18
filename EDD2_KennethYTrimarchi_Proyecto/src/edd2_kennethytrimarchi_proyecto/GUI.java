@@ -80,6 +80,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table = new javax.swing.JTable();
@@ -156,7 +157,12 @@ public class GUI extends javax.swing.JFrame {
         jLabel3.setText("Beta  Build V 1.96");
 
         jPanel4.setBackground(new java.awt.Color(0, 204, 204));
-        jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel4MouseClicked(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -180,7 +186,7 @@ public class GUI extends javax.swing.JFrame {
         );
 
         jPanel5.setBackground(new java.awt.Color(0, 204, 204));
-        jPanel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel5MouseClicked(evt);
@@ -209,16 +215,36 @@ public class GUI extends javax.swing.JFrame {
         );
 
         jPanel6.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel6MouseClicked(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Cruzar Archivo");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(32, 32, 32))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 55, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -252,7 +278,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(29, 29, 29))
         );
@@ -536,6 +562,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
+        System.out.println("NUM REGISTROS: " + metadata.getNumregistros());
         if (metadata != null) {
             if (metadata.getCampos() != null) {
                 if (metadata.getCampos().size() > 0) {
@@ -551,7 +578,7 @@ public class GUI extends javax.swing.JFrame {
                             ex.printStackTrace();
                             System.out.println("Otro de los mil errores escribiendo metadatas.");
                         }
-                        metadata.addnumregistros();
+                        //metadata.addnumregistros();
                         CrearRegistro();
                     } else {
                         if (metadata.getNumregistros() < 1) {
@@ -649,19 +676,24 @@ public class GUI extends javax.swing.JFrame {
         Registro temporal = new Registro(Integer.parseInt(insertarray[0].toString()));
 
         if (metadata.getArbolB().search(temporal) == null) {
-            metadata.getArbolB().insert(temporal);
-            modelo.addRow(insertarray);
-            System.out.println(temporal);
-            try {
-                EscribirDatosRegistro(TrimaExport2);//Send Array to Trima
-                BuscarDatoArchivo(temporal);
-            } catch (Exception ex) {
-                //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex);
-                ex.printStackTrace();
+            if (Integer.parseInt(insertarray[0].toString()) > 9999 && Integer.parseInt(insertarray[0].toString()) < 100000) {
+                metadata.getArbolB().insert(temporal);
+                modelo.addRow(insertarray);
+                System.out.println(temporal);
+                metadata.addnumregistros();
+                try {
+                    EscribirDatosRegistro(TrimaExport2);//Send Array to Trima
+                    BuscarDatoArchivo(temporal);
+                } catch (Exception ex) {
+                    //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(ex);
+                    ex.printStackTrace();
+                }
+                Table.setModel(modelo);
+                System.out.println(metadata.getArbolB().search(temporal));
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese valores entre 9999 y 100,000");
             }
-            Table.setModel(modelo);
-            System.out.println(metadata.getArbolB().search(temporal));
 
         } else {
             JOptionPane.showMessageDialog(null, "Una Instancia del Registro ya existe.");
@@ -681,7 +713,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     public void SaveFile() {
-        JOptionPane.showMessageDialog(null, "Su file se ha guardado exitosamente!");
+        JOptionPane.showMessageDialog(null, "Su file se ha guardado exitosamente! ...Always On Saving!");
     }
 
     private void TableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TableFocusLost
@@ -883,6 +915,7 @@ public class GUI extends javax.swing.JFrame {
                 EliminarDatoArchivo(ExportTrima3);
                 System.out.println(metadata.getNumregistros());
                 metadata.subtractnumregistros();
+                System.out.println("Metadata Registry after deleting: " + metadata.getNumregistros());
                 TableModel modelo = Table.getModel();
                 DefaultTableModel model = (DefaultTableModel) modelo;
                 model.removeRow(rowRemoval);
@@ -906,8 +939,13 @@ public class GUI extends javax.swing.JFrame {
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
         try {
-            String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del exporte: ");
-            metodos.ExportToExcel(metadata, name, Table);
+            if (file == null || metadata == null || metadata.getCampos() == null || metadata.getNumregistros() == 0) {
+                JOptionPane.showMessageDialog(null, "No hay informacion cargada");
+            } else {
+                String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del exporte: ");
+                metodos.ExportToExcel(metadata, name, Table);
+            }
+
         } catch (Exception e) {
             System.out.println("Error Fatal.");
         }
@@ -939,8 +977,9 @@ public class GUI extends javax.swing.JFrame {
                 if (metadata.getCampos() != null) {
                     if (metadata.getCampos().size() > 0) {
                         if (file == null) {
-                            JOptionPane.showMessageDialog(null, "ERROR 404: Please make sure file and campos have been defined.");
+                            JOptionPane.showMessageDialog(null, "ERROR 404: Please make sure file and campos have been defined. Or a saving destination has been established");
                         } else {
+                            System.out.println("TestRegistries SuperCampos:" + metadata.getNumregistros());
                             if (metadata.getNumregistros() < 1) {
                                 try {
                                     file.delete();
@@ -957,7 +996,7 @@ public class GUI extends javax.swing.JFrame {
                                 }
                                 //CrearRegistro();
                                 try {
-                                    for (int i = 0; i < 10001; i++) {
+                                    for (int i = 10000; i < 10021; i++) {
                                         ArrayList registro = new ArrayList();
                                         registro.add(i);
 
@@ -970,7 +1009,7 @@ public class GUI extends javax.swing.JFrame {
                                             } else if (metadata.getTipos().get(j).toString().equals(Integer.toString(3))) {
                                                 registro.add("Andrea Mendoza");
                                             } else {
-                                                registro.add("A");
+                                                registro.add("F");
                                             }
                                         }
                                         Registro xasda = new Registro(i);
@@ -1007,6 +1046,128 @@ public class GUI extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jPanel5MouseClicked
+
+    private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
+/*
+        // TODO add your handling code here:
+        if (file == null || metadata == null) {
+            JOptionPane.showMessageDialog(null, "No hay ningun file cargado");
+        } else {
+            if (metadata.getCampos() == null) {
+                JOptionPane.showMessageDialog(null, "No hay informacion definida.");
+            } else {
+                JTable tablavieja = (JTable) Table;
+                Metadata vieja = (Metadata) metadata;
+
+                AvailList = new DLL();
+                RAfile = null;
+                //Metadata temporal = new Metadata();
+                //temporal = metadata;
+                LoadFile();
+                if (FileSuccess == 1) {
+
+                    metadata = new Metadata();
+                    BuildTable(metadata, 1);
+                    try {
+                        CargarMetadatos();
+                        BuildTable(metadata, 0);
+                        LeerDatosRegistro();
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    // Comparar ahora los campos de ambas metadatas.
+                    if (metadata.getCampos().size() == vieja.getCampos().size()) {
+                        boolean compatible = true;
+                        int camposmax = metadata.getCampos().size();
+                        for (int i = 0; i < camposmax; i++) {
+                            int value1 = Integer.parseInt(metadata.getTipos().get(i).toString());
+                            int value2 = Integer.parseInt(vieja.getTipos().get(i).toString());
+                            if (value1 == value2) {
+
+                            } else {
+                                System.out.println("Valor Incompatible i:" + value1 + "Valor Incompatible2:" + value2);
+                                compatible = false;
+                            }
+
+                        }
+                        if (compatible) {
+                            System.out.println(metadata);
+                            System.out.println(vieja);
+                            TableModel modelviejo = tablavieja.getModel();
+                            DefaultTableModel modeloviejo = (DefaultTableModel) modelviejo;
+                            TableModel model = Table.getModel();
+                            DefaultTableModel modelo = (DefaultTableModel) model;
+                            for (int i = 0; i < tablavieja.getRowCount(); i++) {
+                                int numactualr = Integer.parseInt(modeloviejo.getValueAt(i, 0).toString());
+                                int superes = Integer.parseInt(Table.getValueAt(i, 0).toString());
+                                System.out.println("nUM ACTUAk" + numactualr + "Ps" + superes);
+                                Registro trabajando = new Registro(numactualr);
+                                if (metadata.getArbolB().search(trabajando) == null) {
+                                    if (numactualr > 9999 && numactualr < 100000) {
+                                        metadata.getArbolB().insert(trabajando);
+                                        ArrayList superrow = new ArrayList();
+                                        for (int j = 0; j < vieja.getCampos().size(); j++) {
+                                            superrow.add(tablavieja.getValueAt(i, j));
+                                        }
+
+                                        modelo.addRow(superrow.toArray());
+                                        System.out.println(trabajando);
+                                        metadata.addnumregistros();
+                                        try {
+                                            EscribirDatosRegistro(superrow);//Send Array to Trima
+                                            BuscarDatoArchivo(trabajando);
+                                        } catch (Exception ex) {
+                                            //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                                            System.out.println(ex);
+                                            ex.printStackTrace();
+                                        }
+                                        Table.setModel(modelo);
+                                        System.out.println(metadata.getArbolB().search(trabajando));
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Dato Incompatible pertenece a primary key " + numactualr);
+
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Dato Ya existe!");
+                                    // System.out.println(metadata.getArbolB().search(trabajando));
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Metadatas no compatibles por tipo");
+
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Metadatas no compatibles por tamaño de campos");
+                        JOptionPane.showMessageDialog(null, "Se cargara el segundo archivo seleccionado.");
+                    }
+                }
+            }
+        }
+        */
+    }//GEN-LAST:event_jPanel6MouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
+        // TODO add your handling code here:
+        /*try {
+            if (file == null || metadata == null || metadata.getCampos() == null || metadata.getNumregistros() == 0) {
+                JOptionPane.showMessageDialog(null, "No hay informacion cargada");
+            } else {
+                String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del exporte: ");
+                 XMLMaker nuevo = new XMLMaker();
+                    nuevo.Operate(Table, metadata,name);
+            }
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        */
+    }//GEN-LAST:event_jPanel4MouseClicked
 
     private void BuildTable(Metadata metadata, int funcion) {
         if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
@@ -1193,7 +1354,7 @@ public class GUI extends javax.swing.JFrame {
                     RAfile.write(dat);
                 } else {
                     System.out.println("SI ENCONTROO ESPACIO!!! ENTRO");
-                    System.out.println("Esta es la POSSSSSSS: "+espacio.posicion);
+                    System.out.println("Esta es la POSSSSSSS: " + espacio.posicion);
                     datos.setUbicacion(espacio.posicion);
                     System.out.println("Espacio encontrado: " + espacio.data + " ----- Tamaño del Registro a Insertar: " + dat.length);
                     int j = 0;
@@ -1209,9 +1370,8 @@ public class GUI extends javax.swing.JFrame {
                     dat = obArray.toByteArray();
                     d.key[x].setByteOffset(datos.ubicacion);
                     System.out.println("Espacio Size: " + espacio.data + "--- New Size: " + dat.length);
-                    System.out.println("    Esta es la Ubicacion..... "+datos.ubicacion);
+                    System.out.println("    Esta es la Ubicacion..... " + datos.ubicacion);
 
-                    
                     RAfile.seek(datos.ubicacion);
                     RAfile.writeInt(dat.length);
                     RAfile.write(dat);
@@ -1270,8 +1430,8 @@ public class GUI extends javax.swing.JFrame {
                 if (d.getSize_alter().contains("*")) {//If que verifica que si el registro esta eliminado
                     eliminado = true;//si entra significa que si
                     System.out.println("ENCONTRO EL REGISTRO BORRADO" + d.getDatos().get(1) + " Ubicacion...." + d.getUbicacion());
-                    AvailList.BestFit(tamaño,d.ubicacion);
-                    
+                    AvailList.BestFit(tamaño, d.ubicacion);
+
                 } else {//entra al else cuando NO ETSA ELIMINADO
                     KennethExport2 = new ArrayList<>();
                     Registro temporal = new Registro(d.getKey());
@@ -1506,7 +1666,7 @@ public class GUI extends javax.swing.JFrame {
     int FileSuccess;
     int mode = -1;
     int rowRemoval;
-    int developermode = 0;
+    int developermode = 1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
@@ -1515,6 +1675,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

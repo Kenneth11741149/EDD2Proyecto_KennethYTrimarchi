@@ -26,6 +26,24 @@ import org.apache.poi.ss.usermodel.Cell;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+
+
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class Kenneth {
 
@@ -167,10 +185,8 @@ public class Kenneth {
             //System.out.println("Para dejar de insertar utilize el 0");
             JOptionPane.showMessageDialog(null, "Para dejar de insertar Ingrese 0\nEl primer campo es PRIMARY KEY");
             String input = "";
-            
+
             //ArrayList<Campos> Campo=new ArrayList<>();
-                    
-            
             ArrayList<String> campos = new ArrayList<String>();
             ArrayList<Integer> types = new ArrayList<Integer>();
             // preparing containers for the information
@@ -211,13 +227,12 @@ public class Kenneth {
                 }
 
             } //End while de insertar campos por usuario.
-            
+
             metadata.setCampos(campos); //Lo guardo en la metadata para la Jtable.
             metadata.setTipos(types);
             metadata.setNombre(campos.toString());
-            
+
             //metadata.setCamposArchivo(contador);//Para no afectar la estrutura hice un metodo para llenar mi Arraylist de Campos
-            
             // System.out.println("Successfull!, check table");
             JOptionPane.showMessageDialog(null, "Success! Check Table.");
         } else {
@@ -237,33 +252,32 @@ public class Kenneth {
         //JOptionPane.showMessageDialog(null, "Ingrese el campo a modificar a partir de 1.");
         if (metadata.getNumregistros() == 0) {
             try {
-                
+
                 int campo = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el campo a modificar a partir de 1")); //Leo el campo a borrar
                 //System.out.println("Ingrese el nuevo valor del campo:");
                 //read.nextLine(); //Leo el nuevo nombre del campo
                 String input = JOptionPane.showInputDialog(null, "Ingrese el nuevo nombre: ");
                 int type = -1;
-                if(campo == 1){
-                    
-                } else{
+                if (campo == 1) {
+
+                } else {
                     type = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el nuevo tipo: \n1.Int\n2.Long\n3.String\n4.Char"));
                 }
-                
 
                 campo--;
                 ArrayList campos = metadata.getCampos();
                 ArrayList tipos = metadata.getTipos();
                 if (campo >= 0 && campo < campos.size() && campo == 0) {
-                    
+
                     campos.set(campo, input);
-                   // tipos.set(campo, type);
+                    // tipos.set(campo, type);
                     metadata.setCampos(campos);
                     //System.out.println("Successfull! Check Table");
                     JOptionPane.showMessageDialog(null, "Success! Check Table");
                 } else if (campo >= 0 && campo < campos.size()) {
                     campos.set(campo, input);
                     tipos.set(campo, type);
-                } else {    
+                } else {
                     //System.out.println("Invalid Size. Action could not be performed.");
                     JOptionPane.showMessageDialog(null, "Invalid Size");
                 }
@@ -283,7 +297,7 @@ public class Kenneth {
             System.out.println("X2");
             int campo = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el numero del campo a borrar A PARTIR DE 1"));
             System.out.println("As requested.");
-            System.out.println("Modification requested Campo #:"+campo);
+            System.out.println("Modification requested Campo #:" + campo);
             campo--;
             System.out.println("PENE");
             ArrayList campos = metadata.getCampos();
@@ -302,96 +316,61 @@ public class Kenneth {
         }
 
     }
-    
-    public void ExportToExcel(Metadata metadata, String name, JTable table){
+
+    public void ExportToExcel(Metadata metadata, String name, JTable table) {
         //Blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
-        
+
         //Create a blank sheet
         XSSFSheet sheet = workbook.createSheet("Estructura de Datos");
         int registros = table.getModel().getRowCount();
         //This data needs to be written (Object[])
         Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        data.put("1",metadata.getCampos().toArray());
+        data.put("1", metadata.getCampos().toArray());
         for (int i = 0; i < registros; i++) {
             ArrayList Registro = new ArrayList();
             for (int j = 0; j < metadata.getCampos().size(); j++) {
                 Registro.add(table.getValueAt(i, j));
             }
-            data.put(Integer.toString(i+2), Registro.toArray());
+            data.put(Integer.toString(i + 2), Registro.toArray());
         }
         //data.put("1", new Object[] {"ID", "NAME", "LASTNAME"});
         //data.put("2", new Object[] {1, "Amit", "Shukla"});
         //data.put("3", new Object[] {2, "Lokesh", "Gupta"});
         //data.put("4", new Object[] {3, "John", "Adwards"});
         //data.put("5", new Object[] {4, "Brian", "Schultz"});
-          
+
         //Iterate over data and write to sheet
         Set<String> keyset = data.keySet();
         int rownum = 0;
-        for (String key : keyset)
-        {
+        for (String key : keyset) {
             Row row = sheet.createRow(rownum++);
-            Object [] objArr = data.get(key);
+            Object[] objArr = data.get(key);
             int cellnum = 0;
-            for (Object obj : objArr)
-            {
-               Cell cell = row.createCell(cellnum++);
-               if(obj instanceof String)
-                    cell.setCellValue((String)obj);
-                  // cell.setIte((String)obj);
-                else if(obj instanceof Integer)
-                    cell.setCellValue((Integer)obj);
-                    
+            for (Object obj : objArr) {
+                Cell cell = row.createCell(cellnum++);
+                if (obj instanceof String) {
+                    cell.setCellValue((String) obj);
+                } // cell.setIte((String)obj);
+                else if (obj instanceof Integer) {
+                    cell.setCellValue((Integer) obj);
+                }
+
             }
         }
-        try
-        {
+        try {
             //Write the workbook in file system
-            File filer = new File(name+=".xlsx");
+            File filer = new File(name += ".xlsx");
             filer.delete();
             filer.createNewFile();
             FileOutputStream out = new FileOutputStream(filer);
             workbook.write(out);
             out.close();
-            System.out.println(name+" written successfully on disk.");
-        }
-        catch (Exception e)
-        {
+            System.out.println(name + " written successfully on disk.");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
+   
 }
