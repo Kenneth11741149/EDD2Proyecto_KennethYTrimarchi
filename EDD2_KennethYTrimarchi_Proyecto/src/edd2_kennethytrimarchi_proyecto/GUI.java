@@ -34,6 +34,30 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import org.w3c.dom.Text;
+
 /**
  *
  * @author Kenneth Van Yableth
@@ -541,7 +565,7 @@ public class GUI extends javax.swing.JFrame {
                 }
 
             } catch (Exception e) {
-                System.out.println("Crash Prevented on Illegal operation.");
+                System.out.println("Illegal operation.");
             }
 
         } else {
@@ -587,7 +611,7 @@ public class GUI extends javax.swing.JFrame {
                                 file.createNewFile();
                                 System.out.println("Forcing deletion and recreation of the file.");
                             } catch (Exception sdj) {
-                                System.out.println("Error en la puteria de borrar.");
+                                System.out.println("Error en borrar.");
                             }
 
                             try {
@@ -1048,7 +1072,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel5MouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
-/*
+        /*
         // TODO add your handling code here:
         if (file == null || metadata == null) {
             JOptionPane.showMessageDialog(null, "No hay ningun file cargado");
@@ -1144,7 +1168,7 @@ public class GUI extends javax.swing.JFrame {
                 }
             }
         }
-        */
+         */
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
@@ -1153,21 +1177,75 @@ public class GUI extends javax.swing.JFrame {
 
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         // TODO add your handling code here:
-        /*try {
+        try {
             if (file == null || metadata == null || metadata.getCampos() == null || metadata.getNumregistros() == 0) {
                 JOptionPane.showMessageDialog(null, "No hay informacion cargada");
             } else {
                 String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del exporte: ");
-                 XMLMaker nuevo = new XMLMaker();
-                    nuevo.Operate(Table, metadata,name);
+                ArrayList registrost = new ArrayList();
+
+                for (int i = 0; i < Table.getRowCount(); i++) {
+                    ArrayList row = new ArrayList();
+                    for (int j = 0; j < Table.getColumnCount(); j++) {
+                        row.add(Table.getValueAt(i, j));
+                    }
+                    registrost.add(row);
+                }
+                exportXML(metadata.getCampos(), registrost,name);
             }
-           
+
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Could not export successfully");
         }
 
-        */
+
     }//GEN-LAST:event_jPanel4MouseClicked
+    public static void exportXML(ArrayList Campos, ArrayList Regs, String Direccion) {
+        Document document = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            DOMImplementation implementation = builder.getDOMImplementation();
+            document = implementation.createDocument(null, "xml", null);
+            //Arraylist de campos
+
+            for (int i = 0; i < Regs.size(); i++) {
+                Element registro = document.createElement("Registro" + i);
+                document.getDocumentElement().appendChild(registro);
+                ArrayList<Element> elementos = new ArrayList();
+
+                for (int j = 0; j < Campos.size(); j++) { //Llenando arraylist de elementos campos
+                    Element campos = document.createElement(Campos.get(j).toString());
+                    elementos.add(campos);
+                }
+
+                for (int h = 0; h < elementos.size(); h++) {
+                    registro.appendChild(elementos.get(h));
+                    Text valorCampo = document.createTextNode(Regs.get(h).toString());
+                    elementos.get(h).appendChild(valorCampo);
+                    document.setXmlVersion("1.0");
+
+                }
+            }
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            // Archivo donde almacenaremos el XML
+            File archivo = new File(Direccion+".xml");
+
+            // Fuente de datos, en este caso el documento XML
+            DOMSource source = new DOMSource(document);
+            // Resultado, el cual almacena en el archivo indicado
+            StreamResult result = new StreamResult(archivo);
+            // Transformamos de ña fuente DOM a el resultado, lo que almacena todo en el archivo
+            transformer.transform(source, result);
+            //System.out.println("Ended");
+        } catch (Exception e) {
+            // Logger.getLogger(TreeTest2.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("COULD NOT EXPORT PROBABLY DIRTY EXPORTER STRING.");
+
+        }
+    }
 
     private void BuildTable(Metadata metadata, int funcion) {
         if (funcion == 0) { //Instruction 0 lets the Table Builder know it should only change headers.
