@@ -123,6 +123,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
 
         jMenuItem2.setText("jMenuItem2");
 
@@ -442,6 +443,16 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Registros");
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu4MouseClicked(evt);
+            }
+        });
+        jMenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu4ActionPerformed(evt);
+            }
+        });
 
         jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem10.setText("Crear Registro");
@@ -467,6 +478,9 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem12);
+
+        jMenuItem13.setText("BTree");
+        jMenu4.add(jMenuItem13);
 
         jMenuBar1.add(jMenu4);
 
@@ -521,9 +535,9 @@ public class GUI extends javax.swing.JFrame {
             try {
                 metodos.CreateCampos(metadata);
             } catch (IOException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                //   Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ParseException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                // Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             BuildTable(metadata, 0);
         } else {
@@ -599,7 +613,7 @@ public class GUI extends javax.swing.JFrame {
                         try {
                             EscribirMetadatos();
                         } catch (IOException ex) {
-                            ex.printStackTrace();
+                            // ex.printStackTrace();
                             System.out.println("Otro de los mil errores escribiendo metadatas.");
                         }
                         //metadata.addnumregistros();
@@ -617,7 +631,7 @@ public class GUI extends javax.swing.JFrame {
                             try {
                                 EscribirMetadatos();
                             } catch (IOException ex) {
-                                ex.printStackTrace();
+                                //ex.printStackTrace();
                             }
                             metadata.addnumregistros();
                             CrearRegistro();
@@ -710,8 +724,8 @@ public class GUI extends javax.swing.JFrame {
                     BuscarDatoArchivo(temporal);
                 } catch (Exception ex) {
                     //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println(ex);
-                    ex.printStackTrace();
+                    // System.out.println(ex);
+                    //ex.printStackTrace();
                 }
                 Table.setModel(modelo);
                 System.out.println(metadata.getArbolB().search(temporal));
@@ -742,7 +756,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void TableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TableFocusLost
         // TODO add your handling code here:\
-        /*System.out.println(" Pene");
+        /*
         int Row = Table.getEditingRow();
         int Column = Table.getEditingColumn();
         System.out.println("Row:"+Row);
@@ -864,7 +878,7 @@ public class GUI extends javax.swing.JFrame {
                 BuildTable(metadata, 0);
                 LeerDatosRegistro();
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                // Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(metadata.getCampos().get(0));
 
@@ -906,14 +920,14 @@ public class GUI extends javax.swing.JFrame {
 
                 // RAfile=new RandomAccessFile(file,"rw");
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Something Went Wrong! Contact System Administrator.");
             }
             try {
                 //ous.close();
                 // fos.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Fatal error closing files.");
             }
 
@@ -982,15 +996,24 @@ public class GUI extends javax.swing.JFrame {
         try {
             int Primarykey = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el PrimaryKey del registro a buscar."));
             Registro temporal = new Registro(Primarykey);
-            Object x;
+            Bnode x;
+            //System.out.println("------------");
             if ((x = metadata.getArbolB().search(temporal)) == null) {
                 JOptionPane.showMessageDialog(null, "No se pudo encontrar");
+                // System.out.println("------------");
             } else {
-                System.out.println("TRIMA DIJO QUE LO DEJARA EN BLANCO.");
+
+                Data datos = BuscarDatoArchivo(temporal);
+                String info = "Registro: ";
+                for (int i = 0; i < datos.datos.size(); i++) {
+                    info += datos.datos.get(i) + " - ";
+                }
+                JOptionPane.showMessageDialog(this, info);
 
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Operation aborted.");
+            //e.printStackTrace();
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
@@ -1010,13 +1033,13 @@ public class GUI extends javax.swing.JFrame {
                                     file.createNewFile();
                                     System.out.println("Forcing deletion and recreation of the file.");
                                 } catch (Exception sdj) {
-                                    System.out.println("Error en la puteria de borrar.");
+                                    //System.out.println("Error en la puteria de borrar.");
                                 }
                                 //metadata.addnumregistros();
                                 try {
                                     EscribirMetadatos();
                                 } catch (IOException ex) {
-                                    ex.printStackTrace();
+                                    //ex.printStackTrace();
                                 }
                                 //CrearRegistro();
                                 try {
@@ -1047,12 +1070,12 @@ public class GUI extends javax.swing.JFrame {
                                             BuscarDatoArchivo(xasda);
                                         } catch (Exception ex) {
                                             //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-                                            System.out.println(ex);
+                                            // System.out.println(ex);
                                         }
                                         Table.setModel(x);
                                     }
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    // e.printStackTrace();
                                 }
 
                             } else {
@@ -1191,7 +1214,7 @@ public class GUI extends javax.swing.JFrame {
                     }
                     registrost.add(row);
                 }
-                exportXML(metadata.getCampos(), registrost,name);
+                exportXML(metadata.getCampos(), registrost, name);
             }
 
         } catch (Exception e) {
@@ -1200,6 +1223,25 @@ public class GUI extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jPanel4MouseClicked
+
+    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jMenu4ActionPerformed
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        // TODO add your handling code here:
+       try{
+        System.out.println("=========================================");
+        System.out.println("Imprimiendo en Orden...");
+        metadata.ArbolB.traverse();
+        System.out.println("Imprimiendo en Forma de Decendencia a 3 Nieveles...");
+        metadata.ArbolB.PrintLevels();
+        System.out.println("=========================================");
+       }catch(Exception e){
+           
+       }
+    }//GEN-LAST:event_jMenu4MouseClicked
     public static void exportXML(ArrayList Campos, ArrayList Regs, String Direccion) {
         Document document = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -1231,7 +1273,7 @@ public class GUI extends javax.swing.JFrame {
             Transformer transformer = transformerFactory.newTransformer();
 
             // Archivo donde almacenaremos el XML
-            File archivo = new File(Direccion+".xml");
+            File archivo = new File(Direccion + ".xml");
 
             // Fuente de datos, en este caso el documento XML
             DOMSource source = new DOMSource(document);
@@ -1328,14 +1370,14 @@ public class GUI extends javax.swing.JFrame {
 
                 // RAfile=new RandomAccessFile(file,"rw");
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Something Went Wrong! Contact System Administrator.");
             }
             try {
                 ous.close();
                 fos.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Fatal error closing files.");
             }
 
@@ -1371,10 +1413,10 @@ public class GUI extends javax.swing.JFrame {
 
     public void CargarMetadatos() throws ClassNotFoundException {
         try {
-            System.out.println("????????????????");
+            // System.out.println("????????????????");
             RAfile = new RandomAccessFile(file, "rw");
             int tamaño = RAfile.readInt();
-            System.out.println(tamaño + " SIZEEEEEEEE");
+            //System.out.println(tamaño + " SIZEEEEEEEE");
             byte[] data = new byte[tamaño];
             RAfile.read(data);
             ByteArrayInputStream in = new ByteArrayInputStream(data);
@@ -1382,7 +1424,7 @@ public class GUI extends javax.swing.JFrame {
             metadata = (Metadata) read.readObject();//read the byte array
             metadata.setSizeMeta(tamaño);
         } catch (IOException ex) {
-            Logger.getLogger(Trima.class.getName()).log(Level.SEVERE, null, ex);
+            // Logger.getLogger(Trima.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1410,7 +1452,7 @@ public class GUI extends javax.swing.JFrame {
                 Data datos = new Data();
                 Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
                 long byteOffset = RAfile.length();
-                System.out.println("ByteOffset+:: " + byteOffset);
+                System.out.println("ByteOffset:: " + byteOffset);
                 Bnode d = metadata.getArbolB().search(temporal);
                 int x = searchEnNodo(d, temporal.getKey());
 
@@ -1432,13 +1474,13 @@ public class GUI extends javax.swing.JFrame {
                     RAfile.write(dat);
                 } else {
                     System.out.println("SI ENCONTROO ESPACIO!!! ENTRO");
-                    System.out.println("Esta es la POSSSSSSS: " + espacio.posicion);
+                    //System.out.println("Esta es la POSICION: " + espacio.posicion);
                     datos.setUbicacion(espacio.posicion);
                     System.out.println("Espacio encontrado: " + espacio.data + " ----- Tamaño del Registro a Insertar: " + dat.length);
                     int j = 0;
                     for (int i = 0; i < (espacio.data - dat.length); i++) {//El for lo que hace es meter caracteres para igualar los size de ambos
                         datos.setSize_alter(datos.getSize_alter() + "|");
-                        System.out.print("ENTRO Cuantas Veces??");
+                        //System.out.print("ENTRO Cuantas Veces??");
                         j++;
                     }
 
@@ -1460,7 +1502,7 @@ public class GUI extends javax.swing.JFrame {
                 Data datos = new Data();
                 Registro temporal = new Registro(Integer.parseInt(info_registro.get(0).toString()));
                 long byteOffset = RAfile.length();
-                System.out.println("ByteOffset+:: " + byteOffset);
+                System.out.println("ByteOffset:: " + byteOffset);
                 Bnode d = metadata.getArbolB().search(temporal);
                 int x = searchEnNodo(d, temporal.getKey());
 
@@ -1477,9 +1519,10 @@ public class GUI extends javax.swing.JFrame {
                 RAfile.write(dat);
                 System.out.println("ESTE ES EL SIZE DEL REGISTRO..." + dat.length);
             }
+
         } catch (IOException | NumberFormatException ex) {
-            System.out.println("Tiene errrrrrrrroooooooooooooooor");
-            ex.printStackTrace();
+            // System.out.println("Tiene errrrrrrrroooooooooooooooor");
+            //ex.printStackTrace();
         }
 
     }
@@ -1499,7 +1542,7 @@ public class GUI extends javax.swing.JFrame {
                 System.out.println("----------------------------------------------");
                 eliminado = false;
                 tamaño = RAfile.readInt();
-                System.out.println("Newwww Tamaño" + tamaño);
+                System.out.println("New Tamaño: " + tamaño);
                 byte[] data = new byte[tamaño];
                 RAfile.read(data);
                 ByteArrayInputStream in = new ByteArrayInputStream(data);
@@ -1507,7 +1550,7 @@ public class GUI extends javax.swing.JFrame {
                 Data d = (Data) read.readObject();//guardo el array de bytes en una variable temporal
                 if (d.getSize_alter().contains("*")) {//If que verifica que si el registro esta eliminado
                     eliminado = true;//si entra significa que si
-                    System.out.println("ENCONTRO EL REGISTRO BORRADO" + d.getDatos().get(1) + " Ubicacion...." + d.getUbicacion());
+                    System.out.println("ENCONTRO EL REGISTRO BORRADO... " + d.getDatos().get(1) + " Ubicacion...." + d.getUbicacion());
                     AvailList.BestFit(tamaño, d.ubicacion);
 
                 } else {//entra al else cuando NO ETSA ELIMINADO
@@ -1528,10 +1571,11 @@ public class GUI extends javax.swing.JFrame {
                 }
 
             }
-
+            metadata.ArbolB.traverse();
+            metadata.ArbolB.PrintLevels();
         } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("ERrrrrrrrrrrrrrrrrrrrrrrrrrrrrrroooooooooooooooooorr");
+            //ex.printStackTrace();
+            //System.out.println("ERrrrrrrrrrrrrrrrrrrrrrrrrrrrrrroooooooooooooooooorr");
         }
     }
 
@@ -1596,7 +1640,7 @@ public class GUI extends javax.swing.JFrame {
 
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 
@@ -1673,7 +1717,7 @@ public class GUI extends javax.swing.JFrame {
                 System.out.println("===========================================================");
             }
         } catch (Exception ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1689,7 +1733,7 @@ public class GUI extends javax.swing.JFrame {
                 }
             }
         } else {
-            System.out.println("PORQUE ESSS NULLLLLL?????????????????????????????");
+            // System.out.println("PORQUE ESSS NULLLLLL?????????????????????????????");
         }
         return pos;
     }
@@ -1711,13 +1755,13 @@ public class GUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1744,7 +1788,7 @@ public class GUI extends javax.swing.JFrame {
     int FileSuccess;
     int mode = -1;
     int rowRemoval;
-    int developermode = 1;
+    int developermode = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
     private javax.swing.JButton jButton1;
@@ -1763,6 +1807,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

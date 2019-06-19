@@ -66,7 +66,7 @@ public class Registro implements Serializable{
 
     @Override
     public String toString() {
-        return key +"-"+byteOffset+" ";
+        return key +"-";
     }
     
     

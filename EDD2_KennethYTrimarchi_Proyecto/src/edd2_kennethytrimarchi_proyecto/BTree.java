@@ -12,7 +12,7 @@ import java.util.Queue;
  *
  * @author X
  */
-public class BTree implements Serializable{
+public class BTree implements Serializable {
 
     Bnode root; // Pointer to root node 
     int t = 3;  // Minimum degree
@@ -32,50 +32,56 @@ public class BTree implements Serializable{
     }
 
     void PrintLevels() {
-        if (root != null) {
-            for (int i = 0; i < root.n; i++) {
-                if (root.key[i] != null) {
-                    System.out.print(root.key[i] + "  ");
-                }
-            }
-
-            System.out.println("");
-            if (root.hijos != null) {
-                for (int i = 0; i < root.hijos.length; i++) {
-                    if (root.hijos[i] != null) {
-                        for (int j = 0; j < root.hijos[i].n; j++) {
-                            if (root.hijos[i].key[j] != null) {
-                                System.out.print(root.hijos[i].key[j]);
-                            }
-                        }
-                        System.out.print("|");
+        try{
+            if (root != null) {
+                for (int i = 0; i < root.n; i++) {
+                    if (root.key[i] != null) {
+                        System.out.print(root.key[i] + "  ");
                     }
-                    
                 }
+
                 System.out.println("");
-                for (int i = 0; i < root.hijos.length; i++) {
-                    if (root.hijos[i] != null) {
-                        for (int j = 0; j < root.hijos[i].n; j++) {
-                            if (root.hijos[i].hijos[j] != null) {
-                                for (int k = 0; k < root.hijos[i].hijos[j].n+1; k++) {
-                                    //System.out.println("j:"+j+" K:"+k);
-                                    if (root.hijos[i].hijos[j].key[k]!=null) {
-                                        System.out.print(root.hijos[i].hijos[j].key[k]);
-                                        
-                                    }
-                   
+                if (root.hijos != null) {
+                    for (int i = 0; i < root.hijos.length; i++) {
+                        if (root.hijos[i] != null) {
+                            for (int j = 0; j < root.hijos[i].n; j++) {
+                                if (root.hijos[i].key[j] != null) {
+                                    System.out.print(root.hijos[i].key[j]);
                                 }
-                                 System.out.print("|");
                             }
-                           
+                            System.out.print("|");
                         }
-                        System.out.print("|");
-                    }
-                    
-                }
 
+                    }
+                    System.out.println("");
+                    for (int i = 0; i < root.hijos.length; i++) {
+                        if (root.hijos[i] != null) {
+                            for (int j = 0; j < root.hijos[i].n; j++) {
+                                if (root.hijos[i].hijos[j] != null) {
+                                    for (int k = 0; k < root.hijos[i].hijos[j].n + 1; k++) {
+                                        //System.out.println("j:"+j+" K:"+k);
+                                        if (root.hijos[i].hijos[j].key[k] != null) {
+                                            System.out.print(root.hijos[i].hijos[j].key[k]);
+
+                                        }
+
+                                    }
+                                    System.out.print("|");
+                                }
+
+                            }
+                            System.out.print("|");
+                        }
+
+                    }
+
+                }
             }
-        }
+       
+            
+            }catch(Exception x){
+                
+            }
 
     }
 
